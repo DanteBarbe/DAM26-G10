@@ -21,26 +21,6 @@ export function MaterialPreviewCard({ material }: { material: StudyMaterial }) {
     <View style={detailStyles.previewCard}>
       <View style={detailStyles.previewHeader}>
         <Feather name="file-text" size={20} color="#7b5f43" />
-        <View style={detailStyles.fileNameWrap}>
-          <Text style={detailStyles.fileName} numberOfLines={1}>
-            {material.archivo.name}
-          </Text>
-          <Text style={detailStyles.fileMeta}>
-            {formatSize(material.archivo.size)}
-            {material.pages ? ` - ${material.pages} paginas` : ""}
-          </Text>
-        </View>
-        <Pressable
-          accessibilityRole="button"
-          disabled={!material.archivo.uri}
-          onPress={openFile}
-          style={[
-            detailStyles.openButton,
-            !material.archivo.uri && detailStyles.openButtonDisabled,
-          ]}
-        >
-          <Feather name="external-link" size={18} color="#ffffff" />
-        </Pressable>
       </View>
 
       <View style={detailStyles.previewBody}>
@@ -55,9 +35,6 @@ export function MaterialPreviewCard({ material }: { material: StudyMaterial }) {
             <Text style={detailStyles.documentStampText}>PDF</Text>
           </View>
         </View>
-        <Text style={detailStyles.previewHint}>
-          Vista previa mockeada para primera entrega
-        </Text>
       </View>
     </View>
   );
