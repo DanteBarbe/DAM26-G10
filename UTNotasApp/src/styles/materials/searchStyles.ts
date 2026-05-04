@@ -1,0 +1,153 @@
+import { StyleSheet } from "react-native";
+
+import { colors } from "@/src/styles/materials/materialStyles";
+
+export const searchStyles = StyleSheet.create({
+  searchBar: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: "rgba(47, 111, 78, 0.18)",
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: "row",
+    minHeight: 54,
+    paddingHorizontal: 14,
+  },
+  searchInput: {
+    color: colors.text,
+    flex: 1,
+    fontSize: 15,
+    fontWeight: "600",
+    minHeight: 50,
+    paddingHorizontal: 10,
+  },
+  clearButton: {
+    alignItems: "center",
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  filterRow: {
+    gap: 8,
+    paddingVertical: 14,
+  },
+  filterChip: {
+    backgroundColor: colors.surface,
+    borderColor: "rgba(47, 111, 78, 0.16)",
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: "center",
+    minHeight: 38,
+    paddingHorizontal: 13,
+  },
+  filterChipActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  filterText: {
+    color: "#403a32",
+    fontSize: 13,
+    fontWeight: "700",
+  },
+  filterTextActive: {
+    color: colors.surface,
+  },
+  resultSummary: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  resultCount: {
+    color: "#5f584e",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  cardList: {
+    gap: 14,
+  },
+  card: {
+    backgroundColor: colors.surface,
+    borderColor: "rgba(47, 111, 78, 0.14)",
+    borderLeftColor: colors.primary,
+    borderLeftWidth: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 16,
+  },
+  cardHeader: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: 10,
+  },
+  cardTitleWrap: {
+    flex: 1,
+    minWidth: 0,
+  },
+  cardTitle: {
+    color: colors.text,
+    fontSize: 18,
+    fontWeight: "800",
+    lineHeight: 24,
+  },
+  cardMeta: {
+    color: colors.textMuted,
+    fontSize: 13,
+    fontWeight: "600",
+    marginTop: 5,
+  },
+  filePill: {
+    alignItems: "center",
+    backgroundColor: "rgba(47, 111, 78, 0.08)",
+    borderRadius: 8,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  description: {
+    color: "#403a32",
+    fontSize: 14,
+    lineHeight: 20,
+    marginTop: 12,
+  },
+  cardFooter: {
+    alignItems: "center",
+    borderTopColor: "rgba(47, 111, 78, 0.14)",
+    borderTopWidth: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 16,
+    paddingTop: 14,
+  },
+  fileName: {
+    color: colors.textMuted,
+    flex: 1,
+    fontSize: 12,
+    fontWeight: "700",
+    marginRight: 10,
+  },
+  emptyState: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: "rgba(47, 111, 78, 0.14)",
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: "center",
+    minHeight: 300,
+    padding: 24,
+  },
+  emptyTitle: {
+    color: "#374151",
+    fontSize: 18,
+    fontWeight: "800",
+    marginTop: 14,
+    textAlign: "center",
+  },
+  emptyText: {
+    color: "#6b7280",
+    fontSize: 14,
+    lineHeight: 20,
+    marginTop: 6,
+    textAlign: "center",
+  },
+});
