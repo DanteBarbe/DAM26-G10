@@ -80,11 +80,6 @@ export default function MaterialDetailScreen() {
                 {formatDate(material.createdAt)}
               </Text>
             </View>
-            <View style={detailStyles.levelBadge}>
-              <Text style={detailStyles.levelBadgeText}>
-                {material.author.level}
-              </Text>
-            </View>
           </View>
 
           <Text style={detailStyles.description}>{material.descripcion}</Text>
@@ -116,18 +111,9 @@ export default function MaterialDetailScreen() {
             />
             <MaterialInfoItem
               icon="calendar"
-              label="Ano"
+              label="Año"
               value={material.anioCursada?.toString() || "Sin especificar"}
             />
-          </View>
-
-          <View style={detailStyles.actionsRow}>
-            <View style={detailStyles.fileSummary}>
-              <Feather name="file" size={17} color="#2f6f4e" />
-              <Text style={detailStyles.fileSummaryText} numberOfLines={1}>
-                Material disponible para consulta
-              </Text>
-            </View>
           </View>
         </View>
 
