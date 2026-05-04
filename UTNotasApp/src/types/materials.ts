@@ -29,6 +29,31 @@ export type CreatedMaterial = MaterialFormData & {
   numeroParcial?: number;
 };
 
+export type MaterialAuthor = {
+  id: number;
+  name: string;
+  username: string;
+  level: string;
+};
+
+export type StudyMaterial = {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  tipo: MaterialFormData["tipo"];
+  materia: string;
+  carrera: string;
+  comision?: string;
+  anioCursada?: number;
+  numeroParcial?: number;
+  archivo: AttachedFile;
+  author: MaterialAuthor;
+  createdAt: string;
+  score: number;
+  isFavorite?: boolean;
+  pages?: number;
+};
+
 export type FieldName = keyof MaterialFormData;
 
 export type FieldError = {
