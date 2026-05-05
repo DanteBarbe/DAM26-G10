@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { colors } from "@/src/styles/materials/materialStyles";
+import { colors } from "@/src/styles/Colors";
 
 export const searchStyles = StyleSheet.create({
   searchBar: {

@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-
-import { colors } from "@/src/styles/materials/materialStyles";
+import { colors } from "@/src/styles/Colors";
 
 export const detailStyles = StyleSheet.create({
   infoCard: {
@@ -237,4 +236,53 @@ export const detailStyles = StyleSheet.create({
     marginTop: 14,
     textAlign: "center",
   },
+  // BADGES
+badgeRow: {
+  flexDirection: "row",
+  flexWrap: "wrap",
+  gap: 8,
+  marginTop: 14,
+},
+
+badge: {
+  borderRadius: 8,
+  fontSize: 13,
+  fontWeight: "800",
+  overflow: "hidden",
+  paddingHorizontal: 10,
+  paddingVertical: 7,
+},
+
+badgeType: {
+  backgroundColor: colors.softSecondary,
+  color: colors.secondary,
+},
+
+badgeCareer: {
+  backgroundColor: colors.softPrimary,
+  color: colors.primaryDark,
+},
+
+badgeNeutral: {
+  backgroundColor: "#f0eee8",
+  color: "#403a32",
+},
+
+// BUTTON
+primaryButton: {
+  alignItems: "center",
+  backgroundColor: colors.primary,
+  borderRadius: 8,
+  flexDirection: "row",
+  gap: 7,
+  justifyContent: "center",
+  minHeight: 42,
+  paddingHorizontal: 13,
+},
+
+primaryButtonText: {
+  color: colors.surface,
+  fontSize: 14,
+  fontWeight: "800",
+},
 });

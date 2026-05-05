@@ -24,7 +24,7 @@ import {
   type Career,
   type MaterialType,
   type Subject,
-} from "@/src/data/materialOptions";
+} from "@/src/features/materials/data/materialOptions";
 
 import type {
   AttachedFile,
@@ -33,10 +33,10 @@ import type {
   FieldName,
   MaterialFormData,
   PointsBreakdown,
-} from "@/src/types/materials";
+} from "@/src/features/materials/types/materials.types";
 
-import { styles } from "@/src/styles/materialCreateStyles";
-import { saveCreatedMaterial } from "@/src/utils/createdMaterialsStore";
+import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
+import { saveCreatedMaterial } from "@/src/features/materials/utils/createdMaterialsStore";
 
 const initialForm: MaterialFormData = {
   titulo: "",
