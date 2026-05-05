@@ -7,8 +7,8 @@ import { emptyMaterialStateStyles } from "@/src/features/materials/components//s
 import { FilterChip } from "@/src/components/FilterChip";
 import { MaterialResultCard } from "@/src/features/materials/components/MaterialResultCard";
 import { MaterialScreenHeader } from "@/src/features/materials/components/MaterialScreenHeader";
-import { mapCreatedMaterialToStudyMaterial, mockMaterials } from "@/src/data/mockMaterials";
-import { materialTypes } from "@/src/data/materialOptions";
+import { mapCreatedMaterialToStudyMaterial, mockMaterials } from "@/src/features/materials/data/mockMaterials";
+import { materialTypes } from "@/src/features/materials/data/materialOptions";
 import { GlobalStyles } from "@/src/styles/Global.styles";
 import { searchStyles } from "@/src/features/materials/screens/styles/MaterialSearch.styles";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";

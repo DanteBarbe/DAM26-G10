@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
-import { materialTypes } from "@/src/data/materialOptions";
+import { materialTypes } from "@/src/features/materials/data/materialOptions";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
 
 import { MaterialResultCardStyles } from "@/src/features/materials/components/styles/MaterialResultCard.styles";

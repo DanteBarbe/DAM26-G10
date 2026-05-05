@@ -11,8 +11,8 @@ import { MaterialScreenHeader } from "@/src/features/materials/components/Materi
 import {
   mapCreatedMaterialToStudyMaterial,
   mockMaterials,
-} from "@/src/data/mockMaterials";
-import { materialTypes } from "@/src/data/materialOptions";
+} from "@/src/features/materials/data/mockMaterials";
+import { materialTypes } from "@/src/features/materials/data/materialOptions";
 import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
 import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";

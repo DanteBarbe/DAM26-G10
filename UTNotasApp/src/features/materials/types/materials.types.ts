@@ -1,4 +1,4 @@
-import type { MaterialType } from "@/src/data/materialOptions";
+import type { MaterialType } from "@/src/features/materials/data/materialOptions";
 
 export type AttachedFile = {
   id: string;

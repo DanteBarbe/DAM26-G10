@@ -24,7 +24,7 @@ import {
   type Career,
   type MaterialType,
   type Subject,
-} from "@/src/data/materialOptions";
+} from "@/src/features/materials/data/materialOptions";
 
 import type {
   AttachedFile,
