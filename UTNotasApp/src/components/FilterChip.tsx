@@ -1,6 +1,6 @@
 import { Pressable, Text } from "react-native";
 
-import { searchStyles } from "@/src/styles/materials/searchStyles";
+import { searchStyles } from "@/src/features/materials/screens/styles/MaterialSearch.styles";
 
 export function FilterChip({
   label,
