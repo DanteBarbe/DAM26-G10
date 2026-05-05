@@ -5,8 +5,7 @@ import { Pressable, Text, View } from "react-native";
 import { materialTypes } from "@/src/data/materialOptions";
 import type { StudyMaterial } from "@/src/types/materials";
 
-import { sharedStyles } from "@/src/styles/materials/materialStyles";
-import { searchStyles } from "@/src/styles/materials/searchStyles";
+import { MaterialResultCardStyles } from "@/src/features/materials/components/styles/MaterialResultCard.styles";
 
 const getTypeLabel = (value: StudyMaterial["tipo"]) =>
   materialTypes.find((type) => type.value === value)?.label ?? "Material";
@@ -20,43 +19,43 @@ const formatDate = (value: string) =>
 
 export function MaterialResultCard({ material }: { material: StudyMaterial }) {
   return (
-    <View style={searchStyles.card}>
-      <View style={searchStyles.cardHeader}>
-        <View style={searchStyles.cardTitleWrap}>
-          <Text style={searchStyles.cardTitle}>{material.titulo}</Text>
-          <Text style={searchStyles.cardMeta}>
+    <View style={MaterialResultCardStyles.card}>
+      <View style={MaterialResultCardStyles.cardHeader}>
+        <View style={MaterialResultCardStyles.cardTitleWrap}>
+          <Text style={MaterialResultCardStyles.cardTitle}>{material.titulo}</Text>
+          <Text style={MaterialResultCardStyles.cardMeta}>
             @{material.author.username} - {formatDate(material.createdAt)}
           </Text>
         </View>
-        <View style={searchStyles.filePill}>
+        <View style={MaterialResultCardStyles.filePill}>
           <Feather name="file-text" size={16} color="#214f37" />
         </View>
       </View>
 
-      <Text style={searchStyles.description} numberOfLines={3}>
+      <Text style={MaterialResultCardStyles.description} numberOfLines={3}>
         {material.descripcion}
       </Text>
 
-      <View style={sharedStyles.badgeRow}>
-        <Text style={[sharedStyles.badge, sharedStyles.badgeType]}>
+      <View style={MaterialResultCardStyles.badgeRow}>
+        <Text style={[MaterialResultCardStyles.badge, MaterialResultCardStyles.badgeType]}>
           {getTypeLabel(material.tipo)}
         </Text>
-        <Text style={[sharedStyles.badge, sharedStyles.badgeCareer]}>
+        <Text style={[MaterialResultCardStyles.badge, MaterialResultCardStyles.badgeCareer]}>
           {material.materia}
         </Text>
       </View>
 
-      <View style={searchStyles.cardFooter}>
-        <Text style={searchStyles.fileName} numberOfLines={1}>
+      <View style={MaterialResultCardStyles.cardFooter}>
+        <Text style={MaterialResultCardStyles.fileName} numberOfLines={1}>
           {material.archivo.name}
         </Text>
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push(`/material/${material.id}` as never)}
-          style={sharedStyles.primaryButton}
+          style={MaterialResultCardStyles.primaryButton}
         >
           <Feather name="eye" size={17} color="#ffffff" />
-          <Text style={sharedStyles.primaryButtonText}>Ver material</Text>
+          <Text style={MaterialResultCardStyles.primaryButtonText}>Ver material</Text>
         </Pressable>
       </View>
     </View>

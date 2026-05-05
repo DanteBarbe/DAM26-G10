@@ -3,7 +3,7 @@ import { Linking, Pressable, Text, View } from "react-native";
 
 import type { StudyMaterial } from "@/src/types/materials";
 
-import { detailStyles } from "@/src/styles/materials/materialDetailStyles";
+import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
 
 const formatSize = (size?: number) => {
   if (!size) return "Tamaño no disponible";

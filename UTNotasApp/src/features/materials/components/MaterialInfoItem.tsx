@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
-import { detailStyles } from "@/src/styles/materials/materialDetailStyles";
+import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
 
 export function MaterialInfoItem({
   icon,

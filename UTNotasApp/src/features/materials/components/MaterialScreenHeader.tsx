@@ -1,8 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
-
-import { colors, sharedStyles } from "@/src/styles/materials/materialStyles";
+import { MaterialScreenHeaderStyles } from "@/src/features/materials/components/styles/MaterialScreenHeader.styles";
+import { colors } from "@/src/styles/Colors";
 
 export function MaterialScreenHeader({
   title,
@@ -19,24 +19,24 @@ export function MaterialScreenHeader({
       onPress={() => {
         if (rightHref) router.push(rightHref as never);
       }}
-      style={sharedStyles.headerButton}
+      style={MaterialScreenHeaderStyles.headerButton}
     >
       <Feather name={rightIcon} size={22} color={colors.primaryDark} />
     </Pressable>
   );
 
   return (
-    <View style={sharedStyles.header}>
+    <View style={MaterialScreenHeaderStyles.header}>
       <Pressable
         accessibilityRole="button"
         onPress={() => router.back()}
-        style={sharedStyles.headerButton}
+        style={MaterialScreenHeaderStyles.headerButton}
       >
         <Feather name="arrow-left" size={22} color={colors.primaryDark} />
       </Pressable>
-      <View style={sharedStyles.headerText}>
-        <Text style={sharedStyles.brand}>UTNotas</Text>
-        <Text style={sharedStyles.title} numberOfLines={2}>
+      <View style={MaterialScreenHeaderStyles.headerText}>
+        <Text style={MaterialScreenHeaderStyles.brand}>UTNotas</Text>
+        <Text style={MaterialScreenHeaderStyles.title} numberOfLines={2}>
           {title}
         </Text>
       </View>

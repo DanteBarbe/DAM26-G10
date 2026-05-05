@@ -5,18 +5,18 @@ import { useMemo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { MaterialInfoItem } from "@/src/components/materials/MaterialInfoItem";
-import { MaterialPreviewCard } from "@/src/components/materials/MaterialPreviewCard";
-import { MaterialScreenHeader } from "@/src/components/materials/MaterialScreenHeader";
+import { MaterialInfoItem } from "@/src/features/materials/components/MaterialInfoItem";
+import { MaterialPreviewCard } from "@/src/features/materials/components/MaterialPreviewCard";
+import { MaterialScreenHeader } from "@/src/features/materials/components/MaterialScreenHeader";
 import {
   mapCreatedMaterialToStudyMaterial,
   mockMaterials,
 } from "@/src/data/mockMaterials";
 import { materialTypes } from "@/src/data/materialOptions";
-import { detailStyles } from "@/src/styles/materials/materialDetailStyles";
-import { sharedStyles } from "@/src/styles/materials/materialStyles";
+import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
 import type { StudyMaterial } from "@/src/types/materials";
 import { getCreatedMaterials } from "@/src/utils/createdMaterialsStore";
+import { GlobalStyles } from "@/src/styles/Global.styles";
 
 const getTypeLabel = (value: StudyMaterial["tipo"]) =>
   materialTypes.find((type) => type.value === value)?.label ?? "Material";
@@ -42,7 +42,7 @@ export default function MaterialDetailScreen() {
 
   if (!material) {
     return (
-      <SafeAreaView style={sharedStyles.safeArea}>
+      <SafeAreaView style={GlobalStyles.safeArea}>
         <StatusBar style="dark" />
         <View style={detailStyles.notFound}>
           <Feather name="file-minus" size={56} color="#9a9284" />
@@ -50,9 +50,9 @@ export default function MaterialDetailScreen() {
           <Pressable
             accessibilityRole="button"
             onPress={() => router.replace("/search" as never)}
-            style={sharedStyles.primaryButton}
+            style={detailStyles.primaryButton}
           >
-            <Text style={sharedStyles.primaryButtonText}>
+            <Text style={detailStyles.primaryButtonText}>
               Volver a busqueda
             </Text>
           </Pressable>
@@ -62,9 +62,9 @@ export default function MaterialDetailScreen() {
   }
 
   return (
-    <SafeAreaView style={sharedStyles.safeArea}>
+    <SafeAreaView style={GlobalStyles.safeArea}>
       <StatusBar style="dark" />
-      <ScrollView contentContainerStyle={sharedStyles.content}>
+      <ScrollView contentContainerStyle={GlobalStyles.content}>
         <MaterialScreenHeader
           title="Ver material"
           rightHref="/search"
@@ -84,15 +84,15 @@ export default function MaterialDetailScreen() {
 
           <Text style={detailStyles.description}>{material.descripcion}</Text>
 
-          <View style={sharedStyles.badgeRow}>
-            <Text style={[sharedStyles.badge, sharedStyles.badgeType]}>
+          <View style={detailStyles.badgeRow}>
+            <Text style={[detailStyles.badge, detailStyles.badgeType]}>
               {getTypeLabel(material.tipo)}
             </Text>
-            <Text style={[sharedStyles.badge, sharedStyles.badgeCareer]}>
+            <Text style={[detailStyles.badge, detailStyles.badgeCareer]}>
               {material.materia}
             </Text>
             {material.numeroParcial ? (
-              <Text style={[sharedStyles.badge, sharedStyles.badgeNeutral]}>
+              <Text style={[detailStyles.badge, detailStyles.badgeNeutral]}>
                 Parcial {material.numeroParcial}
               </Text>
             ) : null}

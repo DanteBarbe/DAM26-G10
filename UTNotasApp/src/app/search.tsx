@@ -1,26 +1,16 @@
 import { Feather } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { useMemo, useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import { EmptyMaterialsState } from "@/src/components/materials/EmptyMaterialsState";
-import { FilterChip } from "@/src/components/materials/FilterChip";
-import { MaterialResultCard } from "@/src/components/materials/MaterialResultCard";
-import { MaterialScreenHeader } from "@/src/components/materials/MaterialScreenHeader";
-import {
-  mapCreatedMaterialToStudyMaterial,
-  mockMaterials,
-} from "@/src/data/mockMaterials";
+import { EmptyMaterialsState } from "@/src/features/materials/components/EmptyMaterialsState";
+import { FilterChip } from "@/src/components/FilterChip";
+import { MaterialResultCard } from "@/src/features/materials/components/MaterialResultCard";
+import { MaterialScreenHeader } from "@/src/features/materials/components/MaterialScreenHeader";
+import { mapCreatedMaterialToStudyMaterial, mockMaterials } from "@/src/data/mockMaterials";
 import { materialTypes } from "@/src/data/materialOptions";
-import { sharedStyles } from "@/src/styles/materials/materialStyles";
-import { searchStyles } from "@/src/styles/materials/searchStyles";
+import { GlobalStyles } from "@/src/styles/Global.styles";
+import { searchStyles } from "@/src/features/materials/screens/styles/MaterialSearch.styles";
 import type { StudyMaterial } from "@/src/types/materials";
 import { getCreatedMaterials } from "@/src/utils/createdMaterialsStore";
 
@@ -60,9 +50,9 @@ export default function MaterialSearchScreen() {
   }, [activeType, materials, query]);
 
   return (
-    <SafeAreaView style={sharedStyles.safeArea}>
+    <SafeAreaView style={GlobalStyles.safeArea}>
       <StatusBar style="dark" />
-      <ScrollView contentContainerStyle={sharedStyles.content}>
+      <ScrollView contentContainerStyle={GlobalStyles.content}>
         <MaterialScreenHeader title="Buscar materiales" rightHref="/" rightIcon="upload-cloud" />
 
         <View style={searchStyles.searchBar}>
