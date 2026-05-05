@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 
-import type { CreatedMaterial } from "@/src/types/materials";
+import type { CreatedMaterial } from "@/src/features/materials/types/materials.types";
 
 const STORAGE_KEY = "utnotas.createdMaterials";
 const memoryMaterials: CreatedMaterial[] = [];

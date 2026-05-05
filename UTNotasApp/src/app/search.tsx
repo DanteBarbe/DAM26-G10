@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { EmptyMaterialsState } from "@/src/features/materials/components/EmptyMaterialsState";
+import { emptyMaterialStateStyles } from "@/src/features/materials/components//styles/EmptyMaterialState.styles";
 import { FilterChip } from "@/src/components/FilterChip";
 import { MaterialResultCard } from "@/src/features/materials/components/MaterialResultCard";
 import { MaterialScreenHeader } from "@/src/features/materials/components/MaterialScreenHeader";
@@ -11,8 +11,9 @@ import { mapCreatedMaterialToStudyMaterial, mockMaterials } from "@/src/data/moc
 import { materialTypes } from "@/src/data/materialOptions";
 import { GlobalStyles } from "@/src/styles/Global.styles";
 import { searchStyles } from "@/src/features/materials/screens/styles/MaterialSearch.styles";
-import type { StudyMaterial } from "@/src/types/materials";
-import { getCreatedMaterials } from "@/src/utils/createdMaterialsStore";
+import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
+import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";
+import { EmptyMaterialsState } from "../features/materials/components/EmptyMaterialState";
 
 const normalizeText = (value: string) =>
   value

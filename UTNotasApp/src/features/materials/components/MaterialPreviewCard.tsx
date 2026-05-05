@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { Linking, Pressable, Text, View } from "react-native";
 
-import type { StudyMaterial } from "@/src/types/materials";
+import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
 
 import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
 

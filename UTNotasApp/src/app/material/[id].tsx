@@ -14,8 +14,8 @@ import {
 } from "@/src/data/mockMaterials";
 import { materialTypes } from "@/src/data/materialOptions";
 import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
-import type { StudyMaterial } from "@/src/types/materials";
-import { getCreatedMaterials } from "@/src/utils/createdMaterialsStore";
+import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
+import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";
 import { GlobalStyles } from "@/src/styles/Global.styles";
 
 const getTypeLabel = (value: StudyMaterial["tipo"]) =>

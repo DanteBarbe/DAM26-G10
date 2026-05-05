@@ -2,7 +2,7 @@ import type {
   AttachedFile,
   CreatedMaterial,
   StudyMaterial,
-} from "@/src/types/materials";
+} from "@/src/features/materials/types/materials.types";
 
 export const mockMaterials: StudyMaterial[] = [
   {

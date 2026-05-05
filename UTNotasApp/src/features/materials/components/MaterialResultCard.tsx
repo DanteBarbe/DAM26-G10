@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 import { materialTypes } from "@/src/data/materialOptions";
-import type { StudyMaterial } from "@/src/types/materials";
+import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
 
 import { MaterialResultCardStyles } from "@/src/features/materials/components/styles/MaterialResultCard.styles";
 
