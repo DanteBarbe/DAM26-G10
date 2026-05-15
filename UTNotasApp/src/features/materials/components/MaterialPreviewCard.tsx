@@ -19,15 +19,6 @@ export function MaterialPreviewCard({ material }: { material: StudyMaterial }) {
             {material.archivo.name}
           </Text>
         </View>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Abrir archivo"
-          onPress={openFile}
-          disabled={!material.archivo.uri}
-          style={[styles.openButton, !material.archivo.uri && styles.openButtonDisabled]}
-        >
-          <Feather name="external-link" size={18} color="#ffffff" />
-        </Pressable>
       </View>
 
       <View style={styles.previewBody}>
