@@ -2,14 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { Linking, Pressable, Text, View } from "react-native";
 
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
-
-import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
-
-const formatSize = (size?: number) => {
-  if (!size) return "Tamaño no disponible";
-  if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
-  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
-};
+import { previewCardStyles as styles } from "@/src/features/materials/components/styles/MaterialPreviewCard.styles";
 
 export function MaterialPreviewCard({ material }: { material: StudyMaterial }) {
   const openFile = async () => {
@@ -18,21 +11,35 @@ export function MaterialPreviewCard({ material }: { material: StudyMaterial }) {
   };
 
   return (
-    <View style={detailStyles.previewCard}>
-      <View style={detailStyles.previewHeader}>
+    <View style={styles.previewCard}>
+      <View style={styles.previewHeader}>
         <Feather name="file-text" size={20} color="#7b5f43" />
+        <View style={styles.fileNameWrap}>
+          <Text style={styles.fileName} numberOfLines={1}>
+            {material.archivo.name}
+          </Text>
+        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Abrir archivo"
+          onPress={openFile}
+          disabled={!material.archivo.uri}
+          style={[styles.openButton, !material.archivo.uri && styles.openButtonDisabled]}
+        >
+          <Feather name="external-link" size={18} color="#ffffff" />
+        </Pressable>
       </View>
 
-      <View style={detailStyles.previewBody}>
-        <View style={detailStyles.documentSheet}>
-          <View style={detailStyles.documentLineLong} />
-          <View style={detailStyles.documentLine} />
-          <View style={detailStyles.documentLineShort} />
-          <View style={detailStyles.documentDivider} />
-          <View style={detailStyles.documentParagraph} />
-          <View style={detailStyles.documentParagraphSmall} />
-          <View style={detailStyles.documentStamp}>
-            <Text style={detailStyles.documentStampText}>PDF</Text>
+      <View style={styles.previewBody}>
+        <View style={styles.documentSheet}>
+          <View style={styles.documentLineLong} />
+          <View style={styles.documentLine} />
+          <View style={styles.documentLineShort} />
+          <View style={styles.documentDivider} />
+          <View style={styles.documentParagraph} />
+          <View style={styles.documentParagraphSmall} />
+          <View style={styles.documentStamp}>
+            <Text style={styles.documentStampText}>PDF</Text>
           </View>
         </View>
       </View>

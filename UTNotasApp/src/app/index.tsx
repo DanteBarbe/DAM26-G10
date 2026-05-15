@@ -35,8 +35,10 @@ import type {
   PointsBreakdown,
 } from "@/src/features/materials/types/materials.types";
 
+import { FormField } from "@/src/components/FormField";
 import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
 import { saveCreatedMaterial } from "@/src/features/materials/utils/createdMaterialsStore";
+import { normalizeText, formatFileSize } from "@/src/utils/format";
 
 const initialForm: MaterialFormData = {
   titulo: "",
@@ -54,18 +56,6 @@ const initialForm: MaterialFormData = {
 
 const currentYear = new Date().getFullYear();
 const loggedUserId = 1;
-
-const normalizeText = (value: string) =>
-  value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-
-const formatFileSize = (size?: number) => {
-  if (!size) return "Tamano no disponible";
-  if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
-  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
-};
 
 const createFileId = () =>
   `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
@@ -197,6 +187,23 @@ type SelectOption<Value extends string | number> = {
   value: Value;
 };
 
+const partialLabel = (value: string) => {
+  switch (value) {
+    case "0":
+      return "Ninguno";
+    case "1":
+      return "1ero";
+    case "2":
+      return "2do";
+    case "3":
+      return "3ro";
+    case "4":
+      return "4to";
+    default:
+      return "Seleccionar";
+  }
+};
+
 export default function MaterialCreateScreen() {
   const [form, setForm] = useState<MaterialFormData>(initialForm);
   const [fieldError, setFieldError] = useState<FieldError | null>(null);
@@ -227,9 +234,15 @@ export default function MaterialCreateScreen() {
     [form.carreraId, form.materiaId],
   );
 
-  const commissionPrefix = getCareerPrefix(form.carrera, careerSubject?.anio);
+  const commissionPrefix = useMemo(
+    () => getCareerPrefix(form.carrera, careerSubject?.anio),
+    [form.carrera, careerSubject?.anio],
+  );
   const showParcialSelect =
     form.tipo === "PARCIAL" || form.tipo === "PARCIAL_RESUELTO";
+
+  const fieldErrorFor = (field: FieldName) =>
+    fieldError?.field === field ? fieldError.message : undefined;
 
   const clearFieldError = (field: FieldName) => {
     if (fieldError?.field === field) setFieldError(null);
@@ -368,7 +381,7 @@ export default function MaterialCreateScreen() {
           <View style={styles.navigationPanel}>
             <Pressable
               accessibilityRole="button"
-              onPress={() => router.push("/search" as never)}
+              onPress={() => router.push("/search")}
               style={styles.navButton}
             >
               <Feather name="search" size={18} color="#ffffff" />
@@ -379,8 +392,7 @@ export default function MaterialCreateScreen() {
           <View style={styles.formSurface}>
             <FormField
               label="Titulo*"
-              field="titulo"
-              error={fieldError}
+              error={fieldErrorFor("titulo")}
             >
               <TextInput
                 value={form.titulo}
@@ -393,8 +405,7 @@ export default function MaterialCreateScreen() {
 
             <FormField
               label="Archivo*"
-              field="archivos"
-              error={fieldError}
+              error={fieldErrorFor("archivos")}
             >
               <FileUploadField
                 files={form.archivos}
@@ -406,8 +417,7 @@ export default function MaterialCreateScreen() {
 
             <FormField
               label="Materia*"
-              field="materiaId"
-              error={fieldError}
+              error={fieldErrorFor("materiaId")}
             >
               <SubjectSearch
                 value={form.materia}
@@ -420,8 +430,7 @@ export default function MaterialCreateScreen() {
             {form.materiaId ? (
               <FormField
                 label="Carrera*"
-                field="carreraId"
-                error={fieldError}
+                error={fieldErrorFor("carreraId")}
               >
                 <SelectButton
                   icon="book-open"
@@ -434,8 +443,7 @@ export default function MaterialCreateScreen() {
             <View style={styles.row}>
               <FormField
                 label="Tipo de Material*"
-                field="tipo"
-                error={fieldError}
+                error={fieldErrorFor("tipo")}
                 style={styles.rowItem}
               >
                 <SelectButton
@@ -450,8 +458,7 @@ export default function MaterialCreateScreen() {
 
               <FormField
                 label="Ano de cursada (opcional)"
-                field="anioCursada"
-                error={fieldError}
+                error={fieldErrorFor("anioCursada")}
                 style={styles.rowItem}
               >
                 <TextInput
@@ -470,8 +477,7 @@ export default function MaterialCreateScreen() {
 
             <FormField
               label="Comision (opcional)"
-              field="comision"
-              error={fieldError}
+              error={fieldErrorFor("comision")}
             >
               <View style={styles.commissionRow}>
                 <View style={styles.commissionPrefix}>
@@ -495,8 +501,7 @@ export default function MaterialCreateScreen() {
             {showParcialSelect ? (
               <FormField
                 label="Parcial Relacionado (opcional)"
-                field="parcial"
-                error={fieldError}
+                error={fieldErrorFor("parcial")}
               >
                 <SelectButton
                   icon="layers"
@@ -508,8 +513,7 @@ export default function MaterialCreateScreen() {
 
             <FormField
               label="Descripcion del material (opcional)"
-              field="descripcion"
-              error={fieldError}
+              error={fieldErrorFor("descripcion")}
             >
               <TextInput
                 value={form.descripcion}
@@ -608,36 +612,6 @@ export default function MaterialCreateScreen() {
         onClose={resetForm}
       />
     </SafeAreaView>
-  );
-}
-
-function FormField({
-  label,
-  field,
-  error,
-  children,
-  style,
-}: {
-  label: string;
-  field: FieldName;
-  error: FieldError | null;
-  children: React.ReactNode;
-  style?: object;
-}) {
-  const visibleError = error?.field === field ? error.message : "";
-
-  return (
-    <View style={[styles.field, style]}>
-      <View style={styles.labelRow}>
-        <Text style={styles.label}>{label}</Text>
-        {visibleError ? (
-          <Text style={styles.fieldError} numberOfLines={2}>
-            {visibleError}
-          </Text>
-        ) : null}
-      </View>
-      {children}
-    </View>
   );
 }
 
@@ -967,20 +941,4 @@ function PointsModal({
   );
 }
 
-const partialLabel = (value: string) => {
-  switch (value) {
-    case "0":
-      return "Ninguno";
-    case "1":
-      return "1ero";
-    case "2":
-      return "2do";
-    case "3":
-      return "3ro";
-    case "4":
-      return "4to";
-    default:
-      return "Seleccionar";
-  }
-};
 

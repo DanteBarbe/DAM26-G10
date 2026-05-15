@@ -1,50 +1,79 @@
-# Welcome to your Expo app 👋
+# UTNotasApp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil de UTNotas para la UTN Facultad Regional La Plata. Permite a los estudiantes buscar, consultar y publicar material de estudio (apuntes, parciales, resúmenes, prácticas) organizados por carrera y materia.
 
-## Get started
+**Trabajo Integrador — Desarrollo de Aplicaciones Móviles 2026**
+Grupo 10 — Andrada Santiago · Barbé Dante · Diez Nicolás · Soler Tomás
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## Requisitos previos
 
-2. Start the app
+- [Node.js](https://nodejs.org/) 18 o superior
+- [Expo CLI](https://docs.expo.dev/get-started/installation/) (`npm install -g expo-cli`)
+- Para Android: Android Studio con un emulador configurado, o un dispositivo físico con Expo Go
+- Para iOS: Xcode (solo en macOS), o un dispositivo físico con Expo Go
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Instalación
 
 ```bash
-npm run reset-project
+cd UTNotasApp
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## Correr el proyecto
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+En la terminal aparecerán las siguientes opciones:
 
-## Join the community
+| Tecla | Acción |
+|-------|--------|
+| `a`   | Abrir en emulador Android |
+| `i`   | Abrir en simulador iOS (macOS) |
+| `w`   | Abrir en navegador (web) |
 
-Join our community of developers creating universal apps.
+También podés escanear el QR con la app **Expo Go** en tu celular.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## Estructura del proyecto
+
+```
+UTNotasApp/
+├── src/
+│   ├── app/                    # Pantallas (file-based routing de Expo Router)
+│   │   ├── index.tsx           # Pantalla de carga de material
+│   │   ├── search.tsx          # Pantalla de búsqueda
+│   │   └── material/[id].tsx   # Detalle de material
+│   ├── components/             # Componentes globales reutilizables
+│   ├── features/
+│   │   └── materials/          # Feature de materiales (components, data, types, utils)
+│   ├── styles/                 # Tokens de diseño (colores, tipografía, espaciado)
+│   └── utils/                  # Utilidades generales (format.ts)
+```
+
+---
+
+## Stack tecnológico
+
+| Tecnología | Versión | Rol |
+|------------|---------|-----|
+| React Native | 0.73+ | Framework móvil |
+| Expo / Expo Router | SDK 51+ | Plataforma y navegación |
+| TypeScript | 5.x | Tipado estático |
+
+---
+
+## Entrega 1 — Alcance
+
+- Registrar material de estudio (formulario con archivo, materia, carrera, tipo)
+- Consultar material de estudio (búsqueda por texto y filtros por tipo)
+- Ver detalle de un material
+- Modificar y eliminar material (sin RF-01.2.1 calificación, sin RF-01.2.2 reporte, sin RF-01.1.1 conversión de imagen)
