@@ -44,7 +44,7 @@ export default function MaterialSearchScreen() {
     <SafeAreaView style={GlobalStyles.safeArea}>
       <StatusBar style="dark" />
       <ScrollView contentContainerStyle={GlobalStyles.content}>
-        <MaterialScreenHeader title="Buscar materiales" rightHref="/create" rightIcon="upload-cloud" />
+        <MaterialScreenHeader title="Buscar materiales" />
 
         <View style={searchStyles.searchBar}>
           <Feather name="search" size={20} color="#746c61" />
