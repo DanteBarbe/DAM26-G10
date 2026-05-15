@@ -1,4 +1,5 @@
 import { Feather } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View, } from "react-native";
@@ -15,7 +16,8 @@ import type { StudyMaterial } from "@/src/features/materials/types/materials.typ
 import { normalizeText } from "@/src/utils/format";
 
 export default function MaterialSearchScreen() {
-  const [query, setQuery] = useState("");
+  const { q } = useLocalSearchParams<{ q?: string }>();
+  const [query, setQuery] = useState(q ?? "");
   const [activeType, setActiveType] = useState<StudyMaterial["tipo"] | "TODOS">(
     "TODOS",
   );
@@ -42,7 +44,7 @@ export default function MaterialSearchScreen() {
     <SafeAreaView style={GlobalStyles.safeArea}>
       <StatusBar style="dark" />
       <ScrollView contentContainerStyle={GlobalStyles.content}>
-        <MaterialScreenHeader title="Buscar materiales" rightHref="/" rightIcon="upload-cloud" />
+        <MaterialScreenHeader title="Buscar materiales" rightHref="/create" rightIcon="upload-cloud" />
 
         <View style={searchStyles.searchBar}>
           <Feather name="search" size={20} color="#746c61" />
