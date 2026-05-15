@@ -16,9 +16,6 @@ export function MaterialResultCard({ material }: { material: StudyMaterial }) {
             @{material.author.username} - {formatDate(material.createdAt)}
           </Text>
         </View>
-        <View style={MaterialResultCardStyles.filePill}>
-          <Feather name="file-text" size={16} color="#214f37" />
-        </View>
       </View>
 
       <Text style={MaterialResultCardStyles.description} numberOfLines={3}>
@@ -35,9 +32,6 @@ export function MaterialResultCard({ material }: { material: StudyMaterial }) {
       </View>
 
       <View style={MaterialResultCardStyles.cardFooter}>
-        <Text style={MaterialResultCardStyles.fileName} numberOfLines={1}>
-          {material.archivo.name}
-        </Text>
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push({ pathname: "/material/[id]", params: { id: material.id } })}
