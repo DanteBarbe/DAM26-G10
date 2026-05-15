@@ -229,13 +229,6 @@ export default function MaterialCreateScreen() {
               <Text style={styles.brand}>UTNotas</Text>
               <Text style={styles.title}>Subi tu material de estudio</Text>
             </View>
-            <View style={styles.headerIcon}>
-              <Feather name="upload-cloud" size={28} color="#1f63b5" />
-            </View>
-          </View>
-
-          <View style={styles.navigationPanel}>
-            <IconButton icon="arrow-left" onPress={() => router.back()} />
           </View>
 
           <View style={styles.formSurface}>
