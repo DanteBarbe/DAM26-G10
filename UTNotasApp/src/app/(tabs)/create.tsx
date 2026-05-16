@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -24,7 +24,6 @@ import {
   type Subject,
 } from "@/src/features/materials/data/materialOptions";
 import { FileUploadField } from "@/src/features/materials/components/FileUploadField";
-import { IconButton } from "@/src/features/materials/components/IconButton";
 import { OptionSheet } from "@/src/features/materials/components/OptionSheet";
 import { PointsModal } from "@/src/features/materials/components/PointsModal";
 import { SelectButton } from "@/src/features/materials/components/SelectButton";
@@ -37,11 +36,7 @@ import {
   partialLabel,
   validateForm,
 } from "@/src/features/materials/utils/materialFormHelpers";
-import {
-  getCreatedMaterials,
-  saveCreatedMaterial,
-  updateCreatedMaterial,
-} from "@/src/features/materials/utils/createdMaterialsStore";
+import { saveCreatedMaterial } from "@/src/features/materials/utils/createdMaterialsStore";
 import type {
   CreatedMaterial,
   FieldError,
@@ -67,29 +62,15 @@ const initialForm: MaterialFormData = {
 const loggedUserId = 1;
 
 export default function MaterialCreateScreen() {
-  const { editId } = useLocalSearchParams<{ editId?: string }>();
-  const isEditMode = Boolean(editId);
-
-  const [form, setForm] = useState<MaterialFormData>(() => {
-    if (!editId) return initialForm;
-    const existing = getCreatedMaterials().find((m) => String(m.id) === editId);
-    if (!existing) return initialForm;
-    return {
-      titulo: existing.titulo,
-      descripcion: existing.descripcion,
-      tipo: existing.tipo,
-      archivos: existing.archivos,
-      materiaId: existing.materiaId,
-      carreraId: existing.carreraId,
-      materia: existing.materia,
-      carrera: existing.carrera,
-      comision: existing.comision,
-      parcial: existing.parcial,
-      anioCursada: existing.anioCursada,
-    };
-  });
+  const [form, setForm] = useState<MaterialFormData>(initialForm);
 
   const [fieldError, setFieldError] = useState<FieldError | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      setFieldError(null);
+    }, []),
+  );
   const [activeSelector, setActiveSelector] = useState<
     "career" | "type" | "partial" | null
   >(null);
@@ -218,37 +199,30 @@ export default function MaterialCreateScreen() {
     setFieldError(null);
     setIsSubmitting(true);
 
-    if (isEditMode && editId) {
-      const existing = getCreatedMaterials().find((m) => String(m.id) === editId);
-      if (existing) {
-        updateCreatedMaterial(existing.id, {
-          ...existing,
-          ...form,
-          numeroParcial: form.parcial ? Number(form.parcial) : undefined,
-        });
-      }
-      setIsSubmitting(false);
-      router.back();
-    } else {
-      const material: CreatedMaterial = {
-        ...form,
-        id: Date.now(),
-        userId: loggedUserId,
-        createdAt: new Date().toISOString(),
-        numeroParcial: form.parcial ? Number(form.parcial) : undefined,
-      };
+    const material: CreatedMaterial = {
+      ...form,
+      id: Date.now(),
+      userId: loggedUserId,
+      createdAt: new Date().toISOString(),
+      numeroParcial: form.parcial ? Number(form.parcial) : undefined,
+    };
 
-      await saveCreatedMaterial(material);
-      setLastCreated(material);
-      setPointsAlert(buildPointsBreakdown(form));
-      setIsSubmitting(false);
-    }
+    await saveCreatedMaterial(material);
+    setLastCreated(material);
+    setPointsAlert(buildPointsBreakdown(form));
+    setIsSubmitting(false);
   };
 
   const resetForm = () => {
+    const createdId = lastCreated?.id;
     setForm(initialForm);
     setFieldError(null);
     setPointsAlert(null);
+    setLastCreated(null);
+    if (createdId) {
+      router.navigate("/(tabs)");
+      router.push(`/material/${createdId}`);
+    }
   };
 
   return (
@@ -265,13 +239,8 @@ export default function MaterialCreateScreen() {
           <View style={styles.header}>
             <View style={{ flex: 1 }}>
               <Text style={styles.brand}>UTNotas</Text>
-              <Text style={styles.title}>
-                {isEditMode ? "Editar material" : "Subi tu material de estudio"}
-              </Text>
+              <Text style={styles.title}>Subi tu material de estudio</Text>
             </View>
-            {isEditMode && (
-              <IconButton icon="x" onPress={() => router.back()} />
-            )}
           </View>
 
           <View style={styles.formSurface}>
@@ -403,30 +372,12 @@ export default function MaterialCreateScreen() {
                 isSubmitting && styles.disabledButton,
               ]}
             >
-              <Feather
-                name={isEditMode ? "save" : "upload"}
-                size={20}
-                color="#ffffff"
-              />
+              <Feather name="upload" size={20} color="#ffffff" />
               <Text style={styles.submitButtonText}>
-                {isSubmitting
-                  ? isEditMode ? "Guardando..." : "Subiendo..."
-                  : isEditMode ? "Guardar cambios" : "Subir"}
+                {isSubmitting ? "Subiendo..." : "Subir"}
               </Text>
             </Pressable>
           </View>
-
-          {!isEditMode && lastCreated ? (
-            <View style={styles.createdPanel}>
-              <View style={styles.createdHeader}>
-                <Feather name="check-circle" size={20} color="#247a48" />
-                <Text style={styles.createdTitle}>Material listo en el front</Text>
-              </View>
-              <Text style={styles.createdText} numberOfLines={2}>
-                {lastCreated.titulo} - {lastCreated.materia} - {lastCreated.carrera}
-              </Text>
-            </View>
-          ) : null}
         </ScrollView>
       </KeyboardAvoidingView>
 
@@ -473,7 +424,7 @@ export default function MaterialCreateScreen() {
         }}
       />
 
-      {!isEditMode && <PointsModal points={pointsAlert} onClose={resetForm} />}
+      <PointsModal points={pointsAlert} onClose={resetForm} />
     </SafeAreaView>
   );
 }
