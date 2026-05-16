@@ -55,15 +55,6 @@ export default function HomeScreen() {
             </Pressable>
           )}
         </View>
-
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push("/create")}
-          style={({ pressed }) => [styles.uploadButton, pressed && styles.pressed]}
-        >
-          <Feather name="upload-cloud" size={20} color="#ffffff" />
-          <Text style={styles.uploadButtonText}>Subir material</Text>
-        </Pressable>
       </View>
     </SafeAreaView>
   );
