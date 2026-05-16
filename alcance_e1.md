@@ -188,3 +188,7 @@ PantallaFormularioCarga → PantallaExitoCarga
 ```
 
 El usuario abre la app en la pestaña "Consultar". Al seleccionar un material, la pantalla de detalle se apila sobre los resultados. Al cambiar a "Cargar", el contexto visual cambia al formulario manteniendo en memoria el estado de búsqueda anterior.
+
+# Enlace Figma
+
+https://www.figma.com/design/pckLNSLBjrmzUjTtMSOXAk/Sin-t%C3%ADtulo?node-id=0-1&t=VcHIjR5SPhpHW3jc-1
