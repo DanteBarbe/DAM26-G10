@@ -943,71 +943,71 @@ If you need specific details from before compaction (like exact code snippets, e
 
 ---
 
-Para este trabajo integrador vamos a desarrollar la aplicacion movil de una aplicacion web que ya tenemos desarrollada llamada UTNotas. Necesito hacer la vista de Ver Material y la vista de los resultados de busqueda de materiales. Estamos en la primera entrega de este trabajo integrador. Te adjunto la guia del trabajo, el link a nuestra aplicaciÃ³n web ya desarrollada para que tomes las referencias, ademÃ¡s de lo ya desarrollado hasta ahora en este proyecto https://utn-ds-25-grupo-2.vercel.app/.
+Para este trabajo integrador vamos a desarrollar la aplicacion movil de una aplicacion web que ya tenemos desarrollada llamada UTNotas. Necesito hacer la vista de Ver Material y la vista de los resultados de busqueda de materiales. Estamos en la primera entrega de este trabajo integrador. Te adjunto la guia del trabajo, el link a nuestra aplicación web ya desarrollada para que tomes las referencias, además de lo ya desarrollado hasta ahora en este proyecto https://utn-ds-25-grupo-2.vercel.app/.
 
 
 
-Listo. DejÃ© las vistas mockeadas y sin backend, ni votos, guardado, compartir ni reportar.
+Listo. Dejé las vistas mockeadas y sin backend, ni votos, guardado, compartir ni reportar.
 
-SeparÃ© y componenticÃ©:
+Separé y componenticé:
 - [search.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/app/search.tsx): vista de resultados.
 - [[id].tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/app/material/[id].tsx): vista Ver Material.
 - Componentes reutilizables en [src/components/materials](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/components/materials).
 - Mocks en [mockMaterials.ts](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/data/mockMaterials.ts).
 
-Sobre los `.css`: como esto es Expo/React Native, usar `.css` real romperÃ­a mobile. Lo dejÃ© separado en archivos de estilos con `StyleSheet`, que es el equivalente correcto para esta app: `materialStyles.ts`, `searchStyles.ts` y `materialDetailStyles.ts`.
+Sobre los `.css`: como esto es Expo/React Native, usar `.css` real rompería mobile. Lo dejé separado en archivos de estilos con `StyleSheet`, que es el equivalente correcto para esta app: `materialStyles.ts`, `searchStyles.ts` y `materialDetailStyles.ts`.
 
-VerificaciÃ³n:
-- `npx.cmd tsc --noEmit` pasÃ³.
-- `npm.cmd run lint` pasÃ³.
-
-
-
-Me lanzÃ³ este error: Failed to set an indexed property [0] on 'CSSStyleDeclaration': Indexed property setter is not supported.
-AdemÃ¡s me gustarÃ­a que todas las vistas y componentes del proyecto tuvieran un stylesheet separado en una carpeta de estilos para no ensuciar el codigo de cada uno
+Verificación:
+- `npx.cmd tsc --noEmit` pasó.
+- `npm.cmd run lint` pasó.
 
 
 
-Listo. Te dejo el mapa de lo que quedÃ³:
+Me lanzó este error: Failed to set an indexed property [0] on 'CSSStyleDeclaration': Indexed property setter is not supported.
+Además me gustaría que todas las vistas y componentes del proyecto tuvieran un stylesheet separado en una carpeta de estilos para no ensuciar el codigo de cada uno
+
+
+
+Listo. Te dejo el mapa de lo que quedó:
 
 **Vistas**
 - [index.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/app/index.tsx)  
-  Vista para subir material. Usa estado local para el formulario, valida campos, permite adjuntar archivos y guarda el material mockeado con `saveCreatedMaterial`. TambiÃ©n agreguÃ© accesos a bÃºsqueda y a un material mock usando `router.push`, evitando `Link asChild`, que probablemente disparaba el error de `CSSStyleDeclaration`.
+  Vista para subir material. Usa estado local para el formulario, valida campos, permite adjuntar archivos y guarda el material mockeado con `saveCreatedMaterial`. También agregué accesos a búsqueda y a un material mock usando `router.push`, evitando `Link asChild`, que probablemente disparaba el error de `CSSStyleDeclaration`.
 
 - [search.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/app/search.tsx)  
-  Vista de resultados de bÃºsqueda. Toma materiales mockeados y materiales creados localmente, normaliza texto, filtra por bÃºsqueda y tipo de material. No usa backend.
+  Vista de resultados de búsqueda. Toma materiales mockeados y materiales creados localmente, normaliza texto, filtra por búsqueda y tipo de material. No usa backend.
 
 - [[id].tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/app/material/[id].tsx)  
-  Vista â€œVer Materialâ€. Lee el `id` de la ruta, busca el material en mocks/local storage y muestra tÃ­tulo, autor, materia, carrera, comisiÃ³n, aÃ±o, badges y preview mockeada del archivo.
+  Vista "Ver Material". Lee el `id` de la ruta, busca el material en mocks/local storage y muestra título, autor, materia, carrera, comisión, año, badges y preview mockeada del archivo.
 
 **Componentes**
 - [MaterialScreenHeader.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/components/materials/MaterialScreenHeader.tsx)  
-  Header reutilizable con botÃ³n volver, marca UTNotas, tÃ­tulo y acciÃ³n derecha opcional. Navega con `router`.
+  Header reutilizable con botón volver, marca UTNotas, título y acción derecha opcional. Navega con `router`.
 
 - [MaterialResultCard.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/components/materials/MaterialResultCard.tsx)  
-  Card reutilizable para resultados. Muestra tÃ­tulo, usuario, fecha, descripciÃ³n, badges, archivo y botÃ³n â€œVer materialâ€.
+  Card reutilizable para resultados. Muestra título, usuario, fecha, descripción, badges, archivo y botón "Ver material".
 
 - [FilterChip.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/components/materials/FilterChip.tsx)  
   Chip de filtro reutilizable para tipos de material.
 
 - [EmptyMaterialsState.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/components/materials/EmptyMaterialsState.tsx)  
-  Estado vacÃ­o cuando no hay resultados.
+  Estado vacío cuando no hay resultados.
 
 - [MaterialInfoItem.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/components/materials/MaterialInfoItem.tsx)  
-  Fila reutilizable de metadata con Ã­cono, label y valor.
+  Fila reutilizable de metadata con ícono, label y valor.
 
 - [MaterialPreviewCard.tsx](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/components/materials/MaterialPreviewCard.tsx)  
-  Preview mockeada del PDF/archivo. Muestra nombre, tamaÃ±o y botÃ³n para abrir el archivo si tiene URI.
+  Preview mockeada del PDF/archivo. Muestra nombre, tamaño y botón para abrir el archivo si tiene URI.
 
 **Datos y tipos**
 - [mockMaterials.ts](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/data/mockMaterials.ts)  
-  Datos mock para la primera entrega. TambiÃ©n convierte materiales creados desde la app al formato comÃºn `StudyMaterial`.
+  Datos mock para la primera entrega. También convierte materiales creados desde la app al formato común `StudyMaterial`.
 
 - [materials.ts](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/types/materials.ts)  
   Agrega tipos para `StudyMaterial`, autor, archivos y materiales creados.
 
 - [createdMaterialsStore.ts](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/utils/createdMaterialsStore.ts)  
-  Persiste materiales creados en memoria/localStorage para poder verlos en bÃºsqueda sin backend.
+  Persiste materiales creados en memoria/localStorage para poder verlos en búsqueda sin backend.
 
 **Estilos**
 - [materialCreateStyles.ts](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/styles/materialCreateStyles.ts)  
@@ -1017,9 +1017,83 @@ Listo. Te dejo el mapa de lo que quedÃ³:
   Colores y estilos compartidos entre vistas de materiales.
 
 - [searchStyles.ts](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/styles/materials/searchStyles.ts)  
-  Estilos de bÃºsqueda, filtros, cards y estado vacÃ­o.
+  Estilos de búsqueda, filtros, cards y estado vacío.
 
 - [materialDetailStyles.ts](c:/Users/dante/Documents/DAM26-G10/UTNotasApp/src/styles/materials/materialDetailStyles.ts)  
   Estilos de detalle, metadata y preview.
 
-VerificaciÃ³n: `npx.cmd tsc --noEmit` y `npm.cmd run lint` pasan sin errores.
+Verificación: `npx.cmd tsc --noEmit` y `npm.cmd run lint` pasan sin errores.
+
+---
+
+---
+
+# Conversacion con Claude Code
+
+**Fecha:** 2026-05-16  
+**Proyecto:** DAM26-G10
+
+---
+
+## Usuario
+
+Basandote en la consigna de la entrega 1 de Guia Trabajo Integrador 2026, decime que es lo que falta hacer para completar la entrega.
+
+---
+
+## Claude
+
+Analicé la guía (cargada como `.txt`) y el `alcance_e1.txt`. El resultado fue el siguiente listado de lo que faltaba:
+
+**Código:**
+- Arquitectura de navegación: no había bottom tab bar ("Consultar" / "Subir") — solo pantallas sueltas
+- FilterModal no tenía filtro por carrera
+- `search.tsx` no filtraba por carrera
+
+**Documentación y entregables:**
+- `doc_tecnica_e1.md` con decisiones tecnológicas, diagrama de navegación, arquitectura y deuda técnica
+- `README.md` completo (integrantes, prerrequisitos, instalación)
+- `ia/entrega-1/skills_claude_e1.md` con tabla de skills de IA utilizadas
+- Consolidación de conversaciones en `ia/entrega-1/conversaciones_e1.md`
+
+---
+
+## Usuario
+
+Bueno resolvé vos todas estas correcciones que puedas hacer. Preguntame lo que necesites y decime lo que necesitas que haga a medida que vas corrigiendo.
+
+---
+
+## Claude
+
+Procedí a implementar todos los cambios:
+
+**Navegación con tabs:**
+- Creé `UTNotasApp/src/app/(tabs)/_layout.tsx` con el `<Tabs>` de expo-router, íconos Feather "search" (Consultar) y "upload-cloud" (Subir)
+- Moví `index.tsx` → `(tabs)/index.tsx` (elimina el botón "Subir material" redundante)
+- Moví `create.tsx` → `(tabs)/create.tsx`
+- Eliminé los archivos raíz `index.tsx` y `create.tsx` para evitar conflictos de rutas en expo-router
+
+**Filtro por carrera:**
+- `FilterModal.tsx`: agregué `carreraId?: number; carrera?: string` a `ActiveFilters`, importé `careers` de `materialOptions`, agregué sección con chips de carreras entre "Tipo de material" y "Materia"
+- `search.tsx`: agregué `filters.carreraId` al contador de filtros activos, lógica `matchesCarrera`, limpieza cruzada en `removeFilter`, y chip activo para carrera
+
+**Documentación:**
+- `README.md` — información completa del proyecto, integrantes (Andrada, Barbé, Diez, Soler), prerrequisitos, instalación y estructura
+- `doc_tecnica_e1.md` — decisiones tecnológicas (React Native + Expo SDK 54, Express.js), diagrama de navegación ASCII, arquitectura Feature-Driven Design, seguridad (RNF-05/06), tabla de deuda técnica
+- `ia/entrega-1/skills_claude_e1.md` — 10 skills de Claude utilizadas, herramientas de IA (Claude + Codex), archivos generados con asistencia
+- `ia/entrega-1/conversaciones_e1.md` — consolidación de conversaciones previas
+
+---
+
+## Usuario
+
+Todavia no crees el git tag.
+
+---
+
+## Claude
+
+Entendido, el git tag `entrega-1` queda pendiente hasta que el usuario lo confirme.
+
+---
