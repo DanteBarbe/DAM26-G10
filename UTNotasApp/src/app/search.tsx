@@ -28,6 +28,7 @@ export default function MaterialSearchScreen() {
   const activeFilterCount = [
     filters.tipo,
     filters.materiaId,
+    filters.carreraId,
     filters.anioCursada,
     filters.comision,
   ].filter(Boolean).length;
@@ -41,6 +42,8 @@ export default function MaterialSearchScreen() {
       const matchesTipo = !filters.tipo || material.tipo === filters.tipo;
       const matchesMateria =
         !filters.materia || material.materia === filters.materia;
+      const matchesCarrera =
+        !filters.carrera || material.carrera === filters.carrera;
       const matchesAnio =
         !filters.anioCursada ||
         String(material.anioCursada ?? "") === filters.anioCursada;
@@ -50,7 +53,7 @@ export default function MaterialSearchScreen() {
           normalizeText(filters.comision),
         );
 
-      return matchesTitle && matchesTipo && matchesMateria && matchesAnio && matchesComision;
+      return matchesTitle && matchesTipo && matchesMateria && matchesCarrera && matchesAnio && matchesComision;
     });
   }, [filters, materials, query]);
 
@@ -60,6 +63,8 @@ export default function MaterialSearchScreen() {
       delete next[key];
       if (key === "materia") delete next.materiaId;
       if (key === "materiaId") delete next.materia;
+      if (key === "carrera") delete next.carreraId;
+      if (key === "carreraId") delete next.carrera;
       return next;
     });
   };
@@ -71,6 +76,9 @@ export default function MaterialSearchScreen() {
   }
   if (filters.materia) {
     activeChips.push({ key: "materia", label: filters.materia });
+  }
+  if (filters.carrera) {
+    activeChips.push({ key: "carrera", label: filters.carrera });
   }
   if (filters.anioCursada) {
     activeChips.push({ key: "anioCursada", label: `Año: ${filters.anioCursada}` });

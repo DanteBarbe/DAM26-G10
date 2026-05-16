@@ -4,13 +4,15 @@ import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-nativ
 
 import { IconButton } from "@/src/features/materials/components/IconButton";
 import { filterModalStyles as styles } from "@/src/features/materials/components/styles/FilterModal.styles";
-import { materialTypes, subjects } from "@/src/features/materials/data/materialOptions";
+import { careers, materialTypes, subjects } from "@/src/features/materials/data/materialOptions";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
 import { normalizeText } from "@/src/utils/format";
 
 export type ActiveFilters = {
   materiaId?: number;
   materia?: string;
+  carreraId?: number;
+  carrera?: string;
   tipo?: StudyMaterial["tipo"];
   anioCursada?: string;
   comision?: string;
@@ -83,6 +85,31 @@ export function FilterModal({
                   >
                     <Text style={[styles.typeChipText, active && styles.typeChipTextActive]}>
                       {type.label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            <Text style={styles.sectionLabel}>Carrera</Text>
+            <View style={styles.typeGrid}>
+              {careers.map((career) => {
+                const active = pending.carreraId === career.id;
+                return (
+                  <Pressable
+                    key={career.id}
+                    accessibilityRole="button"
+                    onPress={() =>
+                      setPending((p) => ({
+                        ...p,
+                        carreraId: active ? undefined : career.id,
+                        carrera: active ? undefined : career.nombre,
+                      }))
+                    }
+                    style={[styles.typeChip, active && styles.typeChipActive]}
+                  >
+                    <Text style={[styles.typeChipText, active && styles.typeChipTextActive]}>
+                      {career.nombre}
                     </Text>
                   </Pressable>
                 );
