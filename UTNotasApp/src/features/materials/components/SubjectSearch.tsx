@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
 import type { Subject } from "@/src/features/materials/data/materialOptions";
@@ -19,6 +19,10 @@ export function SubjectSearch({
 }) {
   const [query, setQuery] = useState(value);
   const [focused, setFocused] = useState(false);
+
+  useEffect(() => {
+    setQuery(value);
+  }, [value]);
 
   const filteredSubjects = useMemo(() => {
     if (!query.trim()) return subjects.slice(0, 10);
