@@ -268,52 +268,6 @@ badgeNeutral: {
   color: "#403a32",
 },
 
-// OWNER ACTIONS
-ownerActionsRow: {
-  borderTopColor: "rgba(47, 111, 78, 0.14)",
-  borderTopWidth: 1,
-  flexDirection: "row",
-  gap: 10,
-  marginTop: 16,
-  paddingTop: 14,
-},
-
-editButton: {
-  alignItems: "center",
-  borderColor: colors.bluePrimary,
-  borderRadius: 8,
-  borderWidth: 1,
-  flex: 1,
-  flexDirection: "row",
-  gap: 6,
-  justifyContent: "center",
-  minHeight: 42,
-},
-
-editButtonText: {
-  color: colors.bluePrimary,
-  fontSize: 14,
-  fontWeight: "700",
-},
-
-deleteButton: {
-  alignItems: "center",
-  borderColor: colors.error,
-  borderRadius: 8,
-  borderWidth: 1,
-  flex: 1,
-  flexDirection: "row",
-  gap: 6,
-  justifyContent: "center",
-  minHeight: 42,
-},
-
-deleteButtonText: {
-  color: colors.error,
-  fontSize: 14,
-  fontWeight: "700",
-},
-
 // BUTTON
 primaryButton: {
   alignItems: "center",
