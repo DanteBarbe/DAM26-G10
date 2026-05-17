@@ -2,20 +2,9 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
-import { materialTypes } from "@/src/features/materials/data/materialOptions";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
-
+import { getTypeLabel, formatDate } from "@/src/features/materials/utils/materialHelpers";
 import { MaterialResultCardStyles } from "@/src/features/materials/components/styles/MaterialResultCard.styles";
-
-const getTypeLabel = (value: StudyMaterial["tipo"]) =>
-  materialTypes.find((type) => type.value === value)?.label ?? "Material";
-
-const formatDate = (value: string) =>
-  new Intl.DateTimeFormat("es-AR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(value));
 
 export function MaterialResultCard({ material }: { material: StudyMaterial }) {
   return (
@@ -26,9 +15,6 @@ export function MaterialResultCard({ material }: { material: StudyMaterial }) {
           <Text style={MaterialResultCardStyles.cardMeta}>
             @{material.author.username} - {formatDate(material.createdAt)}
           </Text>
-        </View>
-        <View style={MaterialResultCardStyles.filePill}>
-          <Feather name="file-text" size={16} color="#214f37" />
         </View>
       </View>
 
@@ -46,12 +32,9 @@ export function MaterialResultCard({ material }: { material: StudyMaterial }) {
       </View>
 
       <View style={MaterialResultCardStyles.cardFooter}>
-        <Text style={MaterialResultCardStyles.fileName} numberOfLines={1}>
-          {material.archivo.name}
-        </Text>
         <Pressable
           accessibilityRole="button"
-          onPress={() => router.push(`/material/${material.id}` as never)}
+          onPress={() => router.push({ pathname: "/material/[id]", params: { id: material.id } })}
           style={MaterialResultCardStyles.primaryButton}
         >
           <Feather name="eye" size={17} color="#ffffff" />

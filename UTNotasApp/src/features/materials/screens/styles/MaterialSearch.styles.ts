@@ -27,30 +27,58 @@ export const searchStyles = StyleSheet.create({
     justifyContent: "center",
     width: 36,
   },
-  filterRow: {
-    gap: 8,
-    paddingVertical: 14,
+  searchRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
   },
-  filterChip: {
+  filterButton: {
+    alignItems: "center",
     backgroundColor: colors.surface,
-    borderColor: "rgba(47, 111, 78, 0.16)",
+    borderColor: "rgba(47, 111, 78, 0.18)",
     borderRadius: 8,
     borderWidth: 1,
+    height: 54,
     justifyContent: "center",
-    minHeight: 38,
-    paddingHorizontal: 13,
+    width: 54,
   },
-  filterChipActive: {
+  filterButtonActive: {
     backgroundColor: colors.primary,
     borderColor: colors.primary,
   },
-  filterText: {
-    color: "#403a32",
+  filterBadge: {
+    alignItems: "center",
+    backgroundColor: "#e53e3e",
+    borderRadius: 8,
+    bottom: 6,
+    height: 16,
+    justifyContent: "center",
+    minWidth: 16,
+    paddingHorizontal: 3,
+    position: "absolute",
+    right: 6,
+  },
+  filterBadgeText: {
+    color: "#ffffff",
+    fontSize: 10,
+    fontWeight: "800",
+  },
+  activeChipsRow: {
+    gap: 8,
+    paddingVertical: 10,
+  },
+  activeChip: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: 20,
+    flexDirection: "row",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  activeChipText: {
+    color: "#ffffff",
     fontSize: 13,
     fontWeight: "700",
-  },
-  filterTextActive: {
-    color: colors.surface,
   },
   resultSummary: {
     alignItems: "center",

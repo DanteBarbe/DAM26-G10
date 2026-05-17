@@ -8,36 +8,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialInfoItem } from "@/src/features/materials/components/MaterialInfoItem";
 import { MaterialPreviewCard } from "@/src/features/materials/components/MaterialPreviewCard";
 import { MaterialScreenHeader } from "@/src/features/materials/components/MaterialScreenHeader";
-import {
-  mapCreatedMaterialToStudyMaterial,
-  mockMaterials,
-} from "@/src/features/materials/data/mockMaterials";
-import { materialTypes } from "@/src/features/materials/data/materialOptions";
 import { detailStyles } from "@/src/features/materials/screens/styles/MaterialDetail.styles";
-import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
-import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";
+import { getAllMaterials, getTypeLabel, formatDate } from "@/src/features/materials/utils/materialHelpers";
 import { GlobalStyles } from "@/src/styles/Global.styles";
-
-const getTypeLabel = (value: StudyMaterial["tipo"]) =>
-  materialTypes.find((type) => type.value === value)?.label ?? "Material";
-
-const formatDate = (value: string) =>
-  new Intl.DateTimeFormat("es-AR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(value));
-
-const getMaterials = () => [
-  ...getCreatedMaterials().map(mapCreatedMaterialToStudyMaterial),
-  ...mockMaterials,
-];
 
 export default function MaterialDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const material = useMemo(() => {
-    return getMaterials().find((item) => String(item.id) === String(id));
+    return getAllMaterials().find((item) => String(item.id) === String(id));
   }, [id]);
 
   if (!material) {
@@ -49,7 +28,7 @@ export default function MaterialDetailScreen() {
           <Text style={detailStyles.notFoundTitle}>Material no encontrado</Text>
           <Pressable
             accessibilityRole="button"
-            onPress={() => router.replace("/search" as never)}
+            onPress={() => router.replace("/search")}
             style={detailStyles.primaryButton}
           >
             <Text style={detailStyles.primaryButtonText}>
@@ -65,11 +44,7 @@ export default function MaterialDetailScreen() {
     <SafeAreaView style={GlobalStyles.safeArea}>
       <StatusBar style="dark" />
       <ScrollView contentContainerStyle={GlobalStyles.content}>
-        <MaterialScreenHeader
-          title="Ver material"
-          rightHref="/search"
-          rightIcon="search"
-        />
+        <MaterialScreenHeader title="Ver material" />
 
         <View style={detailStyles.infoCard}>
           <View style={detailStyles.infoTopRow}>

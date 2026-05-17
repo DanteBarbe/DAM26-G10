@@ -29,3 +29,4 @@ export const getCreatedMaterials = () => {
   const rawItems = storage.getItem(STORAGE_KEY);
   return rawItems ? (JSON.parse(rawItems) as CreatedMaterial[]) : memoryMaterials;
 };
+
