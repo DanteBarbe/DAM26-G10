@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { Pressable, Text } from "react-native";
 
-import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
+import { styles } from "./styles/SelectButton.styles";
 
 export function SelectButton({
   icon,

@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
-import { IconButton } from "@/src/features/materials/components/IconButton";
+import { IconButton } from "@/src/components/IconButton";
 import { filterModalStyles as styles } from "@/src/features/materials/components/styles/FilterModal.styles";
 import { careers, materialTypes, subjects } from "@/src/features/materials/data/materialOptions";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";

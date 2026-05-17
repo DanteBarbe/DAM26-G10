@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { Pressable } from "react-native";
 
-import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
+import { styles } from "@/src/components/styles/IconButton.styles";
 
 export function IconButton({
   icon,

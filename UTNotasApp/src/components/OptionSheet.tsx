@@ -1,8 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 
-import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
-import { IconButton } from "@/src/features/materials/components/IconButton";
+import { styles } from "./styles/OptionSheet.styles";
+import { IconButton } from "@/src/components/IconButton";
 
 type SelectOption<Value extends string | number> = {
   label: string;
