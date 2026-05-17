@@ -4,7 +4,7 @@ import { Pressable, Text, View } from "react-native";
 import type { AttachedFile } from "@/src/features/materials/types/materials.types";
 import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
 import { formatFileSize } from "@/src/utils/format";
-import { IconButton } from "@/src/features/materials/components/IconButton";
+import { IconButton } from "@/src/components/IconButton";
 
 export function FileUploadField({
   files,
