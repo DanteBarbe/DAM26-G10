@@ -67,3 +67,8 @@ export type PointsBreakdown = {
   bonus: number;
   breakdown: string[];
 };
+
+export type MaterialError = {
+	code: "MATERIAL_NOT_OWNED" | "NOT_FOUND" | "UNKNOWN";
+	message: string;
+};

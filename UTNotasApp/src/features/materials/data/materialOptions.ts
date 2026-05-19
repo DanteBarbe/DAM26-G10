@@ -124,3 +124,16 @@ export const getCareerSubject = (careerId?: number, subjectId?: number) => {
       relation.carreraId === careerId && relation.materiaId === subjectId,
   );
 };
+
+export type ParcialOption = {
+	label: string;
+	value: string;
+};
+
+export const parcialOptions: ParcialOption[] = [
+	{ label: "Ninguno", value: "0" },
+	{ label: "1ero", value: "1" },
+	{ label: "2do", value: "2" },
+	{ label: "3ro", value: "3" },
+	{ label: "4to", value: "4" },
+];
