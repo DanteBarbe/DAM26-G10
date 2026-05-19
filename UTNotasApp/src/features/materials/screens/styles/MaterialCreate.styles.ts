@@ -12,6 +12,9 @@ export const styles = StyleSheet.create({
     padding: 18,
     paddingBottom: 36,
   },
+  headerTextWrap: {
+	flex: 1,
+  },
   header: {
     alignItems: "center",
     flexDirection: "row",
