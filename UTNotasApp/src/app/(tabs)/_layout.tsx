@@ -1,0 +1,42 @@
+import { Feather } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+
+export default function TabsLayout() {
+  return (
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#1f63b5",
+        tabBarInactiveTintColor: "#9a9284",
+        tabBarStyle: {
+          backgroundColor: "#ffffff",
+          borderTopColor: "#e8e0d5",
+          borderTopWidth: 1,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "600",
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Consultar",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="search" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="create"
+        options={{
+          title: "Subir",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="upload-cloud" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tabs>
+  );
+}

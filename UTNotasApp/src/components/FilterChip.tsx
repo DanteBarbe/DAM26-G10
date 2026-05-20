@@ -1,6 +1,6 @@
 import { Pressable, Text } from "react-native";
 
-import { searchStyles } from "@/src/features/materials/screens/styles/MaterialSearch.styles";
+import { filterChipStyles as styles } from "@/src/components/styles/FilterChip.styles";
 
 export function FilterChip({
   label,
@@ -15,10 +15,10 @@ export function FilterChip({
     <Pressable
       accessibilityRole="button"
       onPress={onPress}
-      style={[searchStyles.filterChip, active && searchStyles.filterChipActive]}
+      style={[styles.filterChip, active && styles.filterChipActive]}
     >
       <Text
-        style={[searchStyles.filterText, active && searchStyles.filterTextActive]}
+        style={[styles.filterText, active && styles.filterTextActive]}
       >
         {label}
       </Text>

@@ -92,7 +92,7 @@ export const MaterialResultCardStyles = StyleSheet.create({
     borderTopColor: "rgba(47, 111, 78, 0.14)",
     borderTopWidth: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     marginTop: 16,
     paddingTop: 14,
   },

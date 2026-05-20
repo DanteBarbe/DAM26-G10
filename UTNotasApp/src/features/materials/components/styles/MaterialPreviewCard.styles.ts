@@ -1,0 +1,113 @@
+import { StyleSheet } from "react-native";
+import { colors } from "@/src/styles/Colors";
+
+export const previewCardStyles = StyleSheet.create({
+  previewCard: {
+    backgroundColor: colors.surface,
+    borderColor: "rgba(47, 111, 78, 0.16)",
+    borderRadius: 8,
+    borderWidth: 1,
+    marginTop: 14,
+    overflow: "hidden",
+  },
+  previewHeader: {
+    alignItems: "center",
+    backgroundColor: "rgba(47, 111, 78, 0.08)",
+    borderBottomColor: "rgba(47, 111, 78, 0.14)",
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    gap: 10,
+    padding: 12,
+  },
+  fileNameWrap: {
+    flex: 1,
+    minWidth: 0,
+  },
+  fileName: {
+    color: colors.text,
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  openButton: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+    height: 38,
+    justifyContent: "center",
+    width: 38,
+  },
+  openButtonDisabled: {
+    opacity: 0.5,
+  },
+  previewBody: {
+    alignItems: "center",
+    backgroundColor: "#f7f9ff",
+    minHeight: 360,
+    padding: 18,
+  },
+  documentSheet: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: 8,
+    borderWidth: 1,
+    minHeight: 290,
+    overflow: "hidden",
+    padding: 22,
+    width: "82%",
+  },
+  documentLineLong: {
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+    height: 16,
+    width: "78%",
+  },
+  documentLine: {
+    backgroundColor: colors.border,
+    borderRadius: 8,
+    height: 10,
+    marginTop: 16,
+    width: "90%",
+  },
+  documentLineShort: {
+    backgroundColor: colors.border,
+    borderRadius: 8,
+    height: 10,
+    marginTop: 9,
+    width: "58%",
+  },
+  documentDivider: {
+    backgroundColor: "rgba(47, 111, 78, 0.16)",
+    height: 1,
+    marginVertical: 20,
+  },
+  documentParagraph: {
+    backgroundColor: "#f0eee8",
+    borderRadius: 8,
+    height: 92,
+  },
+  documentParagraphSmall: {
+    backgroundColor: "#f0eee8",
+    borderRadius: 8,
+    height: 58,
+    marginTop: 14,
+    width: "72%",
+  },
+  documentStamp: {
+    alignItems: "center",
+    backgroundColor: colors.softSecondary,
+    borderColor: "rgba(123, 95, 67, 0.25)",
+    borderRadius: 8,
+    borderWidth: 1,
+    bottom: 18,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    position: "absolute",
+    right: 18,
+  },
+  documentStampText: {
+    color: colors.secondary,
+    fontSize: 12,
+    fontWeight: "900",
+  },
+});
