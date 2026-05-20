@@ -78,7 +78,7 @@ export default function MaterialCreateScreen() {
 
   useEffect(() => {
     if (lastCreated) {
-      showToast("Material de estudio creado exitosamente", "success", 2000);
+      showToast("Material de estudio creado exitosamente", "success", 3500);
       router.replace(`/material/${lastCreated.id}`);
     }
   }, [lastCreated, showToast]);
