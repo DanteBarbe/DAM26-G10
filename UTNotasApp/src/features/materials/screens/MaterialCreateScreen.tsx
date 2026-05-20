@@ -1,7 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useToast } from "@/src/contexts/ToastContext";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -59,6 +60,7 @@ const initialForm: MaterialFormData = {
 const loggedUserId = 1;
 
 export default function MaterialCreateScreen() {
+  const { showToast } = useToast();
   const [form, setForm] = useState<MaterialFormData>(initialForm);
 
   const [fieldError, setFieldError] = useState<FieldError | null>(null);
@@ -73,6 +75,13 @@ export default function MaterialCreateScreen() {
   >(null);
   const [lastCreated, setLastCreated] = useState<CreatedMaterial | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (lastCreated) {
+      showToast("Material de estudio creado exitosamente", "success", 2000);
+      router.replace(`/material/${lastCreated.id}`);
+    }
+  }, [lastCreated, showToast]);
 
   const selectedSubject = useMemo(
     () => subjects.find((s) => s.id === form.materiaId),
@@ -208,16 +217,6 @@ export default function MaterialCreateScreen() {
     setIsSubmitting(false);
   };
 
-  const resetForm = () => {
-    const createdId = lastCreated?.id;
-    setForm(initialForm);
-    setFieldError(null);
-    setLastCreated(null);
-    if (createdId) {
-      router.navigate("/(tabs)");
-      router.push(`/material/${createdId}`);
-    }
-  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
