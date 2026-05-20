@@ -16,9 +16,9 @@ type Props = {
 };
 
 const typeConfig: Record<ToastType, { bg: string; text: string; icon: string }> = {
-  success: { bg: colors.successLight, text: colors.successText, icon: "check-circle" },
-  error: { bg: colors.errorLight, text: colors.errorText, icon: "alert-circle" },
-  info: { bg: colors.infoLight, text: colors.infoText, icon: "info" },
+  success: { bg: "rgba(36, 122, 72, 1)", text: colors.surface, icon: "check-circle" },
+  error: { bg: "rgba(192, 57, 43, 1)", text: colors.surface, icon: "alert-circle" },
+  info: { bg: "rgba(31, 99, 181, 1)", text: colors.surface, icon: "info" },
 };
 
 export function Toast({ toast, onClose }: Props) {
@@ -45,7 +45,7 @@ export function Toast({ toast, onClose }: Props) {
         borderLeftColor: config.text,
         borderRadius: 8,
         marginHorizontal: spacing.md,
-        marginVertical: spacing.sm,
+        marginTop: spacing.sm,
         overflow: "hidden",
       }}
     >

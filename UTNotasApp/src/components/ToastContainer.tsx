@@ -1,5 +1,5 @@
+import { Modal, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { View } from "react-native";
 
 import { Toast } from "@/src/components/Toast";
 import { useToast } from "@/src/contexts/ToastContext";
@@ -8,24 +8,32 @@ export function ToastContainer() {
   const { toasts, removeToast } = useToast();
   const insets = useSafeAreaInsets();
 
+  const visible = toasts.length > 0;
+
   return (
-    <View
-      style={{
-        position: "absolute",
-        top: insets.top,
-        left: 0,
-        right: 0,
-        zIndex: 9999,
-        pointerEvents: "box-none",
-      }}
+    <Modal
+      visible={visible}
+      transparent
+      animationType="none"
+      statusBarTranslucent
+      onRequestClose={() => {}}
     >
-      {toasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          toast={toast}
-          onClose={() => removeToast(toast.id)}
-        />
-      ))}
-    </View>
+      <View
+        style={{
+          flex: 1,
+          paddingTop: insets.top,
+          backgroundColor: "transparent",
+        }}
+        pointerEvents="box-none"
+      >
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            toast={toast}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </View>
+    </Modal>
   );
 }
