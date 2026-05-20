@@ -25,13 +25,11 @@ import {
 } from "@/src/features/materials/data/materialOptions";
 import { FileUploadField } from "@/src/features/materials/components/FileUploadField";
 import { OptionSheet } from "@/src/components/OptionSheet";
-import { PointsModal } from "@/src/features/materials/components/PointsModal";
 import { SelectButton } from "@/src/components/SelectButton";
 import { SubjectSearch } from "@/src/features/materials/components/SubjectSearch";
 import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
 import { pickFiles } from "@/src/features/materials/utils/filePicker";
 import {
-  buildPointsBreakdown,
   getCareerPrefix,
   partialLabel,
   validateForm,
@@ -42,7 +40,6 @@ import type {
   FieldError,
   FieldName,
   MaterialFormData,
-  PointsBreakdown,
 } from "@/src/features/materials/types/materials.types";
 
 const initialForm: MaterialFormData = {
@@ -74,7 +71,6 @@ export default function MaterialCreateScreen() {
   const [activeSelector, setActiveSelector] = useState<
     "career" | "type" | "partial" | null
   >(null);
-  const [pointsAlert, setPointsAlert] = useState<PointsBreakdown | null>(null);
   const [lastCreated, setLastCreated] = useState<CreatedMaterial | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -209,7 +205,6 @@ export default function MaterialCreateScreen() {
 
     await saveCreatedMaterial(material);
     setLastCreated(material);
-    setPointsAlert(buildPointsBreakdown(form));
     setIsSubmitting(false);
   };
 
@@ -217,7 +212,6 @@ export default function MaterialCreateScreen() {
     const createdId = lastCreated?.id;
     setForm(initialForm);
     setFieldError(null);
-    setPointsAlert(null);
     setLastCreated(null);
     if (createdId) {
       router.navigate("/(tabs)");
@@ -424,7 +418,6 @@ export default function MaterialCreateScreen() {
         }}
       />
 
-      <PointsModal points={pointsAlert} onClose={resetForm} />
     </SafeAreaView>
   );
 }
