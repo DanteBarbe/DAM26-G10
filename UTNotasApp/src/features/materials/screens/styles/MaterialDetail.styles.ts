@@ -18,6 +18,10 @@ export const detailStyles = StyleSheet.create({
 		flex: 1,
 		minWidth: 0,
 	},
+	ownerActions: {
+		flexDirection: "row",
+		gap: 8,
+	},
 	materialTitle: {
 		color: colors.text,
 		fontSize: 22,

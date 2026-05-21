@@ -69,12 +69,24 @@ export default function MaterialDetailScreen() {
 							</Text>
 						</View>
 						{isOwner ? (
-							<IconButton
-								icon="trash-2"
-								danger
-								disabled={isDeleting}
-								onPress={() => setConfirmVisible(true)}
-							/>
+							<View style={detailStyles.ownerActions}>
+								<IconButton
+									icon="edit-3"
+									disabled={isDeleting}
+									onPress={() =>
+										router.push({
+											pathname: "/create",
+											params: { editId: String(material.id) },
+										})
+									}
+								/>
+								<IconButton
+									icon="trash-2"
+									danger
+									disabled={isDeleting}
+									onPress={() => setConfirmVisible(true)}
+								/>
+							</View>
 						) : null}
 					</View>
 
