@@ -8,10 +8,10 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { colors, spacing, typography } from "@/src/styles/Colors";
-import type { Toast, ToastType } from "@/src/contexts/ToastContext";
+import type { Toast as ToastData, ToastType } from "@/src/contexts/ToastContext";
 
 type Props = {
-  toast: Toast;
+  toast: ToastData;
   onClose: () => void;
 };
 
