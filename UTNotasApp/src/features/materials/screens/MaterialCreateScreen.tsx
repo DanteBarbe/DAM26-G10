@@ -9,9 +9,9 @@
  * - renderizar el formulario sin logica de negocio.
  */
 import { Feather } from "@expo/vector-icons";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
 	KeyboardAvoidingView,
 	Platform,
@@ -34,9 +34,14 @@ import {
 	parcialOptions,
 	subjects,
 } from "@/src/features/materials/data/materialOptions";
-import { useCreateMaterial } from "@/src/features/materials/hooks/useMaterial";
+import {
+	useCreateMaterial,
+	useGetEditableMaterial,
+	useUpdateMaterial,
+} from "@/src/features/materials/hooks/useMaterial";
 import { useMaterialForm } from "@/src/features/materials/hooks/useMaterialForm";
 import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
+import type { MaterialFormData } from "@/src/features/materials/types/materials.types";
 import { pickFiles } from "@/src/features/materials/utils/filePicker";
 import {
 	partialLabel,
@@ -44,10 +49,50 @@ import {
 } from "@/src/features/materials/utils/materialFormHelpers";
 
 export default function MaterialCreateScreen() {
+	const { editId } = useLocalSearchParams<{ editId?: string }>();
+	const parsedEditId = Number(editId);
+	const editableMaterialId = Number.isFinite(parsedEditId)
+		? parsedEditId
+		: undefined;
+	const isEditing = typeof editableMaterialId === "number";
+	const {
+		material: editableMaterial,
+		isLoading: isLoadingEditableMaterial,
+		isNotFound: isEditableMaterialNotFound,
+	} = useGetEditableMaterial(editableMaterialId);
+
+	const initialFormValues = useMemo<MaterialFormData | undefined>(() => {
+		if (!editableMaterial) return undefined;
+
+		return {
+			titulo: editableMaterial.titulo,
+			descripcion: editableMaterial.descripcion,
+			tipo: editableMaterial.tipo,
+			archivos: editableMaterial.archivos,
+			materiaId: editableMaterial.materiaId,
+			carreraId: editableMaterial.carreraId,
+			materia: editableMaterial.materia,
+			carrera: editableMaterial.carrera,
+			comision: editableMaterial.comision,
+			parcial: editableMaterial.parcial,
+			anioCursada: editableMaterial.anioCursada,
+		};
+	}, [editableMaterial]);
+
 	const { showToast } = useToast();
-	const { values, errors, uiState, options, handlers } = useMaterialForm();
+	const { values, errors, uiState, options, handlers } = useMaterialForm(
+		initialFormValues,
+		isEditing ? `edit-${editableMaterialId}` : "create",
+	);
 	const { submitMaterial, isSubmitting } = useCreateMaterial();
+	const { updateMaterial, isUpdating } = useUpdateMaterial();
 	const setFormError = errors.set;
+	const isSaving = isEditing ? isUpdating : isSubmitting;
+	const title = isEditing
+		? "Edita tu material de estudio"
+		: "Subi tu material de estudio";
+	const submitLabel = isEditing ? "Guardar cambios" : "Subir";
+	const submittingLabel = isEditing ? "Guardando..." : "Subiendo...";
 
 	useFocusEffect(
 		useCallback(() => {
@@ -68,12 +113,42 @@ export default function MaterialCreateScreen() {
 			return;
 		}
 		setFormError(null);
+		if (isEditing && editableMaterialId) {
+			updateMaterial({ id: editableMaterialId, form: values });
+			return;
+		}
+
 		submitMaterial(values, {
 			onSuccess: () => {
 				showToast("Material de estudio creado exitosamente", "success", 3500);
 			},
 		});
 	};
+
+	if (isEditing && isLoadingEditableMaterial) {
+		return (
+			<SafeAreaView style={styles.safeArea}>
+				<StatusBar style="dark" />
+				<View style={styles.stateContent}>
+					<Text style={styles.stateTitle}>Cargando material...</Text>
+				</View>
+			</SafeAreaView>
+		);
+	}
+
+	if (isEditing && isEditableMaterialNotFound) {
+		return (
+			<SafeAreaView style={styles.safeArea}>
+				<StatusBar style="dark" />
+				<View style={styles.stateContent}>
+					<Text style={styles.stateTitle}>Material no editable</Text>
+					<Text style={styles.stateText}>
+						No se encontro un material propio para modificar.
+					</Text>
+				</View>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
@@ -89,7 +164,7 @@ export default function MaterialCreateScreen() {
 					<View style={styles.header}>
 						<View style={styles.headerTextWrap}>
 							<Text style={styles.brand}>UTNotas</Text>
-							<Text style={styles.title}>Subi tu material de estudio</Text>
+							<Text style={styles.title}>{title}</Text>
 						</View>
 					</View>
 
@@ -214,17 +289,21 @@ export default function MaterialCreateScreen() {
 
 						<Pressable
 							accessibilityRole="button"
-							disabled={isSubmitting}
+							disabled={isSaving}
 							onPress={handleSubmit}
 							style={({ pressed }) => [
 								styles.submitButton,
 								pressed && styles.pressed,
-								isSubmitting && styles.disabledButton,
+								isSaving && styles.disabledButton,
 							]}
 						>
-							<Feather name="upload" size={20} color="#ffffff" />
+							<Feather
+								name={isEditing ? "save" : "upload"}
+								size={20}
+								color="#ffffff"
+							/>
 							<Text style={styles.submitButtonText}>
-								{isSubmitting ? "Subiendo..." : "Subir"}
+								{isSaving ? submittingLabel : submitLabel}
 							</Text>
 						</Pressable>
 					</View>

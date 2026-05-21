@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getCareersForSubject, getCareerSubject, materialTypes, subjects, type MaterialType, type Subject, } from "@/src/features/materials/data/materialOptions";
 import type { FieldError, FieldName, MaterialFormData, } from "@/src/features/materials/types/materials.types";
 import { getCareerPrefix } from "@/src/features/materials/utils/materialFormHelpers";
@@ -27,10 +27,19 @@ const initialForm: MaterialFormData = {
 	anioCursada: "",
 };
 
-export const useMaterialForm = () => {
-	const [form, setForm] = useState<MaterialFormData>(initialForm);
+export const useMaterialForm = (
+	initialValues: MaterialFormData = initialForm,
+	formKey = "create",
+) => {
+	const [form, setForm] = useState<MaterialFormData>(initialValues);
 	const [fieldError, setFieldError] = useState<FieldError | null>(null);
 	const [activeSelector, setActiveSelector] = useState<"career" | "type" | "partial" | null>(null);
+
+	useEffect(() => {
+		setForm(initialValues);
+		setFieldError(null);
+		setActiveSelector(null);
+	}, [formKey, initialValues]);
 
 	const selectedSubject = useMemo(
 		() => subjects.find((s) => s.id === form.materiaId),

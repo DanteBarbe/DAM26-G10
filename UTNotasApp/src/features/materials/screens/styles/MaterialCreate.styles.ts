@@ -398,6 +398,26 @@ export const styles = StyleSheet.create({
     paddingVertical: 18,
     textAlign: "center",
   },
+  stateContent: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+    padding: 22,
+  },
+  stateTitle: {
+    color: "#143a5f",
+    fontSize: 20,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  stateText: {
+    color: "#667085",
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 20,
+    marginTop: 8,
+    textAlign: "center",
+  },
 });
 
 
