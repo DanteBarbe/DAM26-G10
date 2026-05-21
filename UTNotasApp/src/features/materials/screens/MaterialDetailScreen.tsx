@@ -114,13 +114,13 @@ export default function MaterialDetailScreen() {
 						/>
 						<MaterialInfoItem
 							icon="users"
-							label="Comision"
+							label="Comisión"
 							value={material.comision || "Sin especificar"}
 						/>
 						<MaterialInfoItem
 							icon="calendar"
 							// MODIFICADO: Se reemplazo "Año" por "Anio" para garantizar regla estricta de prohibido tildes/caracteres conflictivos
-							label="Anio"
+							label="Año"
 							value={material.anioCursada?.toString() || "Sin especificar"}
 						/>
 					</View>
