@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useToast } from "@/src/contexts/ToastContext";
 import type { CreatedMaterial, MaterialError, MaterialFormData, StudyMaterial, } from "@/src/features/materials/types/materials.types";
-import { createMaterial, deleteMaterial, getMaterialById, } from "@/src/features/materials/services/materialService";
+import { createMaterial, deleteMaterial, getEditableMaterialById, getMaterialById, updateMaterial, } from "@/src/features/materials/services/materialService";
+import { mapCreatedMaterialToStudyMaterial } from "@/src/features/materials/data/mockMaterials";
 import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";
 
 /**
@@ -15,6 +16,7 @@ import { getCreatedMaterials } from "@/src/features/materials/utils/createdMater
  */
 
 const materialQueryKey = (id: number) => ["material", id] as const;
+const editableMaterialQueryKey = (id: number) => ["editable-material", id] as const;
 const materialsListKey = ["materials"] as const;
 
 export const useGetMaterial = (id: number) => {
@@ -33,6 +35,22 @@ export const useGetMaterial = (id: number) => {
 		isLoading: query.isLoading,
 		isNotFound: query.error?.code === "NOT_FOUND",
 		isOwner,
+	};
+};
+
+export const useGetEditableMaterial = (id?: number) => {
+	const query = useQuery<CreatedMaterial, MaterialError>({
+		queryKey: editableMaterialQueryKey(id ?? 0),
+		queryFn: () => getEditableMaterialById(id ?? 0),
+		enabled: typeof id === "number" && Number.isFinite(id),
+		staleTime: 0,
+	});
+
+	return {
+		material: query.data,
+		isLoading: query.isLoading,
+		isNotFound: query.error?.code === "MATERIAL_NOT_OWNED",
+		error: query.error ?? null,
 	};
 };
 
@@ -56,6 +74,40 @@ export const useCreateMaterial = () => {
 		submitMaterial: mutation.mutate,
 		isSubmitting: mutation.isPending,
 		createError: mutation.isError ? mutation.error : null,
+	};
+};
+
+export const useUpdateMaterial = () => {
+	const queryClient = useQueryClient();
+	const { showToast } = useToast();
+
+	const mutation = useMutation<
+		CreatedMaterial,
+		MaterialError,
+		{ id: number; form: MaterialFormData }
+	>({
+		mutationFn: ({ id, form }) => updateMaterial(id, form),
+		retry: false,
+		onSuccess: (material) => {
+			queryClient.setQueryData(
+				materialQueryKey(material.id),
+				mapCreatedMaterialToStudyMaterial(material),
+			);
+			queryClient.setQueryData(editableMaterialQueryKey(material.id), material);
+			queryClient.invalidateQueries({ queryKey: materialsListKey });
+			showToast("Material actualizado correctamente", "success", 3500);
+			router.replace(`/material/${material.id}`);
+		},
+		onError: (err) => {
+			console.error("[CRITICAL_UI_ERROR] fallo critico al editar material:", err);
+		},
+	});
+
+	return {
+		updateMaterial: mutation.mutate,
+		isUpdating: mutation.isPending,
+		updateError: mutation.isError ? mutation.error : null,
+		clearUpdateError: () => mutation.reset(),
 	};
 };
 

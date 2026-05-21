@@ -1,5 +1,5 @@
 import type {CreatedMaterial, MaterialError, MaterialFormData, StudyMaterial } from "@/src/features/materials/types/materials.types";
-import { deleteCreatedMaterial, saveCreatedMaterial } from "@/src/features/materials/utils/createdMaterialsStore";
+import { deleteCreatedMaterial, getCreatedMaterialById, saveCreatedMaterial, updateCreatedMaterial } from "@/src/features/materials/utils/createdMaterialsStore";
 import { getAllMaterials } from "@/src/features/materials/utils/materialHelpers";
 
 /**
@@ -38,6 +38,35 @@ export const createMaterial = async (form: MaterialFormData): Promise<CreatedMat
 
 	await saveCreatedMaterial(material);
 	return material;
+};
+
+export const getEditableMaterialById = async (id: number): Promise<CreatedMaterial> => {
+	const found = getCreatedMaterialById(id);
+
+	if (!found) {
+		const err: MaterialError = {
+			code: "MATERIAL_NOT_OWNED",
+			message: "No tenes permisos para editar este material.",
+		};
+		throw err;
+	}
+
+	return found;
+};
+
+export const updateMaterial = async (
+	id: number,
+	form: MaterialFormData,
+): Promise<CreatedMaterial> => {
+	try {
+		return updateCreatedMaterial(id, form);
+	} catch (err) {
+		const isOwnership = err instanceof Error && err.message === "MATERIAL_NOT_OWNED";
+		const mapped: MaterialError = isOwnership
+			? { code: "MATERIAL_NOT_OWNED", message: "No tenes permisos para editar este material." }
+			: { code: "UNKNOWN", message: "Ocurrio un error inesperado. Intenta de nuevo." };
+		throw mapped;
+	}
 };
 
 export const deleteMaterial = async (id: number): Promise<void> => {

@@ -10,15 +10,33 @@ const getLocalStorage = () => {
   return Platform.OS === "web" ? storage : undefined;
 };
 
+const replaceMemoryMaterials = (materials: CreatedMaterial[]) => {
+  memoryMaterials.splice(0, memoryMaterials.length, ...materials);
+};
+
+const buildUpdatedMaterial = (
+  current: CreatedMaterial,
+  form: Omit<CreatedMaterial, "id" | "userId" | "createdAt" | "numeroParcial">,
+): CreatedMaterial => ({
+  ...current,
+  ...form,
+  id: current.id,
+  userId: current.userId,
+  createdAt: current.createdAt,
+  numeroParcial: form.parcial ? Number(form.parcial) : undefined,
+});
+
 export const saveCreatedMaterial = async (material: CreatedMaterial) => {
-  memoryMaterials.unshift(material);
+  const nextMaterials = [
+    material,
+    ...getCreatedMaterials().filter((item) => item.id !== material.id),
+  ];
+  replaceMemoryMaterials(nextMaterials);
 
   const storage = getLocalStorage();
   if (!storage) return;
 
-  const rawItems = storage.getItem(STORAGE_KEY);
-  const currentItems = rawItems ? (JSON.parse(rawItems) as CreatedMaterial[]) : [];
-  storage.setItem(STORAGE_KEY, JSON.stringify([material, ...currentItems]));
+  storage.setItem(STORAGE_KEY, JSON.stringify(nextMaterials));
 };
 
 export const getCreatedMaterials = () => {
@@ -30,6 +48,32 @@ export const getCreatedMaterials = () => {
   return rawItems ? (JSON.parse(rawItems) as CreatedMaterial[]) : memoryMaterials;
 };
 
+export const getCreatedMaterialById = (id: number) =>
+  getCreatedMaterials().find((material) => material.id === id);
+
+export const updateCreatedMaterial = (
+  id: number,
+  form: Omit<CreatedMaterial, "id" | "userId" | "createdAt" | "numeroParcial">,
+): CreatedMaterial => {
+  const currentItems = getCreatedMaterials();
+  const existing = currentItems.find((material) => material.id === id);
+
+  if (!existing) throw new Error("MATERIAL_NOT_OWNED");
+
+  const updatedMaterial = buildUpdatedMaterial(existing, form);
+  const nextMaterials = currentItems.map((material) =>
+    material.id === id ? updatedMaterial : material,
+  );
+
+  replaceMemoryMaterials(nextMaterials);
+
+  const storage = getLocalStorage();
+  if (storage) {
+    storage.setItem(STORAGE_KEY, JSON.stringify(nextMaterials));
+  }
+
+  return updatedMaterial;
+};
 
 /**
  * elimina un material propio del store local.
@@ -40,21 +84,17 @@ export const getCreatedMaterials = () => {
  * - en e2, este bloque se reemplaza x un DELETE /api/materials/:id en el hook.
  */
 export const deleteCreatedMaterial = (id: number): void => {
-	const idx = memoryMaterials.findIndex((m) => m.id === id);
+	const currentItems = getCreatedMaterials();
+	const exists = currentItems.some((m) => m.id === id);
 
 	// id no existe en store local = no es material propio
-	if (idx === -1) throw new Error("MATERIAL_NOT_OWNED");
+	if (!exists) throw new Error("MATERIAL_NOT_OWNED");
 
-	memoryMaterials.splice(idx, 1);
+	const updated = currentItems.filter((m) => m.id !== id);
+	replaceMemoryMaterials(updated);
 
 	const storage = getLocalStorage();
 	if (!storage) return;
 
-	const rawItems = storage.getItem(STORAGE_KEY);
-	if (!rawItems) return;
-
-	const updated = (JSON.parse(rawItems) as CreatedMaterial[]).filter(
-		(m) => m.id !== id,
-	);
 	storage.setItem(STORAGE_KEY, JSON.stringify(updated));
 };
