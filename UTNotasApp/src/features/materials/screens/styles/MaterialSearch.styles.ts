@@ -64,14 +64,17 @@ export const searchStyles = StyleSheet.create({
     fontWeight: "800",
   },
   activeChipsRow: {
+    alignItems: "center",
     gap: 8,
     paddingVertical: 10,
   },
   activeChip: {
     alignItems: "center",
+    alignSelf: "flex-start",
     backgroundColor: colors.primary,
     borderRadius: 20,
     flexDirection: "row",
+    gap: 6,
     paddingHorizontal: 12,
     paddingVertical: 6,
   },

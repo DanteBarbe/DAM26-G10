@@ -145,6 +145,7 @@ export default function MaterialSearchScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={searchStyles.activeChipsRow}
+            style={{ flexGrow: 0 }}
           >
             {activeChips.map((chip) => (
               <Pressable
