@@ -26,24 +26,34 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FormField } from "@/src/components/FormField";
 import { OptionSheet } from "@/src/components/OptionSheet";
 import { SelectButton } from "@/src/components/SelectButton";
+import { useToast } from "@/src/contexts/ToastContext";
 import { FileUploadField } from "@/src/features/materials/components/FileUploadField";
 import { PointsModal } from "@/src/features/materials/components/PointsModal";
 import { SubjectSearch } from "@/src/features/materials/components/SubjectSearch";
-import { materialTypes,	parcialOptions, subjects, } from "@/src/features/materials/data/materialOptions";
+import {
+	materialTypes,
+	parcialOptions,
+	subjects,
+} from "@/src/features/materials/data/materialOptions";
 import { useCreateMaterial } from "@/src/features/materials/hooks/useMaterial";
 import { useMaterialForm } from "@/src/features/materials/hooks/useMaterialForm";
 import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
 import { pickFiles } from "@/src/features/materials/utils/filePicker";
-import { partialLabel, validateForm } from "@/src/features/materials/utils/materialFormHelpers";
+import {
+	partialLabel,
+	validateForm,
+} from "@/src/features/materials/utils/materialFormHelpers";
 
 export default function MaterialCreateScreen() {
+	const { showToast } = useToast();
 	const { values, errors, uiState, options, handlers } = useMaterialForm();
 	const { submitMaterial, isSubmitting, points, clearPoints } = useCreateMaterial();
+	const setFormError = errors.set;
 
 	useFocusEffect(
 		useCallback(() => {
-			errors.set(null);
-		}, []),
+			setFormError(null);
+		}, [setFormError]),
 	);
 
 	const handlePickFiles = async () => {
@@ -55,11 +65,15 @@ export default function MaterialCreateScreen() {
 	const handleSubmit = () => {
 		const error = validateForm(values);
 		if (error) {
-			errors.set(error);
+			setFormError(error);
 			return;
 		}
-		errors.set(null);
-		submitMaterial(values);
+		setFormError(null);
+		submitMaterial(values, {
+			onSuccess: () => {
+				showToast("Material de estudio creado exitosamente", "success", 3500);
+			},
+		});
 	};
 
 	const handleClosePoints = () => {
@@ -226,7 +240,10 @@ export default function MaterialCreateScreen() {
 			<OptionSheet
 				visible={uiState.activeSelector === "career"}
 				title="Seleccione una carrera"
-				options={options.availableCareers.map((c) => ({ label: c.nombre, value: c.id }))}
+				options={options.availableCareers.map((c) => ({
+					label: c.nombre,
+					value: c.id,
+				}))}
 				emptyLabel="No hay carreras disponibles para esa materia."
 				selectedValue={values.carreraId}
 				onClose={() => handlers.setActiveSelector(null)}
