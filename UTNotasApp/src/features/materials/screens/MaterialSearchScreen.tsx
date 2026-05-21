@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -22,8 +22,13 @@ export default function MaterialSearchScreen() {
   const [query, setQuery] = useState(q ?? "");
   const [filters, setFilters] = useState<ActiveFilters>({});
   const [showFilters, setShowFilters] = useState(false);
+  const [materials, setMaterials] = useState(getAllMaterials);
 
-  const materials = useMemo(getAllMaterials, []);
+  useFocusEffect(
+    useCallback(() => {
+      setMaterials(getAllMaterials());
+    }, []),
+  );
 
   const activeFilterCount = [
     filters.tipo,
