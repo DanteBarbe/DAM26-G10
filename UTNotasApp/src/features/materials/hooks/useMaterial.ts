@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
-import type { CreatedMaterial, MaterialError, MaterialFormData, PointsBreakdown, StudyMaterial, } from "@/src/features/materials/types/materials.types";
+import { useToast } from "@/src/contexts/ToastContext";
+import type { CreatedMaterial, MaterialError, MaterialFormData, StudyMaterial, } from "@/src/features/materials/types/materials.types";
 import { createMaterial, deleteMaterial, getMaterialById, } from "@/src/features/materials/services/materialService";
-import { buildPointsBreakdown } from "@/src/features/materials/utils/materialFormHelpers";
 import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";
 
 /**
@@ -39,14 +39,10 @@ export const useGetMaterial = (id: number) => {
 export const useCreateMaterial = () => {
 	const queryClient = useQueryClient();
 
-	const mutation = useMutation<{ material: CreatedMaterial; points: PointsBreakdown }, MaterialError,	MaterialFormData>({
-		mutationFn: async (form) => {
-			const material = await createMaterial(form);
-			const points = buildPointsBreakdown(form);
-			return { material, points };
-		},
+	const mutation = useMutation<CreatedMaterial, MaterialError, MaterialFormData>({
+		mutationFn: createMaterial,
 		retry: false,
-		onSuccess: ({ material }) => {
+		onSuccess: (material) => {
 			queryClient.invalidateQueries({ queryKey: materialsListKey });
 			router.navigate("/(tabs)");
 			router.push(`/material/${material.id}`);
@@ -59,20 +55,21 @@ export const useCreateMaterial = () => {
 	return {
 		submitMaterial: mutation.mutate,
 		isSubmitting: mutation.isPending,
-		points: mutation.data?.points ?? null,
-		clearPoints: () => mutation.reset(),
 		createError: mutation.isError ? mutation.error : null,
 	};
 };
 
 export const useDeleteMaterial = (id: number) => {
 	const queryClient = useQueryClient();
+	const { showToast } = useToast();
 
 	const mutation = useMutation<void, MaterialError, void>({
 		mutationFn: () => deleteMaterial(id),
 		retry: false,
 		onSuccess: () => {
 			queryClient.removeQueries({ queryKey: materialQueryKey(id) });
+			queryClient.invalidateQueries({ queryKey: materialsListKey });
+			showToast("El material fue eliminado correctamente", "success", 3500);
 			router.replace("/search");
 		},
 		onError: (err) => {

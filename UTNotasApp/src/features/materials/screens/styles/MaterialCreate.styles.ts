@@ -347,13 +347,6 @@ export const styles = StyleSheet.create({
   pressedInput: {
     backgroundColor: "#eef6ff",
   },
-  modalBackdrop: {
-    alignItems: "center",
-    backgroundColor: "rgba(16, 24, 40, 0.42)",
-    flex: 1,
-    justifyContent: "center",
-    padding: 18,
-  },
   sheet: {
     backgroundColor: "#ffffff",
     borderRadius: 8,
@@ -404,60 +397,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     paddingVertical: 18,
     textAlign: "center",
-  },
-  pointsModal: {
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 20,
-    width: "100%",
-  },
-  pointsIcon: {
-    alignItems: "center",
-    backgroundColor: "#fff4df",
-    borderRadius: 8,
-    height: 62,
-    justifyContent: "center",
-    width: 62,
-  },
-  pointsTitle: {
-    color: "#143a5f",
-    fontSize: 20,
-    fontWeight: "700",
-    marginTop: 14,
-    textAlign: "center",
-  },
-  pointsTotal: {
-    color: "#c97913",
-    fontSize: 28,
-    fontWeight: "800",
-    marginTop: 10,
-  },
-  pointsBase: {
-    color: "#425466",
-    fontSize: 14,
-    marginTop: 6,
-  },
-  pointsDetail: {
-    color: "#667085",
-    fontSize: 13,
-    lineHeight: 18,
-    marginTop: 8,
-    textAlign: "center",
-  },
-  modalButton: {
-    alignItems: "center",
-    backgroundColor: "#1f63b5",
-    borderRadius: 8,
-    justifyContent: "center",
-    marginTop: 18,
-    minHeight: 46,
-    width: "100%",
-  },
-  modalButtonText: {
-    color: "#ffffff",
-    fontSize: 15,
-    fontWeight: "700",
   },
 });
 

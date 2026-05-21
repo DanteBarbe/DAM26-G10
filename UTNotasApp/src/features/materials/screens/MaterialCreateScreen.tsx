@@ -28,7 +28,6 @@ import { OptionSheet } from "@/src/components/OptionSheet";
 import { SelectButton } from "@/src/components/SelectButton";
 import { useToast } from "@/src/contexts/ToastContext";
 import { FileUploadField } from "@/src/features/materials/components/FileUploadField";
-import { PointsModal } from "@/src/features/materials/components/PointsModal";
 import { SubjectSearch } from "@/src/features/materials/components/SubjectSearch";
 import {
 	materialTypes,
@@ -47,7 +46,7 @@ import {
 export default function MaterialCreateScreen() {
 	const { showToast } = useToast();
 	const { values, errors, uiState, options, handlers } = useMaterialForm();
-	const { submitMaterial, isSubmitting, points, clearPoints } = useCreateMaterial();
+	const { submitMaterial, isSubmitting } = useCreateMaterial();
 	const setFormError = errors.set;
 
 	useFocusEffect(
@@ -74,11 +73,6 @@ export default function MaterialCreateScreen() {
 				showToast("Material de estudio creado exitosamente", "success", 3500);
 			},
 		});
-	};
-
-	const handleClosePoints = () => {
-		clearPoints();
-		handlers.resetForm();
 	};
 
 	return (
@@ -270,8 +264,6 @@ export default function MaterialCreateScreen() {
 					handlers.setActiveSelector(null);
 				}}
 			/>
-
-			<PointsModal points={points} onClose={handleClosePoints} />
 		</SafeAreaView>
 	);
 }
