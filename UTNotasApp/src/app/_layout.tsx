@@ -1,5 +1,17 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
+import { ToastContainer } from "@/src/components/ToastContainer";
+import { ToastProvider } from "@/src/contexts/ToastContext";
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+	return (
+		<QueryClientProvider client={queryClient}>
+			<ToastProvider>
+				<Stack screenOptions={{ headerShown: false }} />
+				<ToastContainer />
+			</ToastProvider>
+		</QueryClientProvider>
+	);
 }

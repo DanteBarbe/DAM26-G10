@@ -1,7 +1,6 @@
 import type {
   FieldError,
   MaterialFormData,
-  PointsBreakdown,
 } from "@/src/features/materials/types/materials.types";
 
 const currentYear = new Date().getFullYear();
@@ -17,19 +16,6 @@ export const getCareerPrefix = (
   if (!sourceWord) return "";
 
   return `${sourceWord[0].toUpperCase()}${careerSubjectYear}`;
-};
-
-export const buildPointsBreakdown = (form: MaterialFormData): PointsBreakdown => {
-  const breakdown: string[] = [];
-
-  if (form.anioCursada) breakdown.push("Ano de cursada");
-  if (form.comision) breakdown.push("Comision");
-  if (form.descripcion.trim()) breakdown.push("Descripcion");
-  if (form.parcial !== "") breakdown.push("N de parcial");
-
-  const bonus = breakdown.length * 5;
-
-  return { total: 20 + bonus, base: 20, bonus, breakdown };
 };
 
 export const validateForm = (form: MaterialFormData): FieldError | null => {

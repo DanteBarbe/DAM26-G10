@@ -61,9 +61,7 @@ export type FieldError = {
   message: string;
 };
 
-export type PointsBreakdown = {
-  total: number;
-  base: number;
-  bonus: number;
-  breakdown: string[];
+export type MaterialError = {
+	code: "MATERIAL_NOT_OWNED" | "NOT_FOUND" | "UNKNOWN";
+	message: string;
 };

@@ -37,6 +37,18 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="search"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="material/[id]"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }
