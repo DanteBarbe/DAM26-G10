@@ -19,21 +19,31 @@ import { Material, TipoMaterial, Prisma } from '@prisma/client';
 const materialInclude = {
 	user: { select: { username: true } },
 	carrera: { select: { nombre: true } },
+	materia: { select: { nombre: true } },
 };
 
 const mapToWithUser = (material: any): MaterialWithUser => {
-	const { user, carrera, ...rest } = material;
-	return { ...rest, username: user?.username ?? null, carreraNombre: carrera?.nombre ?? null } as MaterialWithUser;
+	const { user, carrera, materia, ...rest } = material;
+	return {
+		...rest,
+		username: user?.username ?? null,
+		carreraNombre: carrera?.nombre ?? null,
+		materiaNombre: materia?.nombre ?? null,
+	} as MaterialWithUser;
 };
 
 export async function getMaterials(filters: Record<string, any>, take: number, cursor?: number): Promise<PaginatedResult<MaterialWithUser>> {
 	const { query, limit: _l, cursor: _c, ...directFilters } = filters;
 
+	// el frontend usa 'anioCursada' (sin tilde), el campo Prisma es 'añoCursada'
+	const keyMap: Record<string, string> = { anioCursada: 'añoCursada' };
+
 	const processedFilters: Record<string, any> = {};
 	for (const key in directFilters) {
+		const normalizedKey = keyMap[key] ?? key;
 		const value = directFilters[key];
 		if (value !== '' && value !== null && value !== undefined) {
-			processedFilters[key] = isNaN(Number(value)) ? value : Number(value);
+			processedFilters[normalizedKey] = isNaN(Number(value)) ? value : Number(value);
 		}
 	}
 

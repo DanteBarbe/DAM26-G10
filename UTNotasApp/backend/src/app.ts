@@ -14,6 +14,7 @@ import { logRequest } from './middlewares/logger.middleware';
 import { handleError } from './middlewares/error.middleware';
 import { authRoutes } from './routes/auth.routes';
 import { userRoutes } from './routes/user.routes';
+import { materialRoutes } from './routes/material.routes';
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(logRequest);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/materials', materialRoutes);
 
 // El error middleware debe ser el último — Express lo distingue por tener 4 parámetros
 app.use(handleError);

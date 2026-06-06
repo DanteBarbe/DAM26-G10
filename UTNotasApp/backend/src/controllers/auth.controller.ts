@@ -22,15 +22,15 @@ const COOKIE_OPTIONS = {
 	secure: process.env.NODE_ENV === 'production', // HTTPS solo en producción
 };
 
-export async function login(req: Request<{}, any, LoginRequest>,res: Response<DataResponse<{ user: UserWithoutPassword }>>,next: NextFunction) {
+export async function login(req: Request<{}, any, LoginRequest>, res: Response, next: NextFunction) {
 	try {
 		const { user, token } = await authService.login(req.body);
 
-		// El token va en cookie httpOnly, no en el body — el cliente mobile lee la cookie
+		// Cookie httpOnly para web; token también en body para clientes native que no manejan cookies
 		res.cookie('token', token, COOKIE_OPTIONS);
 
 		res.json({
-			data: { user },
+			data: { user, token },
 			message: 'Sesión iniciada correctamente',
 		});
 	} catch (error) {

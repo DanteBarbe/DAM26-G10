@@ -29,8 +29,9 @@ export interface MaterialCore {
 }
 
 export interface MaterialWithUser extends MaterialCore {
-	username: string;
+	username: string | null;
 	carreraNombre?: string | null;
+	materiaNombre?: string | null;
 }
 
 export interface CreateMaterialRequest {

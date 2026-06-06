@@ -1,10 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useToast } from "@/src/contexts/ToastContext";
+import { useAuth } from "@/src/features/auth/AuthContext";
 import type { CreatedMaterial, MaterialError, MaterialFormData, StudyMaterial, } from "@/src/features/materials/types/materials.types";
-import { createMaterial, deleteMaterial, getEditableMaterialById, getMaterialById, updateMaterial, } from "@/src/features/materials/services/materialService";
-import { mapCreatedMaterialToStudyMaterial } from "@/src/features/materials/data/mockMaterials";
-import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";
+import { createMaterial, deleteMaterial, fetchMaterials, getEditableMaterialById, getMaterialById, updateMaterial, type MaterialListFilters, } from "@/src/features/materials/services/materialService";
 
 /**
  * hooks de react para interaccion con estado de materiales en servidor.
@@ -17,18 +16,33 @@ import { getCreatedMaterials } from "@/src/features/materials/utils/createdMater
 
 const materialQueryKey = (id: number) => ["material", id] as const;
 const editableMaterialQueryKey = (id: number) => ["editable-material", id] as const;
-const materialsListKey = ["materials"] as const;
+export const materialsListKey = ["materials"] as const;
+
+export const useGetMaterials = (filters: MaterialListFilters = {}) => {
+	const query = useQuery<StudyMaterial[], Error>({
+		queryKey: [...materialsListKey, filters] as const,
+		queryFn: () => fetchMaterials(filters),
+		staleTime: 2 * 60 * 1000,
+	});
+
+	return {
+		materials: query.data ?? [],
+		isLoading: query.isLoading,
+		isError: query.isError,
+		refetch: query.refetch,
+	};
+};
 
 export const useGetMaterial = (id: number) => {
+	const { user } = useAuth();
+
 	const query = useQuery<StudyMaterial, MaterialError>({
 		queryKey: materialQueryKey(id),
 		queryFn: () => getMaterialById(id),
 		staleTime: 5 * 60 * 1000,
 	});
 
-	// nota (e1): simulacion de owner mediante chequeo en store local.
-	// en e2 esto se calculara comparando el user.id del AuthContext vs query.data.userId
-	const isOwner = getCreatedMaterials().some((m) => String(m.id) === String(id));
+	const isOwner = !!user && query.data?.author.id === user.id;
 
 	return {
 		material: query.data,
@@ -57,7 +71,7 @@ export const useGetEditableMaterial = (id?: number) => {
 export const useCreateMaterial = () => {
 	const queryClient = useQueryClient();
 
-	const mutation = useMutation<CreatedMaterial, MaterialError, MaterialFormData>({
+	const mutation = useMutation<StudyMaterial, MaterialError, MaterialFormData>({
 		mutationFn: createMaterial,
 		retry: false,
 		onSuccess: (material) => {
@@ -82,18 +96,14 @@ export const useUpdateMaterial = () => {
 	const { showToast } = useToast();
 
 	const mutation = useMutation<
-		CreatedMaterial,
+		StudyMaterial,
 		MaterialError,
 		{ id: number; form: MaterialFormData }
 	>({
 		mutationFn: ({ id, form }) => updateMaterial(id, form),
 		retry: false,
 		onSuccess: (material) => {
-			queryClient.setQueryData(
-				materialQueryKey(material.id),
-				mapCreatedMaterialToStudyMaterial(material),
-			);
-			queryClient.setQueryData(editableMaterialQueryKey(material.id), material);
+			queryClient.setQueryData(materialQueryKey(material.id), material);
 			queryClient.invalidateQueries({ queryKey: materialsListKey });
 			showToast("Material actualizado correctamente", "success", 3500);
 			router.replace(`/material/${material.id}`);

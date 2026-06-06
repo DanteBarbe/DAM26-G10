@@ -27,8 +27,12 @@ function looksLikeJwt(token: string): boolean {
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
 	try {
-		// En mobile el token viaja en cookie httpOnly, no en header Authorization
-		const token = req.cookies?.token;
+		// Cookie httpOnly primero; fallback a Bearer para clientes native (React Native no maneja cookies automáticamente)
+		let token = req.cookies?.token;
+		if (!token || token === 'null' || token === 'undefined') {
+			const authHeader = req.headers.authorization;
+			if (authHeader?.startsWith('Bearer ')) token = authHeader.slice(7);
+		}
 
 		if (!token || token === 'null' || token === 'undefined') {
 			return res.status(401).json({
