@@ -34,6 +34,7 @@ export default function ProfileScreen() {
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletePassword, setDeletePassword] = useState("");
+  const [deletePasswordVisible, setDeletePasswordVisible] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -310,15 +311,23 @@ export default function ProfileScreen() {
                 Esta acción es irreversible. Todos tus datos serán eliminados permanentemente.
               </Text>
               <Text style={s.modalLabel}>Ingresá tu contraseña para confirmar</Text>
-              <TextInput
-                value={deletePassword}
-                onChangeText={setDeletePassword}
-                placeholder="Contraseña"
-                placeholderTextColor="#9a9284"
-                secureTextEntry
-                editable={!isDeleting}
-                style={s.modalInput}
-              />
+              <View style={s.modalInputWrap}>
+                <TextInput
+                  value={deletePassword}
+                  onChangeText={setDeletePassword}
+                  placeholder="Contraseña"
+                  placeholderTextColor="#9a9284"
+                  secureTextEntry={!deletePasswordVisible}
+                  editable={!isDeleting}
+                  style={s.modalInputInner}
+                />
+                <Pressable
+                  onPress={() => setDeletePasswordVisible(v => !v)}
+                  hitSlop={8}
+                >
+                  <Feather name={deletePasswordVisible ? "eye-off" : "eye"} size={18} color="#9a9284" />
+                </Pressable>
+              </View>
               {deleteError ? <Text style={s.modalError}>{deleteError}</Text> : null}
               <Pressable
                 accessibilityRole="button"
@@ -513,6 +522,23 @@ const s = {
     fontSize: 15,
     color: "#28241e",
     marginBottom: 4,
+  },
+  modalInputWrap: {
+    width: "100%" as const,
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    backgroundColor: "#f5f7f2",
+    borderWidth: 1,
+    borderColor: "#ddd7cb",
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    marginBottom: 4,
+  },
+  modalInputInner: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: "#28241e",
   },
   modalError: { fontSize: 13, color: "#c0392b", textAlign: "center" as const, marginBottom: 4 },
   modalDeleteBtn: {
