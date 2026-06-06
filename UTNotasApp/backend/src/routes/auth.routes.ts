@@ -11,7 +11,7 @@ import { Router } from 'express';
 import * as authController from '../controllers/auth.controller';
 import { validate } from '../middlewares/validation.middleware';
 import { loginSchema, googleLoginSchema } from '../validations/auth.validation';
-import { validateRecaptcha } from '../middlewares/recaptcha.middleware.ts';
+import { validateRecaptcha } from '../middlewares/recaptcha.middleware';
 import { authenticate } from '../middlewares/auth.middleware';
 
 const router = Router();
