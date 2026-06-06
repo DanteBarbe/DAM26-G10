@@ -1,4 +1,4 @@
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useAuth } from "@/src/features/auth/AuthContext";
 import { AuthRequiredNotice } from "@/src/features/auth/components/AuthRequiredNotice";
 import MaterialCreateScreen from "@/src/features/materials/screens/MaterialCreateScreen";
 
