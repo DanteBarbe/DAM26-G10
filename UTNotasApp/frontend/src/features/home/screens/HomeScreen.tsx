@@ -17,6 +17,16 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="dark" />
+      <View style={styles.topBar}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push("/profile")}
+          style={({ pressed }) => [styles.profileButton, pressed && styles.pressed]}
+        >
+          <Feather name="user" size={18} color="#2f6f4e" />
+          <Text style={styles.profileButtonText}>Mi perfil</Text>
+        </Pressable>
+      </View>
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.brand}>UTNotas</Text>

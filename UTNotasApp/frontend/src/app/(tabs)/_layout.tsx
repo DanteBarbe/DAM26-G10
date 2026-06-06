@@ -1,7 +1,13 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
+import { useAuth } from "@/src/contexts/AuthContext";
+import { useToast } from "@/src/contexts/ToastContext";
+
 export default function TabsLayout() {
+  const { isAuthenticated } = useAuth();
+  const { showToast } = useToast();
+
   return (
     <Tabs
       screenOptions={{
@@ -35,6 +41,18 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Feather name="upload-cloud" size={size} color={color} />
           ),
+        }}
+        listeners={{
+          // subir material requiere sesion: si no hay, avisamos y no navegamos.
+          tabPress: (e) => {
+            if (!isAuthenticated) {
+              e.preventDefault();
+              showToast(
+                "Iniciá sesión o registrate para subir un material",
+                "info",
+              );
+            }
+          },
         }}
       />
       <Tabs.Screen

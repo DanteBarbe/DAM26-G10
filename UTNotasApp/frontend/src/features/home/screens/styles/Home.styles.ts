@@ -79,4 +79,26 @@ export const homeStyles = StyleSheet.create({
   pressed: {
     opacity: 0.82,
   },
+  topBar: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+  },
+  profileButton: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: 999,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 40,
+    paddingHorizontal: spacing.md,
+  },
+  profileButtonText: {
+    color: colors.text,
+    fontSize: typography.small,
+    fontWeight: "700",
+  },
 });
