@@ -95,8 +95,7 @@ export async function createMaterial(data: CreateMaterialRequest, ctx: UserConte
 				comision: data.comision ?? null,
 				añoCursada: data.añoCursada ?? null,
 				numeroParcial: data.numeroParcial ?? null,
-				materiaId: data.materiaId ?? null,
-				carreraId: data.carreraId ?? null,
+				// materiaId/carreraId ignorados hasta Entrega 3 (tablas vacías)
 				userId: ctx.id,
 				cantidadReportes: 0,
 			},
