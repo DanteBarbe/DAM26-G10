@@ -27,12 +27,6 @@ export const validateForm = (form: MaterialFormData): FieldError | null => {
   if (form.archivos.length === 0) {
     return { field: "archivos", message: "Debes adjuntar un archivo." };
   }
-  if (!form.materiaId) {
-    return { field: "materiaId", message: "Debes seleccionar una materia." };
-  }
-  if (!form.carreraId) {
-    return { field: "carreraId", message: "Debes seleccionar una carrera." };
-  }
   if (!form.tipo) {
     return { field: "tipo", message: "Debes seleccionar un tipo de material." };
   }

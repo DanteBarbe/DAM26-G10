@@ -46,6 +46,8 @@ export type StudyMaterial = {
   comision?: string;
   anioCursada?: number;
   numeroParcial?: number;
+  materiaId?: number;
+  carreraId?: number;
   archivo: AttachedFile;
   author: MaterialAuthor;
   createdAt: string;
