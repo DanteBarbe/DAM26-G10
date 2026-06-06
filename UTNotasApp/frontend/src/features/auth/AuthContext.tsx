@@ -24,6 +24,7 @@ type AuthContextValue = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (data: UpdateProfileData) => Promise<void>;
+  deleteAccount: (password: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -57,8 +58,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(res.data);
   };
 
+  const deleteAccount = async (password: string) => {
+    if (!user) throw new Error('No hay usuario autenticado.');
+    await apiFetch(`/api/users/${user.id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ password }),
+    });
+    setAuthToken(null);
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, updateProfile }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, updateProfile, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

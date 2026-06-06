@@ -5,6 +5,7 @@ import { useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -19,7 +20,7 @@ import { colors } from "@/src/styles/Colors";
 import { useToast } from "@/src/contexts/ToastContext";
 
 export default function ProfileScreen() {
-  const { user, isAuthenticated, logout, updateProfile } = useAuth();
+  const { user, isAuthenticated, logout, updateProfile, deleteAccount } = useAuth();
   const { showToast } = useToast();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -31,8 +32,38 @@ export default function ProfileScreen() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleLogout = async () => {
     await logout();
+  };
+
+  const openDeleteModal = () => {
+    setDeletePassword("");
+    setDeleteError(null);
+    setDeleteModalVisible(true);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!deletePassword.trim()) {
+      setDeleteError("Ingresá tu contraseña para confirmar.");
+      return;
+    }
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await deleteAccount(deletePassword.trim());
+      setDeleteModalVisible(false);
+      showToast("Cuenta eliminada", "info");
+      router.replace("/");
+    } catch (err) {
+      setDeleteError(err instanceof ApiError ? err.message : "Error al eliminar la cuenta.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const startEditing = () => {
@@ -253,6 +284,65 @@ export default function ProfileScreen() {
             <Text style={s.logoutText}>Cerrar sesión</Text>
           </Pressable>
         </View>
+
+        <View style={s.bottomAction}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={openDeleteModal}
+            style={({ pressed }) => [s.deleteBtn, pressed && s.pressed]}
+          >
+            <Feather name="trash-2" size={16} color="#c0392b" />
+            <Text style={s.deleteText}>Eliminar cuenta</Text>
+          </Pressable>
+        </View>
+
+        <Modal
+          visible={deleteModalVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => !isDeleting && setDeleteModalVisible(false)}
+        >
+          <View style={s.modalOverlay}>
+            <View style={s.modalCard}>
+              <Feather name="alert-triangle" size={32} color="#c0392b" style={{ marginBottom: 12 }} />
+              <Text style={s.modalTitle}>¿Eliminar cuenta?</Text>
+              <Text style={s.modalBody}>
+                Esta acción es irreversible. Todos tus datos serán eliminados permanentemente.
+              </Text>
+              <Text style={s.modalLabel}>Ingresá tu contraseña para confirmar</Text>
+              <TextInput
+                value={deletePassword}
+                onChangeText={setDeletePassword}
+                placeholder="Contraseña"
+                placeholderTextColor="#9a9284"
+                secureTextEntry
+                editable={!isDeleting}
+                style={s.modalInput}
+              />
+              {deleteError ? <Text style={s.modalError}>{deleteError}</Text> : null}
+              <Pressable
+                accessibilityRole="button"
+                onPress={handleDeleteAccount}
+                disabled={isDeleting}
+                style={({ pressed }) => [s.modalDeleteBtn, pressed && s.pressed, isDeleting && s.disabledBtn]}
+              >
+                {isDeleting ? (
+                  <ActivityIndicator color="#ffffff" />
+                ) : (
+                  <Text style={s.modalDeleteBtnText}>Eliminar cuenta</Text>
+                )}
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => setDeleteModalVisible(false)}
+                disabled={isDeleting}
+                style={({ pressed }) => [s.modalCancelBtn, pressed && s.pressed]}
+              >
+                <Text style={s.modalCancelText}>Cancelar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     );
   }
@@ -353,6 +443,12 @@ const s = {
     marginTop: 16,
     gap: 10,
   },
+  bottomAction: {
+    marginHorizontal: 20,
+    marginTop: "auto" as const,
+    paddingTop: 16,
+    paddingBottom: 12,
+  },
   editBtn: {
     flexDirection: "row" as const,
     alignItems: "center" as const,
@@ -375,6 +471,71 @@ const s = {
     borderColor: "#e8d0ce",
   },
   logoutText: { color: "#c0392b", fontWeight: "700" as const, fontSize: 15 },
+  deleteBtn: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    gap: 8,
+    backgroundColor: "#fff0ee",
+    borderRadius: 12,
+    paddingVertical: 14,
+    borderWidth: 1,
+    borderColor: "#f5c6c0",
+  },
+  deleteText: { color: "#c0392b", fontWeight: "700" as const, fontSize: 15 },
+
+  // modal de confirmación
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    paddingHorizontal: 24,
+  },
+  modalCard: {
+    width: "100%" as const,
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    padding: 24,
+    alignItems: "center" as const,
+  },
+  modalTitle: { fontSize: 18, fontWeight: "700" as const, color: "#28241e", marginBottom: 8 },
+  modalBody: { fontSize: 14, color: "#635d52", textAlign: "center" as const, marginBottom: 16 },
+  modalLabel: { fontSize: 13, fontWeight: "600" as const, color: "#635d52", alignSelf: "flex-start" as const, marginBottom: 4 },
+  modalInput: {
+    width: "100%" as const,
+    backgroundColor: "#f5f7f2",
+    borderWidth: 1,
+    borderColor: "#ddd7cb",
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: "#28241e",
+    marginBottom: 4,
+  },
+  modalError: { fontSize: 13, color: "#c0392b", textAlign: "center" as const, marginBottom: 4 },
+  modalDeleteBtn: {
+    width: "100%" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    backgroundColor: "#c0392b",
+    borderRadius: 10,
+    paddingVertical: 14,
+    marginTop: 12,
+  },
+  modalDeleteBtnText: { color: "#ffffff", fontWeight: "700" as const, fontSize: 15 },
+  modalCancelBtn: {
+    width: "100%" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    borderWidth: 1,
+    borderColor: "#ddd7cb",
+    borderRadius: 10,
+    paddingVertical: 12,
+    marginTop: 8,
+  },
+  modalCancelText: { color: "#635d52", fontWeight: "600" as const, fontSize: 15 },
 
   // guest
   centeredContent: {
