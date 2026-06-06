@@ -1,9 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { ToastContainer } from "@/src/components/ToastContainer";
-import { AuthProvider } from "@/src/contexts/AuthContext";
-import { ToastProvider } from "@/src/contexts/ToastContext";
 import { AuthProvider } from "@/src/features/auth/AuthContext";
+import { ToastProvider } from "@/src/contexts/ToastContext";
 
 const queryClient = new QueryClient();
 

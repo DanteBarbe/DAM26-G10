@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useAuth } from "@/src/features/auth/AuthContext";
 import { useToast } from "@/src/contexts/ToastContext";
 import { colors } from "@/src/styles/Colors";
 import { profileStyles as styles } from "./styles/Profile.styles";
@@ -17,11 +17,11 @@ import { profileStyles as styles } from "./styles/Profile.styles";
  * - con sesion: mostrar datos basicos del usuario y permitir cerrar sesion.
  */
 export default function ProfileScreen() {
-	const { isAuthenticated, user, signOut } = useAuth();
+	const { isAuthenticated, user, logout } = useAuth();
 	const { showToast } = useToast();
 
 	const handleSignOut = () => {
-		signOut();
+		logout();
 		showToast("Sesión cerrada", "info");
 	};
 

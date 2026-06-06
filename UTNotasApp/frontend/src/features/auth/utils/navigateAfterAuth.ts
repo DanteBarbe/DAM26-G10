@@ -7,9 +7,5 @@ import { router } from "expo-router";
  * registro) para dejar al usuario en el home con un stack limpio.
  */
 export function navigateAfterAuth() {
-	if (router.canDismiss()) {
-		router.dismissAll();
-	} else {
-		router.replace("/");
-	}
+	router.replace("/");
 }

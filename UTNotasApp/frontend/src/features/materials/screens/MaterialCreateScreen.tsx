@@ -9,7 +9,7 @@
  * - renderizar el formulario sin logica de negocio.
  */
 import { Feather } from "@expo/vector-icons";
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useMemo } from "react";
 import {
@@ -141,10 +141,25 @@ export default function MaterialCreateScreen() {
 			<SafeAreaView style={styles.safeArea}>
 				<StatusBar style="dark" />
 				<View style={styles.stateContent}>
-					<Text style={styles.stateTitle}>Material no editable</Text>
+					<Feather name="shield-off" size={56} color="#9a9284" />
+					<Text style={styles.stateTitle}>Sin permiso</Text>
 					<Text style={styles.stateText}>
-						No se encontro un material propio para modificar.
+						No tenés permiso para editar este material.
 					</Text>
+					<Pressable
+						accessibilityRole="button"
+						onPress={() => router.back()}
+						style={styles.stateButton}
+					>
+						<Text style={styles.stateButtonText}>Volver</Text>
+					</Pressable>
+					<Pressable
+						accessibilityRole="button"
+						onPress={() => router.replace("/search")}
+						style={styles.stateButtonSecondary}
+					>
+						<Text style={styles.stateButtonSecondaryText}>Ir a búsqueda</Text>
+					</Pressable>
 				</View>
 			</SafeAreaView>
 		);
