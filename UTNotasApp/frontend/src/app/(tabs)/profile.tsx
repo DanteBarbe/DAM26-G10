@@ -336,9 +336,9 @@ export default function ProfileScreen() {
                 accessibilityRole="button"
                 onPress={() => setDeleteModalVisible(false)}
                 disabled={isDeleting}
-                style={({ pressed }) => [s.cancelBtn, pressed && s.pressed]}
+                style={({ pressed }) => [s.modalCancelBtn, pressed && s.pressed]}
               >
-                <Text style={s.cancelText}>Cancelar</Text>
+                <Text style={s.modalCancelText}>Cancelar</Text>
               </Pressable>
             </View>
           </View>
@@ -525,6 +525,17 @@ const s = {
     marginTop: 12,
   },
   modalDeleteBtnText: { color: "#ffffff", fontWeight: "700" as const, fontSize: 15 },
+  modalCancelBtn: {
+    width: "100%" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    borderWidth: 1,
+    borderColor: "#ddd7cb",
+    borderRadius: 10,
+    paddingVertical: 12,
+    marginTop: 8,
+  },
+  modalCancelText: { color: "#635d52", fontWeight: "600" as const, fontSize: 15 },
 
   // guest
   centeredContent: {
