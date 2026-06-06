@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useAuth } from "@/src/features/auth/AuthContext";
 import { useToast } from "@/src/contexts/ToastContext";
 
 export default function TabsLayout() {
