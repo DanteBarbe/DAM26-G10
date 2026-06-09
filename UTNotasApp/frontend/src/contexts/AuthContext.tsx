@@ -8,7 +8,13 @@ import React, {
 
 export type AuthUser = {
 	name?: string;
+	surname?: string;
+	username?: string;
 	email: string;
+	careerId?: number;
+	careerName?: string;
+	points?: number;
+	joinedAt?: string;
 };
 
 /**
@@ -18,7 +24,8 @@ export type AuthUser = {
  * - exponer si hay sesion activa y los datos basicos del usuario.
  * - permitir iniciar sesion / cerrarla.
  * - NO habla con el backend todavia: signIn solo guarda al usuario.
- *   Cuando exista el backend, signIn pasara a validar credenciales reales.
+ *   Cuando exista el backend, signIn pasara a validar credenciales reales y
+ *   los datos (puntos, fecha de alta, etc.) vendran del servidor.
  */
 type AuthContextType = {
 	isAuthenticated: boolean;
@@ -32,7 +39,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<AuthUser | null>(null);
 
-	const signIn = useCallback((nextUser: AuthUser) => setUser(nextUser), []);
+	// completa valores que (por ahora) no tenemos del backend.
+	const signIn = useCallback((nextUser: AuthUser) => {
+		setUser({ points: 0, joinedAt: new Date().toISOString(), ...nextUser });
+	}, []);
+
 	const signOut = useCallback(() => setUser(null), []);
 
 	const value = useMemo(

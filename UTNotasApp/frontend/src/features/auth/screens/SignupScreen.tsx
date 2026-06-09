@@ -42,7 +42,14 @@ export default function SignupScreen() {
 
 	const handleRegister = () => {
 		if (!validateForm()) return;
-		signIn({ name: values.name.trim(), email: values.email.trim() });
+		signIn({
+			name: values.name.trim(),
+			surname: values.surname.trim(),
+			username: values.username.trim(),
+			email: values.email.trim(),
+			careerId: values.career ?? undefined,
+			careerName: selectedCareer?.nombre,
+		});
 		showToast("¡Cuenta creada exitosamente!", "success");
 		navigateAfterAuth();
 	};
