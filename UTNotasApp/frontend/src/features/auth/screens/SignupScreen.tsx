@@ -1,11 +1,12 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
+import { ApiError, apiFetch } from "@/src/api/apiClient";
 import { OptionSheet } from "@/src/components/OptionSheet";
 import { SelectButton } from "@/src/components/SelectButton";
-import { useAuth } from "@/src/contexts/AuthContext";
 import { useToast } from "@/src/contexts/ToastContext";
+import { useAuth } from "@/src/features/auth/AuthContext";
 import { careers } from "@/src/features/materials/data/materialOptions";
 import { AuthScreenLayout } from "../components/AuthScreenLayout";
 import { AuthTextField } from "../components/AuthTextField";
@@ -13,15 +14,6 @@ import { useSignupForm } from "../hooks/useSignupForm";
 import { navigateAfterAuth } from "../utils/navigateAfterAuth";
 import { authStyles as styles } from "./styles/auth.styles";
 
-/**
- * pantalla de registro (solo frontend) en dos pasos, igual que el flujo web.
- *
- * responsabilidades:
- * - paso 1: elegir la carrera antes que nada.
- * - paso 2: completar el formulario de datos.
- * - validar en cada paso y navegar a la app al finalizar.
- * - NO crea la cuenta en el backend (pendiente).
- */
 export default function SignupScreen() {
 	const {
 		step,
@@ -34,24 +26,38 @@ export default function SignupScreen() {
 		backToCareer,
 		validateForm,
 	} = useSignupForm();
+	const { login } = useAuth();
 	const { showToast } = useToast();
-	const { signIn } = useAuth();
 	const [careerSheetOpen, setCareerSheetOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [apiError, setApiError] = useState<string | null>(null);
 
 	const selectedCareer = careers.find((career) => career.id === values.career);
 
-	const handleRegister = () => {
+	const handleRegister = async () => {
 		if (!validateForm()) return;
-		signIn({
-			name: values.name.trim(),
-			surname: values.surname.trim(),
-			username: values.username.trim(),
-			email: values.email.trim(),
-			careerId: values.career ?? undefined,
-			careerName: selectedCareer?.nombre,
-		});
-		showToast("¡Cuenta creada exitosamente!", "success");
-		navigateAfterAuth();
+		setApiError(null);
+		setIsLoading(true);
+		try {
+			await apiFetch("/api/users/register", {
+				method: "POST",
+				body: JSON.stringify({
+					name: values.name.trim(),
+					surname: values.surname.trim(),
+					username: values.username.trim(),
+					email: values.email.trim(),
+					password: values.password,
+					careerId: values.career ?? undefined,
+				}),
+			});
+			await login(values.email.trim(), values.password);
+			showToast("¡Bienvenido!", "success");
+			navigateAfterAuth();
+		} catch (err) {
+			setApiError(err instanceof ApiError ? err.message : "Error al registrarse.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	// Paso 1: elegir carrera
@@ -154,15 +160,23 @@ export default function SignupScreen() {
 				secure
 			/>
 
+			{apiError ? <Text style={styles.fieldError}>{apiError}</Text> : null}
+
 			<Pressable
 				accessibilityRole="button"
 				onPress={handleRegister}
+				disabled={isLoading}
 				style={({ pressed }) => [
 					styles.primaryButton,
 					pressed && styles.primaryButtonPressed,
+					isLoading && { opacity: 0.6 },
 				]}
 			>
-				<Text style={styles.primaryButtonText}>Registrarme</Text>
+				{isLoading ? (
+					<ActivityIndicator color="#ffffff" />
+				) : (
+					<Text style={styles.primaryButtonText}>Registrarme</Text>
+				)}
 			</Pressable>
 
 			<View style={styles.linkRow}>

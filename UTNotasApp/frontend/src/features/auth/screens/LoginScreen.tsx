@@ -1,7 +1,9 @@
 import { router } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
-import { useAuth } from "@/src/contexts/AuthContext";
+import { ApiError } from "@/src/api/apiClient";
+import { useAuth } from "@/src/features/auth/AuthContext";
 import { useToast } from "@/src/contexts/ToastContext";
 import { AuthScreenLayout } from "../components/AuthScreenLayout";
 import { AuthTextField } from "../components/AuthTextField";
@@ -9,24 +11,26 @@ import { useLoginForm } from "../hooks/useLoginForm";
 import { navigateAfterAuth } from "../utils/navigateAfterAuth";
 import { authStyles as styles } from "./styles/auth.styles";
 
-/**
- * pantalla de inicio de sesion (solo frontend).
- *
- * responsabilidades:
- * - orquestar useLoginForm y presentar los campos.
- * - validar en el submit y, si todo esta ok, navegar a la app.
- * - NO realiza la autenticacion real (pendiente backend).
- */
 export default function LoginScreen() {
 	const { values, errors, setField, validate } = useLoginForm();
 	const { showToast } = useToast();
-	const { signIn } = useAuth();
+	const { login } = useAuth();
+	const [isLoading, setIsLoading] = useState(false);
+	const [apiError, setApiError] = useState<string | null>(null);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		if (!validate()) return;
-		signIn({ email: values.email.trim() });
-		showToast("¡Sesión iniciada exitosamente!", "success");
-		navigateAfterAuth();
+		setApiError(null);
+		setIsLoading(true);
+		try {
+			await login(values.email.trim(), values.password);
+			showToast("¡Sesión iniciada exitosamente!", "success");
+			navigateAfterAuth();
+		} catch (err) {
+			setApiError(err instanceof ApiError ? err.message : "Error al iniciar sesión.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -47,15 +51,23 @@ export default function LoginScreen() {
 				secure
 			/>
 
+			{apiError ? <Text style={styles.fieldError}>{apiError}</Text> : null}
+
 			<Pressable
 				accessibilityRole="button"
 				onPress={handleSubmit}
+				disabled={isLoading}
 				style={({ pressed }) => [
 					styles.primaryButton,
 					pressed && styles.primaryButtonPressed,
+					isLoading && { opacity: 0.6 },
 				]}
 			>
-				<Text style={styles.primaryButtonText}>Ingresar</Text>
+				{isLoading ? (
+					<ActivityIndicator color="#ffffff" />
+				) : (
+					<Text style={styles.primaryButtonText}>Ingresar</Text>
+				)}
 			</Pressable>
 
 			<View style={styles.linkRow}>

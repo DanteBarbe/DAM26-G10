@@ -42,7 +42,7 @@ function StatCard({
  * - mostrar estadisticas rapidas, buscador local y la lista de materiales propios.
  * - estado vacio (sin materiales o sin resultados de busqueda).
  */
-export function MyPublications({ points }: { points: number }) {
+export function MyPublications() {
 	const [materials, setMaterials] = useState<StudyMaterial[]>(getMyMaterials);
 	const [query, setQuery] = useState("");
 
@@ -78,7 +78,6 @@ export function MyPublications({ points }: { points: number }) {
 			<View style={styles.statsRow}>
 				<StatCard icon="file-text" value={materials.length} label="Publicaciones" />
 				<StatCard icon="book" value={subjectsCount} label="Materias" />
-				<StatCard icon="award" value={points} label="Puntos" />
 			</View>
 
 			<View style={styles.searchBar}>

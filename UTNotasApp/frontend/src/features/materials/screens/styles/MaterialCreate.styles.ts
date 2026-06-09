@@ -418,6 +418,35 @@ export const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: "center",
   },
+  stateButton: {
+    alignItems: "center",
+    backgroundColor: "#1f63b5",
+    borderRadius: 10,
+    marginTop: 20,
+    paddingHorizontal: 28,
+    paddingVertical: 12,
+    width: "100%",
+  },
+  stateButtonText: {
+    color: "#ffffff",
+    fontSize: 15,
+    fontWeight: "700",
+  },
+  stateButtonSecondary: {
+    alignItems: "center",
+    borderColor: "#ddd7cb",
+    borderRadius: 10,
+    borderWidth: 1,
+    marginTop: 10,
+    paddingHorizontal: 28,
+    paddingVertical: 12,
+    width: "100%",
+  },
+  stateButtonSecondaryText: {
+    color: "#635d52",
+    fontSize: 15,
+    fontWeight: "600",
+  },
 });
 
 

@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useMemo, useState } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { MaterialResultCard } from "@/src/features/materials/components/MaterialResultCard";
@@ -11,9 +11,10 @@ import { FilterModal, type ActiveFilters } from "@/src/features/materials/compon
 import { materialTypes } from "@/src/features/materials/data/materialOptions";
 import { searchStyles } from "@/src/features/materials/screens/styles/MaterialSearch.styles";
 import { EmptyMaterialsState } from "@/src/features/materials/components/EmptyMaterialState";
-import { getAllMaterials } from "@/src/features/materials/utils/materialHelpers";
+import { useGetMaterials } from "@/src/features/materials/hooks/useMaterial";
 import { GlobalStyles } from "@/src/styles/Global.styles";
 import { normalizeText } from "@/src/utils/format";
+import { colors } from "@/src/styles/Colors";
 
 type ActiveChip = { key: keyof ActiveFilters; label: string };
 
@@ -22,12 +23,13 @@ export default function MaterialSearchScreen() {
   const [query, setQuery] = useState(q ?? "");
   const [filters, setFilters] = useState<ActiveFilters>({});
   const [showFilters, setShowFilters] = useState(false);
-  const [materials, setMaterials] = useState(getAllMaterials);
+
+  const { materials, isLoading, isError, refetch } = useGetMaterials({ limit: 40 });
 
   useFocusEffect(
     useCallback(() => {
-      setMaterials(getAllMaterials());
-    }, []),
+      refetch();
+    }, [refetch]),
   );
 
   const activeFilterCount = [
@@ -161,20 +163,35 @@ export default function MaterialSearchScreen() {
           </ScrollView>
         )}
 
-        <View style={searchStyles.resultSummary}>
-          <Text style={searchStyles.resultCount}>
-            {filteredMaterials.length} resultados
-          </Text>
-        </View>
-
-        {filteredMaterials.length === 0 ? (
-          <EmptyMaterialsState />
-        ) : (
-          <View style={searchStyles.cardList}>
-            {filteredMaterials.map((material) => (
-              <MaterialResultCard key={material.id} material={material} />
-            ))}
+        {isLoading ? (
+          <ActivityIndicator style={{ marginTop: 40 }} color={colors.primary} />
+        ) : isError ? (
+          <View style={{ alignItems: "center", marginTop: 40 }}>
+            <Text style={{ color: "#746c61", marginBottom: 12 }}>
+              No se pudo conectar con el servidor.
+            </Text>
+            <Pressable accessibilityRole="button" onPress={() => refetch()}>
+              <Text style={{ color: colors.primary }}>Reintentar</Text>
+            </Pressable>
           </View>
+        ) : (
+          <>
+            <View style={searchStyles.resultSummary}>
+              <Text style={searchStyles.resultCount}>
+                {filteredMaterials.length} resultados
+              </Text>
+            </View>
+
+            {filteredMaterials.length === 0 ? (
+              <EmptyMaterialsState />
+            ) : (
+              <View style={searchStyles.cardList}>
+                {filteredMaterials.map((material) => (
+                  <MaterialResultCard key={material.id} material={material} />
+                ))}
+              </View>
+            )}
+          </>
         )}
       </ScrollView>
 
