@@ -1,9 +1,12 @@
 # Documentación Técnica — Entrega 2
 
 **Proyecto:** UTNotasApp
+
 **Grupo:** 10 · DAM 2026
+
 **Integrantes:** Andrada Santiago · Barbé Dante · Diez Nicolás · Soler Tomás
-**Fecha de entrega:** 9 de junio de 2026
+
+**Fecha de entrega:** 23 de junio de 2026
 
 ---
 
@@ -28,38 +31,37 @@ b. ADMIN
 
 ### Matriz de permisos
 
-# Matriz de Permisos
 
-| Módulo       | Acción        | Administrador | Usuario | Anónimo |
+| Módulo E2     | Acción        | Administrador | Usuario | Anónimo |
 | ------------ | ------------- | ------------- | ------- | ------- |
-| Usuarios     | Crear         | ✅             | ✅       | ✅       |
-| Usuarios     | Consultar     | ✅             | ❌       | ❌       |
-| Usuarios     | Consultar uno | ✅             | ✅       | ❌       |
-| Usuarios     | Modificar     | ✅             | ✅       | ❌       |
-| Usuarios     | Eliminar      | ✅             | ✅       | ❌       |
-| Materiales   | Crear         | ✅             | ✅       | ❌       |
-| Materiales   | Consultar     | ✅             | ✅       | ✅       |
-| Materiales   | Consultar uno | ✅             | ✅       | ✅       |
-| Materiales   | Modificar     | ✅             | ✅       | ❌       |
-| Materiales   | Eliminar      | ✅             | ✅       | ❌       |
+| Usuarios     | Crear         | sí             | sí       | sí       |
+| Usuarios     | Consultar     | sí             | no       | no       |
+| Usuarios     | Consultar uno | sí             | sí       | no       |
+| Usuarios     | Modificar     | sí             | sí       | no       |
+| Usuarios     | Eliminar      | sí             | sí       | no       |
+| Materiales   | Crear         | sí             | sí       | no       |
+| Materiales   | Consultar     | sí             | sí       | sí       |
+| Materiales   | Consultar uno | sí             | sí       | sí       |
+| Materiales   | Modificar     | sí             | sí       | no       |
+| Materiales   | Eliminar      | sí             | sí       | no       |
 
 | Módulo E3      | Acción        | Administrador | Usuario | Anónimo |
 | ------------ | ------------- | ------------- | ------- | ------- |
-| Carreras     | Crear         | ✅             | ❌       | ❌       |
-| Carreras     | Consultar     | ✅             | ✅       | ✅       |
-| Carreras     | Consultar uno | ✅             | ✅       | ✅       |
-| Carreras     | Modificar     | ✅             | ❌       | ❌       |
-| Carreras     | Eliminar      | ✅             | ❌       | ❌       |
-| Materias     | Crear         | ✅             | ❌       | ❌       |
-| Materias     | Consultar     | ✅             | ✅       | ✅       |
-| Materias     | Consultar uno | ✅             | ✅       | ✅       |
-| Materias     | Modificar     | ✅             | ❌       | ❌       |
-| Materias     | Eliminar      | ✅             | ❌       | ❌       |
-| Calificación | Crear         | ✅             | ✅       | ❌       |
-| Calificación | Consultar     | ✅             | ✅       | ✅       |
-| Calificación | Consultar uno | ✅             | ✅       | ✅       |
-| Calificación | Modificar     | ✅             | ✅       | ❌       |
-| Calificación | Eliminar      | ✅             | ✅       | ❌       |
+| Carreras     | Crear         | sí             | no       | no       |
+| Carreras     | Consultar     | sí             | sí       | sí       |
+| Carreras     | Consultar uno | sí             | sí       | sí       |
+| Carreras     | Modificar     | sí             | no       | no       |
+| Carreras     | Eliminar      | sí             | no       | no       |
+| Materias     | Crear         | sí             | no       | no       |
+| Materias     | Consultar     | sí             | sí       | sí       |
+| Materias     | Consultar uno | sí             | sí       | sí       |
+| Materias     | Modificar     | sí             | no       | no       |
+| Materias     | Eliminar      | sí             | no       | no       |
+| Calificación | Crear         | sí             | sí       | no       |
+| Calificación | Consultar     | sí             | sí       | sí       |
+| Calificación | Consultar uno | sí             | sí       | sí       |
+| Calificación | Modificar     | sí             | sí       | no       |
+| Calificación | Eliminar      | sí             | sí       | no       |
 
 ---
 
