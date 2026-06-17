@@ -19,7 +19,7 @@ Grupo 10 — Andrada Santiago · Barbé Dante · Diez Nicolás · Soler Tomás
 ## Instalación
 
 ```bash
-cd UTNotasApp
+cd UTNotasApp/frontend/
 npm install
 ```
 
@@ -69,11 +69,3 @@ UTNotasApp/
 | Expo / Expo Router | SDK 51+ | Plataforma y navegación |
 | TypeScript | 5.x | Tipado estático |
 
----
-
-## Entrega 1 — Alcance
-
-- Registrar material de estudio (formulario con archivo, materia, carrera, tipo)
-- Consultar material de estudio (búsqueda por texto y filtros por tipo)
-- Ver detalle de un material
-- Modificar y eliminar material (sin RF-01.2.1 calificación, sin RF-01.2.2 reporte, sin RF-01.1.1 conversión de imagen)

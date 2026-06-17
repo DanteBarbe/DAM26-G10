@@ -25,6 +25,8 @@ backend/
 
 ```bash
 cd UTNotasApp/backend
-npm install express
+<copiar .env>
+npm install
+npx prisma generate
 npm run dev
 ```
