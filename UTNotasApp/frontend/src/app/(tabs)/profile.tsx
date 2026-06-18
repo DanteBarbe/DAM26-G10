@@ -18,6 +18,7 @@ import { useAuth } from "@/src/features/auth/AuthContext";
 import { ApiError } from "@/src/api/apiClient";
 import { colors } from "@/src/styles/Colors";
 import { useToast } from "@/src/contexts/ToastContext";
+import { MyPublications } from "@/src/features/materials/components/MyPublications";
 
 export default function ProfileScreen() {
   const { user, isAuthenticated, logout, updateProfile, deleteAccount } = useAuth();
@@ -235,67 +236,76 @@ export default function ProfileScreen() {
       <SafeAreaView style={s.safe}>
         <StatusBar style="light" />
 
-        <View style={s.hero}>
-          <View style={s.avatarCircle}>
-            <Text style={s.avatarInitials}>{initials}</Text>
-          </View>
-          <Text style={s.heroName}>{user.name} {user.surname}</Text>
-          <Text style={s.heroUsername}>@{user.username}</Text>
-          <View style={s.rolePill}>
-            <Text style={s.rolePillText}>{user.role}</Text>
-          </View>
-        </View>
-
-        <View style={s.card}>
-          <View style={s.infoRow}>
-            <Feather name="mail" size={16} color={colors.primary} />
-            <View style={s.infoTextWrap}>
-              <Text style={s.infoLabel}>Email</Text>
-              <Text style={s.infoValue}>{user.email}</Text>
+        <ScrollView
+          contentContainerStyle={s.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={s.hero}>
+            <View style={s.avatarCircle}>
+              <Text style={s.avatarInitials}>{initials}</Text>
+            </View>
+            <Text style={s.heroName}>{user.name} {user.surname}</Text>
+            <Text style={s.heroUsername}>@{user.username}</Text>
+            <View style={s.rolePill}>
+              <Text style={s.rolePillText}>{user.role}</Text>
             </View>
           </View>
 
-          <View style={s.divider} />
+          <View style={s.card}>
+            <View style={s.infoRow}>
+              <Feather name="mail" size={16} color={colors.primary} />
+              <View style={s.infoTextWrap}>
+                <Text style={s.infoLabel}>Email</Text>
+                <Text style={s.infoValue}>{user.email}</Text>
+              </View>
+            </View>
 
-          <View style={s.infoRow}>
-            <Feather name="user" size={16} color={colors.primary} />
-            <View style={s.infoTextWrap}>
-              <Text style={s.infoLabel}>Usuario</Text>
-              <Text style={s.infoValue}>@{user.username}</Text>
+            <View style={s.divider} />
+
+            <View style={s.infoRow}>
+              <Feather name="user" size={16} color={colors.primary} />
+              <View style={s.infoTextWrap}>
+                <Text style={s.infoLabel}>Usuario</Text>
+                <Text style={s.infoValue}>@{user.username}</Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style={s.actions}>
-          <Pressable
-            accessibilityRole="button"
-            onPress={startEditing}
-            style={({ pressed }) => [s.editBtn, pressed && s.pressed]}
-          >
-            <Feather name="edit-2" size={16} color="#ffffff" />
-            <Text style={s.editBtnText}>Editar perfil</Text>
-          </Pressable>
+          <View style={s.actions}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={startEditing}
+              style={({ pressed }) => [s.editBtn, pressed && s.pressed]}
+            >
+              <Feather name="edit-2" size={16} color="#ffffff" />
+              <Text style={s.editBtnText}>Editar perfil</Text>
+            </Pressable>
 
-          <Pressable
-            accessibilityRole="button"
-            onPress={handleLogout}
-            style={({ pressed }) => [s.logoutBtn, pressed && s.pressed]}
-          >
-            <Feather name="log-out" size={16} color="#c0392b" />
-            <Text style={s.logoutText}>Cerrar sesión</Text>
-          </Pressable>
-        </View>
+            <Pressable
+              accessibilityRole="button"
+              onPress={handleLogout}
+              style={({ pressed }) => [s.logoutBtn, pressed && s.pressed]}
+            >
+              <Feather name="log-out" size={16} color="#c0392b" />
+              <Text style={s.logoutText}>Cerrar sesión</Text>
+            </Pressable>
+          </View>
 
-        <View style={s.bottomAction}>
-          <Pressable
-            accessibilityRole="button"
-            onPress={openDeleteModal}
-            style={({ pressed }) => [s.deleteBtn, pressed && s.pressed]}
-          >
-            <Feather name="trash-2" size={16} color="#c0392b" />
-            <Text style={s.deleteText}>Eliminar cuenta</Text>
-          </Pressable>
-        </View>
+          <View style={s.publicationsWrap}>
+            <MyPublications />
+          </View>
+
+          <View style={s.bottomAction}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={openDeleteModal}
+              style={({ pressed }) => [s.deleteBtn, pressed && s.pressed]}
+            >
+              <Feather name="trash-2" size={16} color="#c0392b" />
+              <Text style={s.deleteText}>Eliminar cuenta</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
 
         <Modal
           visible={deleteModalVisible}
@@ -452,9 +462,16 @@ const s = {
     marginTop: 16,
     gap: 10,
   },
+  scrollContent: {
+    paddingBottom: 24,
+  },
+  publicationsWrap: {
+    marginHorizontal: 20,
+    marginTop: 8,
+  },
   bottomAction: {
     marginHorizontal: 20,
-    marginTop: "auto" as const,
+    marginTop: 16,
     paddingTop: 16,
     paddingBottom: 12,
   },
