@@ -56,6 +56,7 @@ export type MaterialListFilters = {
   tipo?: string;
   comision?: string;
   anioCursada?: string;
+  userId?: number;
   limit?: number;
   cursor?: number;
 };
@@ -66,6 +67,7 @@ export const fetchMaterials = async (filters: MaterialListFilters = {}): Promise
   if (filters.tipo) params.set('tipo', filters.tipo);
   if (filters.comision) params.set('comision', filters.comision);
   if (filters.anioCursada) params.set('anioCursada', filters.anioCursada);
+  if (filters.userId !== undefined) params.set('userId', String(filters.userId));
   params.set('limit', String(filters.limit ?? 40));
   if (filters.cursor) params.set('cursor', String(filters.cursor));
 
