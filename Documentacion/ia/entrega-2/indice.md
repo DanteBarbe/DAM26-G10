@@ -13,6 +13,7 @@ Este directorio contiene las conversaciones con asistentes de IA utilizadas dura
 | 1 | [editar_perfil.md](editar_perfil.md) | Implementacion de la feature de edicion de perfil: formulario con nombre, apellido y usuario; email bloqueado; confirmacion con contrasena | Claude | `AuthContext.tsx`, `profile.tsx`, `ProfileScreen.tsx` |
 | 2 | [eliminar_cuenta.md](eliminar_cuenta.md) | Funcionalidad de eliminar cuenta: modal de confirmacion con campo de contrasena, toggle de visibilidad y boton posicionado en la parte inferior | Claude | `AuthContext.tsx`, `profile.tsx` |
 | 3 | [bugs_y_backend.md](bugs_y_backend.md) | Resolucion de bugs y regresiones: error useAuth, regresion en login, error registro, setup del backend, careerId opcional en Prisma, redireccion post-login, KeyboardAvoidingView, estilos del estado sin sesion | Claude | `_layout.tsx`, `schema.prisma`, `navigateAfterAuth.ts`, `ProfileScreen.tsx`, `SignupScreen.tsx` |
+| 4 | [auth_perfil_publicaciones.md](auth_perfil_publicaciones.md) | Reestructura del repo (front/back/Documentacion); frontend de login y registro en dos pasos; pantalla "Mi perfil" con "Mis Publicaciones"; merge contra `main` (backend ya integrado); fix para que "Mis Publicaciones" lea del backend via `useGetMaterials` | Claude | `UTNotasApp/{frontend,backend}/`, `Documentacion/`, `features/auth/*`, `(tabs)/profile.tsx`, `MyPublications.tsx`, `materialService.ts` |
 
 ---
 
@@ -45,3 +46,9 @@ Este directorio contiene las conversaciones con asistentes de IA utilizadas dura
 | 15 | Fix de import faltante `KeyboardAvoidingView` | Claude |
 | 16 | Verificacion de ownership en backend: `updateMaterial` y `deleteMaterial` | Claude |
 | 17 | Verificacion de ownership en frontend: `isOwner` en `useMaterial`, botones condicionales en `MaterialDetailScreen` | Claude |
+| 18 | Reestructura del repo: separar `frontend/` y `backend/` dentro de `UTNotasApp/`, unificar docs en `Documentacion/` | Claude |
+| 19 | Frontend de login y registro en React Native; registro en dos pasos (carrera, luego formulario) | Claude |
+| 20 | Flujo de sesion: home publico, "Mi perfil" en el home, intercepcion de "Subir" con toast cuando no hay sesion | Claude |
+| 21 | Pantalla "Mi perfil" con tarjeta de usuario y seccion embebida "Mis Publicaciones" | Claude |
+| 22 | Resolucion de conflicto con `main` (backend ya integrado): eliminacion del `AuthContext` en memoria y migracion al de main | Claude |
+| 23 | `MyPublications` conectado al backend via `useGetMaterials({ userId })`; filtros del endpoint extendidos con `userId` | Claude |
