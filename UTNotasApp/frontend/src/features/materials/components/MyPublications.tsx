@@ -1,19 +1,14 @@
 import { Feather } from "@expo/vector-icons";
-import { router, useFocusEffect } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { router } from "expo-router";
+import { useMemo, useState } from "react";
+import { ActivityIndicator, Pressable, Text, TextInput, View } from "react-native";
 
+import { useAuth } from "@/src/features/auth/AuthContext";
 import { MaterialResultCard } from "@/src/features/materials/components/MaterialResultCard";
-import { mapCreatedMaterialToStudyMaterial } from "@/src/features/materials/data/mockMaterials";
-import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
-import { getCreatedMaterials } from "@/src/features/materials/utils/createdMaterialsStore";
+import { useGetMaterials } from "@/src/features/materials/hooks/useMaterial";
 import { colors } from "@/src/styles/Colors";
 import { normalizeText } from "@/src/utils/format";
 import { myPublicationsStyles as styles } from "./styles/MyPublications.styles";
-
-// publicaciones del usuario = materiales que subio (store local de creados).
-const getMyMaterials = (): StudyMaterial[] =>
-	getCreatedMaterials().map(mapCreatedMaterialToStudyMaterial);
 
 function StatCard({
 	icon,
@@ -39,19 +34,18 @@ function StatCard({
  * seccion "Mis Publicaciones" embebida en el perfil.
  *
  * responsabilidades:
- * - mostrar estadisticas rapidas, buscador local y la lista de materiales propios.
- * - estado vacio (sin materiales o sin resultados de busqueda).
+ * - traer del backend los materiales del usuario autenticado (GET /api/materials?userId=...)
+ *   via useGetMaterials (react-query: cache, refetch, invalidacion al crear/editar/borrar).
+ * - mostrar estadisticas rapidas, buscador local por titulo y la lista de resultados.
+ * - estados de carga / error / vacio.
  */
 export function MyPublications() {
-	const [materials, setMaterials] = useState<StudyMaterial[]>(getMyMaterials);
-	const [query, setQuery] = useState("");
-
-	// refresca al volver a la pantalla (por si subio algo nuevo).
-	useFocusEffect(
-		useCallback(() => {
-			setMaterials(getMyMaterials());
-		}, []),
+	const { user } = useAuth();
+	const userId = user?.id;
+	const { materials, isLoading, isError, refetch } = useGetMaterials(
+		userId !== undefined ? { userId } : {},
 	);
+	const [query, setQuery] = useState("");
 
 	const filtered = useMemo(() => {
 		const normalized = normalizeText(query);
@@ -101,7 +95,26 @@ export function MyPublications() {
 				) : null}
 			</View>
 
-			{filtered.length === 0 ? (
+			{isLoading ? (
+				<View style={styles.empty}>
+					<ActivityIndicator color={colors.primary} />
+					<Text style={styles.emptyText}>Cargando tus publicaciones...</Text>
+				</View>
+			) : isError ? (
+				<View style={styles.empty}>
+					<Feather name="alert-circle" size={28} color={colors.error} />
+					<Text style={styles.emptyTitle}>No se pudieron cargar tus publicaciones</Text>
+					<Text style={styles.emptyText}>Verificá tu conexión e intentá de nuevo.</Text>
+					<Pressable
+						accessibilityRole="button"
+						onPress={() => refetch()}
+						style={({ pressed }) => [styles.emptyButton, pressed && styles.pressed]}
+					>
+						<Feather name="refresh-cw" size={18} color={colors.surface} />
+						<Text style={styles.emptyButtonText}>Reintentar</Text>
+					</Pressable>
+				</View>
+			) : filtered.length === 0 ? (
 				<View style={styles.empty}>
 					<Feather
 						name={isSearching ? "search" : "inbox"}
