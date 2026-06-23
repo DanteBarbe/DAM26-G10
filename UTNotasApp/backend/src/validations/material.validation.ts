@@ -11,7 +11,7 @@ import { TipoMaterial } from '@prisma/client';
  */
 
 const materialBodyCore = {
-	titulo: z.string().trim().min(1, 'El título es un campo requerido').max(200, 'El título no puede exceder los 200 caracteres'),
+	titulo: z.string().trim().min(1, 'El título es un campo requerido').max(100, 'El título no puede exceder los 100 caracteres'),
 	tipo: z.nativeEnum(TipoMaterial),
 	archivo: z.string().min(1, 'El archivo es un campo requerido'),
 	descripcion: z.string().max(200, 'La descripción no puede exceder los 200 caracteres').nullable().optional(),

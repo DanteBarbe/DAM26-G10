@@ -10,8 +10,8 @@
 import { z } from 'zod';
 
 const userCoreFields = {
-	name: z.string().trim().min(1, 'El nombre es requerido').max(50, 'El nombre no puede exceder 50 caracteres'),
-	surname: z.string().trim().min(1, 'El apellido es requerido').max(50, 'El apellido no puede exceder 50 caracteres'),
+	name: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'El nombre no puede exceder 50 caracteres'),
+	surname: z.string().trim().min(2, 'El apellido debe tener al menos 2 caracteres').max(50, 'El apellido no puede exceder 50 caracteres'),
 	email: z.string().email('El email no tiene un formato válido').toLowerCase().trim(),
 	// careerId es Int? en el schema de prisma — opcional hasta E3
 	careerId: z.coerce.number().int().positive('El ID de carrera debe ser un número positivo').optional(),

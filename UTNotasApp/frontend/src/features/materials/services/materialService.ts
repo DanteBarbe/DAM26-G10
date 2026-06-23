@@ -56,6 +56,7 @@ export type MaterialListFilters = {
   tipo?: string;
   comision?: string;
   anioCursada?: string;
+  userId?: number;
   limit?: number;
   cursor?: number;
 };
@@ -66,6 +67,7 @@ export const fetchMaterials = async (filters: MaterialListFilters = {}): Promise
   if (filters.tipo) params.set('tipo', filters.tipo);
   if (filters.comision) params.set('comision', filters.comision);
   if (filters.anioCursada) params.set('anioCursada', filters.anioCursada);
+  if (filters.userId !== undefined) params.set('userId', String(filters.userId));
   params.set('limit', String(filters.limit ?? 40));
   if (filters.cursor) params.set('cursor', String(filters.cursor));
 
@@ -157,9 +159,9 @@ export const updateMaterial = async (id: number, form: MaterialFormData): Promis
     numeroParcial: form.parcial ? Number(form.parcial) : null,
   };
   if (archivo) body.archivo = archivo;
-  // solo incluir FKs si tienen valor — enviar null explícito en PATCH causa P2003 en Prisma
-  if (form.materiaId !== undefined) body.materiaId = form.materiaId;
-  if (form.carreraId !== undefined) body.carreraId = form.carreraId;
+  // materiaId/carreraId NO se envian: las tablas materia/carrera estan vacias en E2
+  // y el backend tambien las ignora al crear. Enviarlas provoca P2003 (FK inexistente)
+  // y la edicion fallaba en silencio. Se conectaran en E3 cuando existan esas tablas.
 
   try {
     const res = await apiFetch<{ data: ApiMaterial; message: string }>(`/api/materials/${id}`, {

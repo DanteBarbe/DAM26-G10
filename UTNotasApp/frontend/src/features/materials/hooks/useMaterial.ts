@@ -109,7 +109,7 @@ export const useUpdateMaterial = () => {
 			router.replace(`/material/${material.id}`);
 		},
 		onError: (err) => {
-			console.error("[CRITICAL_UI_ERROR] fallo critico al editar material:", err);
+			showToast(err.message ?? "No se pudo guardar el material", "error", 3500); console.error("[CRITICAL_UI_ERROR] fallo critico al editar material:", err);
 		},
 	});
 

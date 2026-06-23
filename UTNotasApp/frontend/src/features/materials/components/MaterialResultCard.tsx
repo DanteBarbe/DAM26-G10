@@ -26,9 +26,6 @@ export function MaterialResultCard({ material }: { material: StudyMaterial }) {
         <Text style={[MaterialResultCardStyles.badge, MaterialResultCardStyles.badgeType]}>
           {getTypeLabel(material.tipo)}
         </Text>
-        <Text style={[MaterialResultCardStyles.badge, MaterialResultCardStyles.badgeCareer]}>
-          {material.materia}
-        </Text>
       </View>
 
       <View style={MaterialResultCardStyles.cardFooter}>
