@@ -18,10 +18,22 @@ import { materialRoutes } from './routes/material.routes';
 
 const app = express();
 
+// Lista de orígenes permitidos (tu esquema de la app y local si pruebas en web)
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:8081'];
+
 app.use(cors({
-	origin: process.env.FRONTEND_URL || 'http://localhost:8081',
-	credentials: true, // necesario para que las cookies httpOnly viajen en requests cross-origin
+  origin: (origin, callback) => {
+    // 1. !origin permite las peticiones del APK (ya que llega como undefined)
+    // 2. allowedOrigins.includes(origin) permite tus entornos de desarrollo web
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Bloqueado por políticas de CORS'));
+    }
+  },
+  credentials: true // Necesario si manejas cookies o sesiones
 }));
+
 
 app.use(express.json());
 app.use(cookieParser());
