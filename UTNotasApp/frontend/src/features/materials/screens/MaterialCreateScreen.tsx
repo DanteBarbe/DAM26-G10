@@ -9,7 +9,7 @@
  * - renderizar el formulario sin logica de negocio.
  */
 import { Feather } from "@expo/vector-icons";
-import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useMemo } from "react";
 import {
@@ -28,11 +28,9 @@ import { OptionSheet } from "@/src/components/OptionSheet";
 import { SelectButton } from "@/src/components/SelectButton";
 import { useToast } from "@/src/contexts/ToastContext";
 import { FileUploadField } from "@/src/features/materials/components/FileUploadField";
-import { SubjectSearch } from "@/src/features/materials/components/SubjectSearch";
 import {
 	materialTypes,
 	parcialOptions,
-	subjects,
 } from "@/src/features/materials/data/materialOptions";
 import {
 	useCreateMaterial,
@@ -48,13 +46,16 @@ import {
 	validateForm,
 } from "@/src/features/materials/utils/materialFormHelpers";
 
-export default function MaterialCreateScreen() {
-	const { editId } = useLocalSearchParams<{ editId?: string }>();
-	const parsedEditId = Number(editId);
-	const editableMaterialId = Number.isFinite(parsedEditId)
-		? parsedEditId
-		: undefined;
-	const isEditing = typeof editableMaterialId === "number";
+export default function MaterialCreateScreen({
+	editId,
+}: { editId?: number } = {}) {
+	// editId llega por prop desde la ruta de edicion (/material/edit/[id]).
+	// La pestaña "Subir" renderiza esta pantalla sin editId -> siempre modo creacion.
+	const editableMaterialId =
+		typeof editId === "number" && Number.isFinite(editId) && editId > 0
+			? editId
+			: undefined;
+	const isEditing = editableMaterialId !== undefined;
 	const {
 		material: editableMaterial,
 		isLoading: isLoadingEditableMaterial,
@@ -120,6 +121,8 @@ export default function MaterialCreateScreen() {
 
 		submitMaterial(values, {
 			onSuccess: () => {
+				// limpia el formulario para que la proxima vez "Subir" arranque vacio.
+				handlers.resetForm();
 				showToast("Material de estudio creado exitosamente", "success", 3500);
 			},
 		});
@@ -203,25 +206,6 @@ export default function MaterialCreateScreen() {
 							/>
 						</FormField>
 
-						<FormField label="Materia*" error={errors.forField("materiaId")}>
-							<SubjectSearch
-								value={values.materia}
-								subjects={subjects}
-								selectedSubject={options.selectedSubject}
-								onSelect={handlers.handleSelectSubject}
-							/>
-						</FormField>
-
-						{values.materiaId ? (
-							<FormField label="Carrera*" error={errors.forField("carreraId")}>
-								<SelectButton
-									icon="book-open"
-									label={values.carrera || "Seleccione una carrera"}
-									onPress={() => handlers.setActiveSelector("career")}
-								/>
-							</FormField>
-						) : null}
-
 						<View style={styles.row}>
 							<FormField
 								label="Tipo de Material*"
@@ -255,23 +239,17 @@ export default function MaterialCreateScreen() {
 						</View>
 
 						<FormField label="Comision (opcional)" error={errors.forField("comision")}>
-							<View style={styles.commissionRow}>
-								<View style={styles.commissionPrefix}>
-									<Text style={styles.commissionPrefixText}>
-										{uiState.commissionPrefix || "--"}
-									</Text>
-								</View>
-								<TextInput
-									value={values.comision.replace(uiState.commissionPrefix, "")}
-									onChangeText={handlers.handleCommissionDigit}
-									editable={Boolean(uiState.commissionPrefix)}
-									placeholder="2"
-									placeholderTextColor="#8a94a6"
-									keyboardType="number-pad"
-									maxLength={1}
-									style={[styles.input, styles.commissionInput]}
-								/>
-							</View>
+							<TextInput
+								value={values.comision}
+								onChangeText={(value) =>
+									handlers.updateForm("comision", value.toUpperCase())
+								}
+								placeholder="Ej: K4061"
+								placeholderTextColor="#8a94a6"
+								autoCapitalize="characters"
+								maxLength={10}
+								style={styles.input}
+							/>
 						</FormField>
 
 						{uiState.showParcialSelect ? (
@@ -324,19 +302,6 @@ export default function MaterialCreateScreen() {
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
-
-			<OptionSheet
-				visible={uiState.activeSelector === "career"}
-				title="Seleccione una carrera"
-				options={options.availableCareers.map((c) => ({
-					label: c.nombre,
-					value: c.id,
-				}))}
-				emptyLabel="No hay carreras disponibles para esa materia."
-				selectedValue={values.carreraId}
-				onClose={() => handlers.setActiveSelector(null)}
-				onSelect={handlers.handleSelectCareerId}
-			/>
 
 			<OptionSheet
 				visible={uiState.activeSelector === "type"}

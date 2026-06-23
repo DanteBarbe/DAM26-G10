@@ -76,6 +76,12 @@ export default function TabsLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="material/edit/[id]"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

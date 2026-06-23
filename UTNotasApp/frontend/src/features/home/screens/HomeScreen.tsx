@@ -43,7 +43,7 @@ export default function HomeScreen() {
             onChangeText={setQuery}
             onSubmitEditing={handleSearch}
             returnKeyType="search"
-            placeholder="Materia, título o carrera..."
+            placeholder="Buscá por título..."
             placeholderTextColor="#9a9284"
             style={styles.searchInput}
           />

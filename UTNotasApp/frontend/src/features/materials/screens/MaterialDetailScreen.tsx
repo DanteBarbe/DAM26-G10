@@ -75,8 +75,8 @@ export default function MaterialDetailScreen() {
 									disabled={isDeleting}
 									onPress={() =>
 										router.push({
-											pathname: "/create",
-											params: { editId: String(material.id) },
+											pathname: "/material/edit/[id]",
+											params: { id: String(material.id) },
 										})
 									}
 								/>
@@ -96,9 +96,6 @@ export default function MaterialDetailScreen() {
 						<Text style={[detailStyles.badge, detailStyles.badgeType]}>
 							{getTypeLabel(material.tipo)}
 						</Text>
-						<Text style={[detailStyles.badge, detailStyles.badgeCareer]}>
-							{material.materia}
-						</Text>
 						{material.numeroParcial ? (
 							<Text style={[detailStyles.badge, detailStyles.badgeNeutral]}>
 								Parcial {material.numeroParcial}
@@ -107,11 +104,6 @@ export default function MaterialDetailScreen() {
 					</View>
 
 					<View style={detailStyles.metaGrid}>
-						<MaterialInfoItem
-							icon="book-open"
-							label="Carrera"
-							value={material.carrera}
-						/>
 						<MaterialInfoItem
 							icon="users"
 							label="Comisión"

@@ -55,11 +55,6 @@ export function MyPublications() {
 		);
 	}, [materials, query]);
 
-	const subjectsCount = useMemo(
-		() => new Set(materials.map((material) => material.materia)).size,
-		[materials],
-	);
-
 	const isSearching = query.trim().length > 0;
 
 	return (
@@ -71,7 +66,6 @@ export function MyPublications() {
 
 			<View style={styles.statsRow}>
 				<StatCard icon="file-text" value={materials.length} label="Publicaciones" />
-				<StatCard icon="book" value={subjectsCount} label="Materias" />
 			</View>
 
 			<View style={styles.searchBar}>

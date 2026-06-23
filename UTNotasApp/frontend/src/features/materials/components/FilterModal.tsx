@@ -1,12 +1,10 @@
-import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
 import { IconButton } from "@/src/components/IconButton";
 import { filterModalStyles as styles } from "@/src/features/materials/components/styles/FilterModal.styles";
-import { careers, materialTypes, subjects } from "@/src/features/materials/data/materialOptions";
+import { materialTypes } from "@/src/features/materials/data/materialOptions";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
-import { normalizeText } from "@/src/utils/format";
 
 export type ActiveFilters = {
   materiaId?: number;
@@ -30,19 +28,13 @@ export function FilterModal({
   onApply: (filters: ActiveFilters) => void;
 }) {
   const [pending, setPending] = useState<ActiveFilters>(initialFilters);
-  const [subjectQuery, setSubjectQuery] = useState("");
 
   useEffect(() => {
     if (visible) {
       setPending(initialFilters);
-      setSubjectQuery("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
-
-  const filteredSubjects = subjects.filter((s) =>
-    normalizeText(s.nombre).includes(normalizeText(subjectQuery)),
-  );
 
   const handleApply = () => {
     onApply(pending);
@@ -90,75 +82,6 @@ export function FilterModal({
                 );
               })}
             </View>
-
-            <Text style={styles.sectionLabel}>Carrera</Text>
-            <View style={styles.typeGrid}>
-              {careers.map((career) => {
-                const active = pending.carreraId === career.id;
-                return (
-                  <Pressable
-                    key={career.id}
-                    accessibilityRole="button"
-                    onPress={() =>
-                      setPending((p) => ({
-                        ...p,
-                        carreraId: active ? undefined : career.id,
-                        carrera: active ? undefined : career.nombre,
-                      }))
-                    }
-                    style={[styles.typeChip, active && styles.typeChipActive]}
-                  >
-                    <Text style={[styles.typeChipText, active && styles.typeChipTextActive]}>
-                      {career.nombre}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-
-            <Text style={styles.sectionLabel}>Materia</Text>
-            <View style={styles.subjectSearch}>
-              <Feather name="search" size={16} color="#746c61" />
-              <TextInput
-                value={subjectQuery}
-                onChangeText={setSubjectQuery}
-                placeholder="Buscar materia..."
-                placeholderTextColor="#9a9284"
-                style={styles.subjectSearchInput}
-              />
-              {subjectQuery ? (
-                <Pressable accessibilityRole="button" onPress={() => setSubjectQuery("")}>
-                  <Feather name="x" size={16} color="#746c61" />
-                </Pressable>
-              ) : null}
-            </View>
-            <ScrollView style={styles.subjectList} nestedScrollEnabled={true}>
-              {filteredSubjects.map((subject) => {
-                const selected = pending.materiaId === subject.id;
-                return (
-                  <Pressable
-                    key={subject.id}
-                    accessibilityRole="button"
-                    onPress={() =>
-                      setPending((p) => ({
-                        ...p,
-                        materiaId: selected ? undefined : subject.id,
-                        materia: selected ? undefined : subject.nombre,
-                      }))
-                    }
-                    style={[styles.subjectItem, selected && styles.subjectItemSelected]}
-                  >
-                    <Text
-                      style={[styles.subjectText, selected && styles.subjectTextSelected]}
-                      numberOfLines={2}
-                    >
-                      {subject.nombre}
-                    </Text>
-                    {selected ? <Feather name="check" size={16} color="#1f63b5" /> : null}
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
 
             <View style={styles.row}>
               <View style={styles.rowItem}>
