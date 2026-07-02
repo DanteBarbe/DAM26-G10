@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import * as materialController from '../controllers/material.controller';
 import { validate } from '../middlewares/validation.middleware';
-import { createMaterialSchema, updateMaterialSchema, idParamSchema } from '../validations/material.validation';
+import { createMaterialSchema, updateMaterialSchema } from '../validations/material.validation';
+import { idParamSchema } from '../validations/shared.validation';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
 
 /**

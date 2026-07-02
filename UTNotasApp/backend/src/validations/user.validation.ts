@@ -4,7 +4,7 @@
  * responsabilidades:
  * - valida estructura y tipos de body/params antes de llegar al controller.
  * - role nunca se acepta en ningún schema — no es modificable por el usuario.
- * - careerId es opcional en E2 (Int? en el schema de prisma).
+ * - careerId es obligatorio desde E3 (Int en el schema de prisma, FK a Carrera).
  */
 
 import { z } from 'zod';
@@ -13,8 +13,7 @@ const userCoreFields = {
 	name: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'El nombre no puede exceder 50 caracteres'),
 	surname: z.string().trim().min(2, 'El apellido debe tener al menos 2 caracteres').max(50, 'El apellido no puede exceder 50 caracteres'),
 	email: z.string().email('El email no tiene un formato válido').toLowerCase().trim(),
-	// careerId es Int? en el schema de prisma — opcional hasta E3
-	careerId: z.coerce.number().int().positive('El ID de carrera debe ser un número positivo').optional(),
+	careerId: z.coerce.number().int().positive('El ID de carrera debe ser un número positivo'),
 	password: z.string().trim()
 		.min(8, 'La contraseña debe tener al menos 8 caracteres')
 		.regex(/[A-Z]/, 'La contraseña debe contener al menos una mayúscula')
@@ -47,8 +46,4 @@ export const updateUserSchema = z.object({
 		username: userCoreFields.username,
 		profilePicture: userCoreFields.profilePicture,
 	}).partial().strict(),
-});
-
-export const idParamSchema = z.object({
-	params: z.object({ id: z.coerce.number().int().positive() }),
 });
