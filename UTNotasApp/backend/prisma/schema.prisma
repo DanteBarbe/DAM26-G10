@@ -15,7 +15,7 @@ model User {
   password       String
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
-  careerId       Int?
+  careerId       Int
   role           Role           @default(USER)
   profilePicture String?        @db.VarChar(1000)
   points         Int            @default(0)
@@ -24,7 +24,7 @@ model User {
   materiales     Material[]
   pointsHistory  Punto[]
   reportes       Reporte[]
-  career         Carrera?        @relation(fields: [careerId], references: [id])
+  career         Carrera         @relation(fields: [careerId], references: [id])
 
   @@map("users")
 }
@@ -74,7 +74,7 @@ model Material {
   tipo             TipoMaterial
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
-  materiaId        Int?
+  materiaId        Int
   carreraId        Int?
   userId           Int
   downvotes        Int            @default(0)
@@ -82,7 +82,7 @@ model Material {
   favoritos        Favorito[]
   materialVotes    Calificacion[]
   carrera          Carrera?       @relation(fields: [carreraId], references: [id])
-  materia          Materia?        @relation(fields: [materiaId], references: [id])
+  materia          Materia        @relation(fields: [materiaId], references: [id])
   user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   reportes         Reporte[]
 
