@@ -58,16 +58,8 @@ router.delete('/:id',
 	carreraController.deleteCarrera,
 );
 
-// Requiere token — solo ADMIN puede asignar una materia a la carrera
+// Requiere token — solo ADMIN puede asignar una materia a la carrera o actualizar el año de la relacion.
 router.post('/:id/materias',
-	authenticate,
-	authorize('ADMIN'),
-	validate(upsertCarreraMateriaSchema),
-	carreraController.upsertCarreraMateria,
-);
-
-// Requiere token — solo ADMIN puede actualizar el anio de una materia ya asignada
-router.patch('/:id/materias',
 	authenticate,
 	authorize('ADMIN'),
 	validate(upsertCarreraMateriaSchema),
