@@ -7,12 +7,12 @@ import prisma from '../config/prisma';
 import { Material, TipoMaterial, Prisma } from '@prisma/client';
 
 /**
- * lógica de negocio para la entidad material.
+ * logica de negocio para la entidad material.
  *
  * responsabilidades:
  * - ejecuta operaciones CRUD sobre Material usando Prisma.
  * - aplica ownership check antes de modificar o eliminar.
- * - delega la paginación por cursor a las utilidades de pagination.util.
+ * - delega la paginacion por cursor a las utilidades de pagination.util.
  * - lanza AppError para todos los errores operacionales.
  */
 
@@ -35,7 +35,7 @@ const mapToWithUser = (material: any): MaterialWithUser => {
 export async function getMaterials(filters: Record<string, any>, take: number, cursor?: number): Promise<PaginatedResult<MaterialWithUser>> {
 	const { query, limit: _l, cursor: _c, ...directFilters } = filters;
 
-	// el frontend usa 'anioCursada' (sin tilde), el campo Prisma es 'añoCursada'
+	// el frontend usa 'anioCursada' (sin tilde), el campo Prisma es 'añoCursada' (nombre real de columna, no se puede cambiar)
 	const keyMap: Record<string, string> = { anioCursada: 'añoCursada' };
 
 	const processedFilters: Record<string, any> = {};
@@ -49,7 +49,7 @@ export async function getMaterials(filters: Record<string, any>, take: number, c
 
 	const directFilterArray = Object.keys(processedFilters).map(key => ({ [key]: processedFilters[key] }));
 
-	// búsqueda textual: cubre titulo, descripcion, comision y valores del enum TipoMaterial que coincidan parcialmente
+	// busqueda textual: cubre titulo, descripcion, comision y valores del enum TipoMaterial que coincidan parcialmente
 	const textFilter = query
 		? (() => {
 			const q = String(query).toLowerCase();
@@ -84,7 +84,7 @@ export async function getMaterialById(id: number): Promise<MaterialWithUser> {
 }
 
 export async function createMaterial(data: CreateMaterialRequest, ctx: UserContext): Promise<Material> {
-	// userId inyectado desde ctx — el cliente no puede falsificar la autoría
+	// userId inyectado desde ctx — el cliente no puede falsificar la autoria
 	try {
 		return await prisma.material.create({
 			data: {
@@ -95,13 +95,13 @@ export async function createMaterial(data: CreateMaterialRequest, ctx: UserConte
 				comision: data.comision ?? null,
 				añoCursada: data.añoCursada ?? null,
 				numeroParcial: data.numeroParcial ?? null,
-				// materiaId/carreraId ignorados hasta Entrega 3 (tablas vacías)
+				// materiaId/carreraId ignorados hasta Entrega 3 (tablas vacias)
 				userId: ctx.id,
 				cantidadReportes: 0,
 			},
 		});
 	} catch (e: any) {
-		// P2003: FK inválida — materiaId, carreraId o userId no referencian registros existentes
+		// P2003: FK invalida — materiaId, carreraId o userId no referencian registros existentes
 		if (e.code === 'P2003') throw new AppError('Una de las referencias (materia, carrera) no existe.', 409);
 		throw e;
 	}
@@ -112,7 +112,7 @@ export async function updateMaterial(id: number, data: UpdateMaterialRequest, ct
 	if (!existing) throw new AppError('Material no encontrado.', 404);
 
 	if (existing.userId !== ctx.id && ctx.role !== 'ADMIN') {
-		throw new AppError('No tenés permiso para modificar este material.', 403);
+		throw new AppError('No tenes permiso para modificar este material.', 403);
 	}
 
 	// whitelisting estricto: upvotes, downvotes y cantidadReportes son read-only en E2
@@ -134,9 +134,9 @@ export async function updateMaterial(id: number, data: UpdateMaterialRequest, ct
 			},
 		});
 	} catch (e: any) {
-		// P2025: race condition entre el findUnique y el update (eliminación concurrente)
+		// P2025: race condition entre el findUnique y el update (eliminacion concurrente)
 		if (e.code === 'P2025') throw new AppError('Material no encontrado.', 404);
-		// P2003: FK inválida — materiaId o carreraId no referencian registros existentes
+		// P2003: FK invalida — materiaId o carreraId no referencian registros existentes
 		if (e.code === 'P2003') throw new AppError('Una de las referencias (materia, carrera) no existe.', 409);
 		throw e;
 	}
@@ -157,6 +157,6 @@ export async function deleteMaterial(id: number, ctx: UserContext): Promise<void
 	if (result.count === 0) {
 		const exists = await prisma.material.findUnique({ where: { id }, select: { id: true } });
 		if (!exists) throw new AppError('Material no encontrado.', 404);
-		throw new AppError('No tenés permiso para eliminar este material.', 403);
+		throw new AppError('No tenes permiso para eliminar este material.', 403);
 	}
 }

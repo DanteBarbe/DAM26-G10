@@ -10,18 +10,34 @@
 import { z } from 'zod';
 
 const userCoreFields = {
-	name: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'El nombre no puede exceder 50 caracteres'),
-	surname: z.string().trim().min(2, 'El apellido debe tener al menos 2 caracteres').max(50, 'El apellido no puede exceder 50 caracteres'),
-	email: z.string().email('El email no tiene un formato válido').toLowerCase().trim(),
-	careerId: z.coerce.number().int().positive('El ID de carrera debe ser un número positivo'),
+	name: z.string().trim()
+		.min(2, 'El nombre debe tener al menos 2 caracteres')
+		.max(50, 'El nombre no puede exceder 50 caracteres'),
+
+	surname: z.string().trim()
+		.min(2, 'El apellido debe tener al menos 2 caracteres')
+		.max(50, 'El apellido no puede exceder 50 caracteres'),
+
+	email: z.string()
+		.email('El email no tiene un formato válido')
+		.toLowerCase().trim(),
+
+	careerId: z.coerce.number()
+		.int()
+		.positive('El ID de carrera debe ser un número positivo'),
+
 	password: z.string().trim()
 		.min(8, 'La contraseña debe tener al menos 8 caracteres')
 		.regex(/[A-Z]/, 'La contraseña debe contener al menos una mayúscula')
 		.regex(/[0-9]/, 'La contraseña debe contener al menos un número'),
+
 	username: z.string().trim()
 		.min(3, 'El nombre de usuario debe tener al menos 3 caracteres')
 		.max(50, 'El nombre de usuario no puede exceder 50 caracteres'),
-	profilePicture: z.string().url('La URL de la foto de perfil no es válida').nullable().optional(),
+
+	profilePicture: z.string()
+		.url('La URL de la foto de perfil no es válida')
+		.nullable().optional(),
 };
 
 export const registerUserSchema = z.object({
