@@ -11,8 +11,12 @@ import { z } from 'zod';
 
 export const loginSchema = z.object({
 	body: z.object({
-		email: z.string().email('El email no tiene un formato válido'),
-		password: z.string().min(1, 'La contraseña es requerida'),
+		email: z.string()
+			.email('El email no tiene un formato válido'),
+
+		password: z.string()
+			.min(1, 'La contraseña es requerida'),
+
 		// opcional aquí: la obligatoriedad la maneja validateRecaptcha
 		captchaToken: z.string().optional(),
 	}).strict(),
@@ -20,6 +24,7 @@ export const loginSchema = z.object({
 
 export const googleLoginSchema = z.object({
 	body: z.object({
-		credential: z.string().min(1, 'La credencial de Google es requerida'),
+		credential: z.string()
+			.min(1, 'La credencial de Google es requerida'),
 	}).strict(),
 });

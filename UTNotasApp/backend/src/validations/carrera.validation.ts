@@ -10,13 +10,24 @@ import { z } from 'zod';
 
 // materiaId + anio, usados tanto al crear la carrera con materias anidadas como en el endpoint dedicado de carrera_materia
 const carreraMateriaCore = {
-	materiaId: z.coerce.number().int('El ID de la materia debe ser un número entero').positive('El ID de la materia debe ser un número positivo'),
-	anio: z.coerce.number().int('El año debe ser un número entero').min(1, 'El año debe ser al menos 1').max(7, 'El año no puede ser mayor a 7'),
+	materiaId: z.coerce.number()
+		.int('El ID de la materia debe ser un número entero')
+		.positive('El ID de la materia debe ser un número positivo'),
+
+	anio: z.coerce.number()
+		.int('El año debe ser un número entero')
+		.min(1, 'El año debe ser al menos 1')
+		.max(7, 'El año no puede ser mayor a 7'),
 };
 
 const carreraBodyCore = {
-	nombre: z.string().trim().min(1, 'El nombre es un campo requerido').max(100, 'El nombre no puede exceder los 100 caracteres'),
-	icon: z.string().trim().min(1, 'El path del icon es un campo requerido').max(100, 'El path del icon no puede exceder los 100 caracteres'),
+	nombre: z.string().trim()
+		.min(1, 'El nombre es un campo requerido')
+		.max(100, 'El nombre no puede exceder los 100 caracteres'),
+
+	icon: z.string().trim()
+		.min(1, 'El path del icon es un campo requerido')
+		.max(100, 'El path del icon no puede exceder los 100 caracteres'),
 };
 
 export const createCarreraSchema = z.object({
