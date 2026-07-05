@@ -17,6 +17,7 @@ import { userRoutes } from './routes/user.routes';
 import { materialRoutes } from './routes/material.routes';
 import { carreraRoutes } from './routes/carrera.routes';
 import { materiaRoutes } from './routes/materia.routes';
+import { favoritoRoutes } from './routes/favorito.routes';
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/api/carreras', carreraRoutes);
 app.use('/api/materias', materiaRoutes);
+app.use('/api/favoritos', favoritoRoutes);
 
 // El error middleware debe ser el último — Express lo distingue por tener 4 parámetros
 app.use(handleError);

@@ -18,10 +18,12 @@ export function getPaginationParams(queryTake?: any, queryCursor?: any) {
 }
 
 //configuracion generica para consultar a la bd para respuestas paginadas
-export function getPrismaPaginationOptions(take: number, cursor?: number) {
-    const options: any = {
+//desc=true invierte el orden (mas nuevo primero) para listados tipo "favoritos" que necesitan orden de alta descendente
+//tipo de retorno explicito (sin any): evita que al spreadear el resultado dentro de un findMany con include, ts pierda el shape y caiga a un overload de prisma sin include
+export function getPrismaPaginationOptions(take: number, cursor?: number, desc: boolean = false): { take: number; orderBy: { id: 'asc' | 'desc' }; cursor?: { id: number }; skip?: number } {
+    const options: { take: number; orderBy: { id: 'asc' | 'desc' }; cursor?: { id: number }; skip?: number } = {
         take: take + 1,
-        orderBy: { id: 'asc' }
+        orderBy: { id: desc ? 'desc' : 'asc' }
     };
     if (cursor) {
         options.cursor = { id: cursor };

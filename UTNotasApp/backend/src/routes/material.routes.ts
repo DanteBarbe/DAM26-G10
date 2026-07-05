@@ -27,7 +27,7 @@ router.delete('/:id', authenticate, authorize('ADMIN', 'USER'), validate(idParam
 
 // DELETE /:materialId/reportes eliminada — es funcionalidad de E3 (Reportes)
 
-// calificacion.routes.ts usa mergeParams para heredar :materialId sin volver a declararlo 
+// calificacion.routes.ts usa mergeParams para heredar :materialId sin volver a declararlo
 router.use('/:materialId/calificaciones', calificacionRoutes);
 
 export const materialRoutes = router;
