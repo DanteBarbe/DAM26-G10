@@ -1,12 +1,3 @@
-/**
- * configuración central de la aplicación express.
- *
- * responsabilidades:
- * - registra middlewares globales (cors, json, cookies, logger).
- * - monta las rutas bajo el prefijo /api.
- * - registra el middleware de error global al final del pipeline.
- */
-
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -18,6 +9,7 @@ import { materialRoutes } from './routes/material.routes';
 import { carreraRoutes } from './routes/carrera.routes';
 import { materiaRoutes } from './routes/materia.routes';
 import { favoritoRoutes } from './routes/favorito.routes';
+import { reporteRoutes } from './routes/reporte.routes';
 
 const app = express();
 
@@ -48,6 +40,7 @@ app.use('/api/materials', materialRoutes);
 app.use('/api/carreras', carreraRoutes);
 app.use('/api/materias', materiaRoutes);
 app.use('/api/favoritos', favoritoRoutes);
+app.use('/api/reportes', reporteRoutes);
 
 // El error middleware debe ser el último — Express lo distingue por tener 4 parámetros
 app.use(handleError);
