@@ -4,6 +4,7 @@ import { validate } from '../middlewares/validation.middleware';
 import { createMaterialSchema, updateMaterialSchema } from '../validations/material.validation';
 import { idParamSchema } from '../validations/shared.validation';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
+import { calificacionRoutes } from './calificacion.routes';
 
 /**
  * rutas de la entidad material.
@@ -25,5 +26,8 @@ router.patch('/:id', authenticate, authorize('ADMIN', 'USER'), validate(updateMa
 router.delete('/:id', authenticate, authorize('ADMIN', 'USER'), validate(idParamSchema), materialController.deleteMaterial);
 
 // DELETE /:materialId/reportes eliminada — es funcionalidad de E3 (Reportes)
+
+// calificacion.routes.ts usa mergeParams para heredar :materialId sin volver a declararlo 
+router.use('/:materialId/calificaciones', calificacionRoutes);
 
 export const materialRoutes = router;
