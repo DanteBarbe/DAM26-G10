@@ -6,6 +6,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DangerConfirmModal } from "@/src/components/DangerConfirmModal";   
 import { IconButton } from "@/src/components/IconButton";
+import { MaterialActionBar } from "@/src/features/materials/components/MaterialActionBar";
 import { MaterialInfoItem } from "@/src/features/materials/components/MaterialInfoItem";
 import { MaterialPreviewCard } from "@/src/features/materials/components/MaterialPreviewCard";
 import { MaterialScreenHeader } from "@/src/features/materials/components/MaterialScreenHeader";
@@ -116,6 +117,8 @@ export default function MaterialDetailScreen() {
 							value={material.anioCursada?.toString() || "Sin especificar"}
 						/>
 					</View>
+
+					<MaterialActionBar material={material} />
 				</View>
 
 				<MaterialPreviewCard material={material} />
