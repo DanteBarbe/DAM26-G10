@@ -5,7 +5,7 @@ import { useAuth } from "@/src/features/auth/AuthContext";
 import { useToast } from "@/src/contexts/ToastContext";
 
 export default function TabsLayout() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { showToast } = useToast();
 
   return (
@@ -61,6 +61,16 @@ export default function TabsLayout() {
           title: "Perfil",
           tabBarIcon: ({ color, size }) => (
             <Feather name="user" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="admin"
+        options={{
+          title: "Admin",
+          href: user?.role === "ADMIN" ? undefined : null,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="shield" size={size} color={color} />
           ),
         }}
       />
