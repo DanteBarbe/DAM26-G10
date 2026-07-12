@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
+import { MaterialActionBar } from "@/src/features/materials/components/MaterialActionBar";
 import type { StudyMaterial } from "@/src/features/materials/types/materials.types";
 import { getTypeLabel, formatDate } from "@/src/features/materials/utils/materialHelpers";
 import { MaterialResultCardStyles } from "@/src/features/materials/components/styles/MaterialResultCard.styles";
@@ -38,6 +39,8 @@ export function MaterialResultCard({ material }: { material: StudyMaterial }) {
           <Text style={MaterialResultCardStyles.primaryButtonText}>Ver material</Text>
         </Pressable>
       </View>
+
+      <MaterialActionBar material={material} compact />
     </View>
   );
 }
