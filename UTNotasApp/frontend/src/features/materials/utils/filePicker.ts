@@ -1,4 +1,5 @@
 import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
 import { Platform } from "react-native";
 
 import type { AttachedFile } from "@/src/features/materials/types/materials.types";
@@ -59,6 +60,36 @@ export const pickFiles = async (): Promise<AttachedFile[]> => {
       mimeType: asset.mimeType,
       uri: asset.uri,
     }));
+  } catch {
+    return [];
+  }
+};
+
+export const pickFromCamera = async (): Promise<AttachedFile[]> => {
+  if (Platform.OS === "web") return [];
+
+  const { status } = await ImagePicker.requestCameraPermissionsAsync();
+  if (status !== "granted") return [];
+
+  try {
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: "images",
+      quality: 0.85,
+      allowsEditing: false,
+    });
+
+    if (result.canceled) return [];
+
+    return result.assets.map((asset) => {
+      const filename = asset.fileName ?? asset.uri.split("/").pop() ?? "foto.jpg";
+      return {
+        id: createFileId(),
+        name: filename,
+        size: asset.fileSize,
+        mimeType: asset.mimeType ?? "image/jpeg",
+        uri: asset.uri,
+      };
+    });
   } catch {
     return [];
   }
