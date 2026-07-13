@@ -27,6 +27,11 @@ export function MaterialResultCard({ material }: { material: StudyMaterial }) {
         <Text style={[MaterialResultCardStyles.badge, MaterialResultCardStyles.badgeType]}>
           {getTypeLabel(material.tipo)}
         </Text>
+        {material.materiaId ? (
+          <Text style={[MaterialResultCardStyles.badge, MaterialResultCardStyles.badgeCareer]}>
+            {material.materia}
+          </Text>
+        ) : null}
       </View>
 
       <View style={MaterialResultCardStyles.cardFooter}>
