@@ -180,6 +180,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
   },
+  uploadActions: {
+    flexDirection: "row",
+    gap: 10,
+  },
   uploadZone: {
     alignItems: "center",
     backgroundColor: "#f8fbfe",
@@ -190,6 +194,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     minHeight: 138,
     padding: 18,
+  },
+  uploadZoneHalf: {
+    flex: 1,
+    minHeight: 120,
   },
   uploadZoneWithFiles: {
     minHeight: 96,

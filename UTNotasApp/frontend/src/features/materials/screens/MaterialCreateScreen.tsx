@@ -40,7 +40,10 @@ import {
 import { useMaterialForm } from "@/src/features/materials/hooks/useMaterialForm";
 import { styles } from "@/src/features/materials/screens/styles/MaterialCreate.styles";
 import type { MaterialFormData } from "@/src/features/materials/types/materials.types";
-import { pickFiles } from "@/src/features/materials/utils/filePicker";
+import {
+	pickFiles,
+	pickFromCamera,
+} from "@/src/features/materials/utils/filePicker";
 import {
 	partialLabel,
 	validateForm,
@@ -103,6 +106,12 @@ export default function MaterialCreateScreen({
 
 	const handlePickFiles = async () => {
 		const selectedFiles = await pickFiles();
+		if (selectedFiles.length === 0) return;
+		handlers.addFiles(selectedFiles);
+	};
+
+	const handleTakePhoto = async () => {
+		const selectedFiles = await pickFromCamera();
 		if (selectedFiles.length === 0) return;
 		handlers.addFiles(selectedFiles);
 	};
@@ -201,6 +210,7 @@ export default function MaterialCreateScreen({
 							<FileUploadField
 								files={values.archivos}
 								onAddFiles={handlePickFiles}
+								onTakePhoto={handleTakePhoto}
 								onMoveFile={handlers.moveFile}
 								onRemoveFile={handlers.removeFile}
 							/>
