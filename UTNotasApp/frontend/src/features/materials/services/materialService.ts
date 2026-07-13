@@ -159,9 +159,9 @@ export const updateMaterial = async (id: number, form: MaterialFormData): Promis
     numeroParcial: form.parcial ? Number(form.parcial) : null,
   };
   if (archivo) body.archivo = archivo;
-  // materiaId/carreraId NO se envian: las tablas materia/carrera estan vacias en E2
-  // y el backend tambien las ignora al crear. Enviarlas provoca P2003 (FK inexistente)
-  // y la edicion fallaba en silencio. Se conectaran en E3 cuando existan esas tablas.
+  // materia/carrera ya existen en la DB (E3): se envian para poder editarlas.
+  if (form.materiaId !== undefined) body.materiaId = form.materiaId;
+  if (form.carreraId !== undefined) body.carreraId = form.carreraId;
 
   try {
     const res = await apiFetch<{ data: ApiMaterial; message: string }>(`/api/materials/${id}`, {

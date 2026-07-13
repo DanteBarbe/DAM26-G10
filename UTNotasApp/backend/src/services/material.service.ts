@@ -95,7 +95,8 @@ export async function createMaterial(data: CreateMaterialRequest, ctx: UserConte
 				comision: data.comision ?? null,
 				añoCursada: data.añoCursada ?? null,
 				numeroParcial: data.numeroParcial ?? null,
-				// materiaId/carreraId ignorados hasta Entrega 3 (tablas vacias)
+				materiaId: data.materiaId!,
+				carreraId: data.carreraId ?? null,
 				userId: ctx.id,
 				cantidadReportes: 0,
 			},
@@ -129,7 +130,7 @@ export async function updateMaterial(id: number, data: UpdateMaterialRequest, ct
 				...(comision !== undefined && { comision }),
 				...(añoCursada !== undefined && { añoCursada }),
 				...(numeroParcial !== undefined && { numeroParcial }),
-				...(materiaId !== undefined && { materiaId }),
+				...(typeof materiaId === "number" && { materiaId }),
 				...(carreraId !== undefined && { carreraId }),
 			},
 		});

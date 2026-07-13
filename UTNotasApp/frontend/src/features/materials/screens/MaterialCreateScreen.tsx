@@ -28,6 +28,7 @@ import { OptionSheet } from "@/src/components/OptionSheet";
 import { SelectButton } from "@/src/components/SelectButton";
 import { useToast } from "@/src/contexts/ToastContext";
 import { FileUploadField } from "@/src/features/materials/components/FileUploadField";
+import { SubjectSearch } from "@/src/features/materials/components/SubjectSearch";
 import {
 	materialTypes,
 	parcialOptions,
@@ -216,6 +217,28 @@ export default function MaterialCreateScreen({
 							/>
 						</FormField>
 
+						<FormField label="Materia*" error={errors.forField("materiaId")}>
+							<SubjectSearch
+								value={values.materia}
+								subjects={options.materias}
+								selectedSubject={options.selectedSubject}
+								onSelect={handlers.handleSelectSubject}
+							/>
+						</FormField>
+
+						{values.materiaId ? (
+							<FormField
+								label="Carrera (opcional)"
+								error={errors.forField("carreraId")}
+							>
+								<SelectButton
+									icon="book-open"
+									label={values.carrera || "Seleccione una carrera"}
+									onPress={() => handlers.setActiveSelector("career")}
+								/>
+							</FormField>
+						) : null}
+
 						<View style={styles.row}>
 							<FormField
 								label="Tipo de Material*"
@@ -249,17 +272,23 @@ export default function MaterialCreateScreen({
 						</View>
 
 						<FormField label="Comision (opcional)" error={errors.forField("comision")}>
-							<TextInput
-								value={values.comision}
-								onChangeText={(value) =>
-									handlers.updateForm("comision", value.toUpperCase())
-								}
-								placeholder="Ej: K4061"
-								placeholderTextColor="#8a94a6"
-								autoCapitalize="characters"
-								maxLength={10}
-								style={styles.input}
-							/>
+							<View style={styles.commissionRow}>
+								<View style={styles.commissionPrefix}>
+									<Text style={styles.commissionPrefixText}>
+										{uiState.commissionPrefix || "--"}
+									</Text>
+								</View>
+								<TextInput
+									value={values.comision.replace(uiState.commissionPrefix, "")}
+									onChangeText={handlers.handleCommissionDigit}
+									editable={Boolean(uiState.commissionPrefix)}
+									placeholder="2"
+									placeholderTextColor="#8a94a6"
+									keyboardType="number-pad"
+									maxLength={1}
+									style={[styles.input, styles.commissionInput]}
+								/>
+							</View>
 						</FormField>
 
 						{uiState.showParcialSelect ? (
@@ -312,6 +341,19 @@ export default function MaterialCreateScreen({
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
+
+			<OptionSheet
+				visible={uiState.activeSelector === "career"}
+				title="Seleccione una carrera"
+				options={options.availableCareers.map((c) => ({
+					label: c.nombre,
+					value: c.id,
+				}))}
+				emptyLabel="No hay carreras que dicten esa materia."
+				selectedValue={values.carreraId}
+				onClose={() => handlers.setActiveSelector(null)}
+				onSelect={handlers.handleSelectCareerId}
+			/>
 
 			<OptionSheet
 				visible={uiState.activeSelector === "type"}

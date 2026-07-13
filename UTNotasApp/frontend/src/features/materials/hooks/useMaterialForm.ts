@@ -1,6 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
-import { getCareersForSubject, getCareerSubject, materialTypes, subjects, type MaterialType, type Subject, } from "@/src/features/materials/data/materialOptions";
-import type { FieldError, FieldName, MaterialFormData, } from "@/src/features/materials/types/materials.types";
+import {
+	materialTypes,
+	type MaterialType,
+	type Subject,
+} from "@/src/features/materials/data/materialOptions";
+import {
+	useCarreraMateriaAnio,
+	useCarrerasByMateria,
+	useMaterias,
+} from "@/src/features/materials/hooks/useCatalog";
+import type {
+	FieldError,
+	FieldName,
+	MaterialFormData,
+} from "@/src/features/materials/types/materials.types";
 import { getCareerPrefix } from "@/src/features/materials/utils/materialFormHelpers";
 
 /**
@@ -8,7 +21,8 @@ import { getCareerPrefix } from "@/src/features/materials/utils/materialFormHelp
  *
  * responsabilidades:
  * - estado de campos, errores de validacion y selector activo.
- * - logica de seleccion dependiente (materia -> carrera -> comision).
+ * - logica de seleccion dependiente (materia -> carrera -> comision) usando el
+ *   catalogo real del backend (materias, carreras por materia, anio de cursada).
  * - derivados calculados (prefix comision, showParcialSelect, opciones disponibles).
  * - NO conoce pickFiles (infraestructura) ni useFocusEffect (ciclo de pantalla).
  */
@@ -33,7 +47,9 @@ export const useMaterialForm = (
 ) => {
 	const [form, setForm] = useState<MaterialFormData>(initialValues);
 	const [fieldError, setFieldError] = useState<FieldError | null>(null);
-	const [activeSelector, setActiveSelector] = useState<"career" | "type" | "partial" | null>(null);
+	const [activeSelector, setActiveSelector] = useState<
+		"career" | "type" | "partial" | null
+	>(null);
 
 	useEffect(() => {
 		setForm(initialValues);
@@ -41,14 +57,17 @@ export const useMaterialForm = (
 		setActiveSelector(null);
 	}, [formKey, initialValues]);
 
-	const selectedSubject = useMemo(
-		() => subjects.find((s) => s.id === form.materiaId),
-		[form.materiaId],
+	// --- catalogo desde el backend ---
+	const { data: materias = [] } = useMaterias();
+	const { data: availableCareers = [] } = useCarrerasByMateria(form.materiaId);
+	const { data: careerMateriaAnio } = useCarreraMateriaAnio(
+		form.carreraId,
+		form.materiaId,
 	);
 
-	const availableCareers = useMemo(
-		() => getCareersForSubject(form.materiaId),
-		[form.materiaId],
+	const selectedSubject = useMemo(
+		() => materias.find((m) => m.id === form.materiaId),
+		[materias, form.materiaId],
 	);
 
 	const selectedMaterialType = useMemo(
@@ -56,14 +75,11 @@ export const useMaterialForm = (
 		[form.tipo],
 	);
 
-	const careerSubject = useMemo(
-		() => getCareerSubject(form.carreraId, form.materiaId),
-		[form.carreraId, form.materiaId],
-	);
-
+	// prefijo de comision: primera letra de la carrera + anio (ej: "S1"). El
+	// usuario completa el digito final. Solo aparece con materia + carrera elegidas.
 	const commissionPrefix = useMemo(
-		() => getCareerPrefix(form.carrera, careerSubject?.anio),
-		[form.carrera, careerSubject?.anio],
+		() => getCareerPrefix(form.carrera, careerMateriaAnio),
+		[form.carrera, careerMateriaAnio],
 	);
 
 	const showParcialSelect =
@@ -176,6 +192,7 @@ export const useMaterialForm = (
 			commissionPrefix,
 		},
 		options: {
+			materias,
 			selectedSubject,
 			availableCareers,
 			selectedMaterialType,
