@@ -34,7 +34,7 @@ export async function createUser(data: CreateUserRequest): Promise<UserCore> {
 				email: data.email,
 				username: data.username,
 				password: hashedPassword,
-				// careerId ignorado hasta Entrega 3 (tabla carreras vacía)
+				careerId: data.careerId!,
 				// role asignado por defecto en el schema de prisma (@default(USER))
 			},
 		});
