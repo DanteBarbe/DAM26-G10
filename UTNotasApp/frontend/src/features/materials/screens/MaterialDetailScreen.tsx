@@ -97,6 +97,11 @@ export default function MaterialDetailScreen() {
 						<Text style={[detailStyles.badge, detailStyles.badgeType]}>
 							{getTypeLabel(material.tipo)}
 						</Text>
+						{material.materiaId ? (
+							<Text style={[detailStyles.badge, detailStyles.badgeCareer]}>
+								{material.materia}
+							</Text>
+						) : null}
 						{material.numeroParcial ? (
 							<Text style={[detailStyles.badge, detailStyles.badgeNeutral]}>
 								Parcial {material.numeroParcial}
@@ -105,6 +110,13 @@ export default function MaterialDetailScreen() {
 					</View>
 
 					<View style={detailStyles.metaGrid}>
+						{material.carrera ? (
+							<MaterialInfoItem
+								icon="book-open"
+								label="Carrera"
+								value={material.carrera}
+							/>
+						) : null}
 						<MaterialInfoItem
 							icon="users"
 							label="Comisión"
