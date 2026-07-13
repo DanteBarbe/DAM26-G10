@@ -7,7 +7,7 @@ import { OptionSheet } from "@/src/components/OptionSheet";
 import { SelectButton } from "@/src/components/SelectButton";
 import { useToast } from "@/src/contexts/ToastContext";
 import { useAuth } from "@/src/features/auth/AuthContext";
-import { careers } from "@/src/features/materials/data/materialOptions";
+import { useCarreras } from "@/src/features/materials/hooks/useCatalog";
 import { AuthScreenLayout } from "../components/AuthScreenLayout";
 import { AuthTextField } from "../components/AuthTextField";
 import { useSignupForm } from "../hooks/useSignupForm";
@@ -31,6 +31,7 @@ export default function SignupScreen() {
 	const [careerSheetOpen, setCareerSheetOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [apiError, setApiError] = useState<string | null>(null);
+	const { data: careers = [] } = useCarreras();
 
 	const selectedCareer = careers.find((career) => career.id === values.career);
 
